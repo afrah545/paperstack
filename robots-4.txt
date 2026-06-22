@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://paperstack.vercel.app/sitemap.xml
+Sitemap: https://paperstack-one.vercel.app//sitemap.xml
