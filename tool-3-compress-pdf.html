@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Compress PDF Free — Reduce File Size | PaperStack</title>
+<meta name="description" content="Shrink large PDF files for free without losing quality. Choose your compression level. Processed locally — nothing is uploaded."/>
+<link rel="canonical" href="https://paperstack.vercel.app/tool-3-compress-pdf.html"/>
+<meta property="og:title" content="Compress PDF Free — Reduce File Size | PaperStack"/>
+<meta property="og:description" content="Shrink large PDF files for free without losing quality. Choose your compression level. Processed locally — nothing is uploaded."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://paperstack.vercel.app/tool-3-compress-pdf.html"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Compress PDF Free — Reduce File Size | PaperStack"/>
+<meta name="twitter:description" content="Shrink large PDF files for free without losing quality. Choose your compression level. Processed locally — nothing is uploaded."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+  :root {
+    --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec;
+    --text:#111827; --muted:#6b7280; --light:#9ca3af;
+    --accent:#4f6ef7; --accent-l:#eef1fe;
+    --green:#16a34a; --green-l:#dcfce7;
+    --red:#dc2626; --red-l:#fee2e2;
+    --orange:#ea580c; --orange-l:#fff7ed;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:760px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .tool-hero{max-width:760px;margin:0 auto;padding:28px 24px 24px;display:flex;align-items:center;gap:18px;}
+  .tool-hero-icon{width:56px;height:56px;background:var(--green-l);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+  .tool-hero h1{font-size:1.5rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px;}
+  .tool-hero p{font-size:.875rem;color:var(--muted);}
+
+  .tool-wrap{max-width:760px;margin:0 auto;padding:0 24px 48px;}
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px;margin-bottom:16px;}
+  .card-title{font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px;}
+
+  .drop-area{border:2px dashed var(--border);border-radius:10px;background:var(--bg);padding:44px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;}
+  .drop-area.dragover{border-color:var(--accent);background:var(--accent-l);}
+  .drop-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .drop-icon{font-size:2.2rem;margin-bottom:12px;}
+  .drop-area h3{font-size:.95rem;font-weight:700;margin-bottom:5px;}
+  .drop-area p{font-size:.8rem;color:var(--muted);}
+  .drop-area .browse{color:var(--accent);font-weight:600;text-decoration:underline;}
+
+  .file-info-bar{background:var(--accent-l);border-radius:8px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .file-info-bar .fname{font-size:.875rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .file-info-bar .fmeta{font-size:.75rem;color:var(--accent);flex-shrink:0;}
+  .change-file{background:none;border:1.5px solid var(--accent);color:var(--accent);padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;flex-shrink:0;}
+  .change-file:hover{background:var(--accent);color:white;}
+
+  /* COMPRESSION LEVELS */
+  .level-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .level-card{border:1.5px solid var(--border);border-radius:10px;padding:16px 14px;cursor:pointer;transition:all .15s;text-align:center;background:var(--white);}
+  .level-card:hover{border-color:var(--accent);}
+  .level-card.selected{border-color:var(--accent);background:var(--accent-l);}
+  .level-icon{font-size:1.4rem;margin-bottom:8px;}
+  .level-card h4{font-size:.85rem;font-weight:700;margin-bottom:3px;}
+  .level-card p{font-size:.72rem;color:var(--muted);line-height:1.4;}
+
+  .compress-btn{width:100%;padding:14px;background:var(--accent);border:none;border-radius:10px;color:white;font-size:.95rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:opacity .15s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .compress-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px);}
+  .compress-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+  .progress-wrap{margin-top:14px;display:none;}
+  .progress-bg{background:var(--bg);border-radius:6px;height:6px;overflow:hidden;margin-bottom:7px;}
+  .progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),#818cf8);width:0%;border-radius:6px;transition:width .3s;}
+  .progress-label{font-size:.77rem;color:var(--muted);text-align:center;}
+
+  .error-box{display:none;background:var(--red-l);border:1.5px solid #fca5a5;border-radius:9px;padding:12px 16px;color:var(--red);font-size:.83rem;margin-top:12px;}
+  .warn-box{display:none;background:var(--orange-l);border:1.5px solid #fed7aa;border-radius:9px;padding:12px 16px;color:var(--orange);font-size:.8rem;margin-top:12px;line-height:1.5;}
+
+  .success-box{display:none;background:var(--green-l);border:1.5px solid #86efac;border-radius:12px;padding:24px;text-align:center;margin-top:14px;}
+  .success-box .s-icon{font-size:2rem;margin-bottom:8px;}
+  .success-box h3{font-size:1rem;font-weight:700;color:var(--green);margin-bottom:10px;}
+  .compare-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:6px;}
+  .compare-box{text-align:center;}
+  .compare-label{font-size:.7rem;color:#15803d;text-transform:uppercase;letter-spacing:.4px;}
+  .compare-val{font-size:1.1rem;font-weight:800;color:var(--text);}
+  .compare-arrow{font-size:1.2rem;color:var(--green);}
+  .saved-badge{display:inline-block;background:var(--green);color:white;font-size:.78rem;font-weight:700;padding:3px 12px;border-radius:20px;margin-bottom:16px;}
+  .download-btn{display:inline-flex;align-items:center;gap:7px;background:var(--green);color:white;border:none;padding:11px 24px;border-radius:8px;font-size:.875rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;transition:opacity .15s;}
+  .download-btn:hover{opacity:.85;}
+  .again-btn{margin-top:10px;background:none;border:1.5px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;display:block;margin-left:auto;margin-right:auto;}
+  .again-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  .ad-slot{background:var(--white);border:1.5px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--light);font-size:.7rem;letter-spacing:.5px;text-transform:uppercase;height:90px;margin-bottom:16px;}
+
+  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .feat{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:16px;}
+  .feat-icon{font-size:1.2rem;margin-bottom:8px;}
+  .feat h4{font-size:.83rem;font-weight:700;margin-bottom:3px;}
+  .feat p{font-size:.75rem;color:var(--muted);line-height:1.5;}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  .footer-logo{font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:7px;}
+  .footer-links{display:flex;gap:16px;}
+  .footer-links a{font-size:.78rem;color:var(--muted);text-decoration:none;}
+  .footer-links a:hover{color:var(--text);}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .tool-hero{flex-direction:column;align-items:flex-start;gap:12px;}
+    .features-grid{grid-template-columns:1fr;}
+    .level-grid{grid-template-columns:1fr;}
+    footer{padding:16px;flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">
+    <div class="logo-icon">📄</div>
+    PaperStack
+  </a>
+  <a class="back-link" href="index.html">← All Tools</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <span class="current">Compress PDF</span>
+</div>
+
+<div class="tool-hero">
+  <div class="tool-hero-icon">📦</div>
+  <div>
+    <h1>Compress PDF</h1>
+    <p>Shrink your PDF file size by re-compressing embedded images — quality stays readable.</p>
+  </div>
+</div>
+
+<div class="tool-wrap">
+
+
+  <div class="card" id="uploadCard">
+    <div class="card-title">Step 1 — Upload your PDF</div>
+    <div class="drop-area" id="dropArea">
+      <input type="file" id="fileInput" accept=".pdf"/>
+      <div class="drop-icon">📄</div>
+      <h3>Drop your PDF here</h3>
+      <p>or <span class="browse">browse to choose a file</span> · Single PDF only</p>
+    </div>
+  </div>
+
+  <div id="optionsSection" style="display:none;">
+
+    <div class="card">
+      <div class="card-title">File loaded</div>
+      <div class="file-info-bar">
+        <div>
+          <div class="fname" id="loadedName">file.pdf</div>
+          <div class="fmeta" id="loadedMeta">0 pages · 0 KB</div>
+        </div>
+        <button class="change-file" onclick="resetUpload()">Change file</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Step 2 — Choose compression level</div>
+      <div class="level-grid">
+        <div class="level-card" data-level="low" onclick="selectLevel('low')">
+          <div class="level-icon">🟢</div>
+          <h4>Light</h4>
+          <p>Best quality, smaller savings (~20%)</p>
+        </div>
+        <div class="level-card selected" data-level="medium" onclick="selectLevel('medium')">
+          <div class="level-icon">🟡</div>
+          <h4>Recommended</h4>
+          <p>Balanced quality & size (~50%)</p>
+        </div>
+        <div class="level-card" data-level="high" onclick="selectLevel('high')">
+          <div class="level-icon">🔴</div>
+          <h4>Maximum</h4>
+          <p>Smallest file, lower quality (~70%)</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <button class="compress-btn" id="compressBtn" onclick="doCompress()">📦 Compress PDF</button>
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bg"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="progress-label" id="progressLabel">Processing…</div>
+      </div>
+      <div class="error-box" id="errorBox"></div>
+      <div class="warn-box" id="warnBox"></div>
+
+      <div class="success-box" id="successBox">
+        <div class="s-icon">✅</div>
+        <h3>Compressed successfully!</h3>
+        <div class="compare-row">
+          <div class="compare-box">
+            <div class="compare-label">Original</div>
+            <div class="compare-val" id="origSize">0 KB</div>
+          </div>
+          <div class="compare-arrow">→</div>
+          <div class="compare-box">
+            <div class="compare-label">Compressed</div>
+            <div class="compare-val" id="newSize">0 KB</div>
+          </div>
+        </div>
+        <div class="saved-badge" id="savedBadge">0% smaller</div>
+        <br/>
+        <a class="download-btn" id="downloadLink" href="#" download="compressed.pdf">⬇️ Download compressed PDF</a>
+        <button class="again-btn" onclick="resetAll()">Compress a different file</button>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="features-grid">
+    <div class="feat">
+      <div class="feat-icon">🔒</div>
+      <h4>100% Private</h4>
+      <p>Files stay on your device. Nothing is uploaded to any server.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🎛️</div>
+      <h4>3 quality levels</h4>
+      <p>Pick the right balance between file size and visual quality.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">⚡</div>
+      <h4>Fast results</h4>
+      <p>Compression runs locally — no upload queue or wait time.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">
+    <div style="width:24px;height:24px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.75rem;">📄</div>
+    PaperStack
+  </div>
+  <div class="footer-links">
+    <a href="about.html">About</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="blog.html">Blog</a><a href="mailto:paperstack.help@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+let pdfFile = null;
+let selectedLevel = 'medium';
+const qualityMap = { low: 0.8, medium: 0.55, high: 0.3 };
+const scaleMap   = { low: 1.0, medium: 0.85, high: 0.65 };
+
+const dropArea       = document.getElementById('dropArea');
+const fileInput      = document.getElementById('fileInput');
+const optionsSection = document.getElementById('optionsSection');
+const loadedName     = document.getElementById('loadedName');
+const loadedMeta     = document.getElementById('loadedMeta');
+const compressBtn    = document.getElementById('compressBtn');
+const progressWrap   = document.getElementById('progressWrap');
+const progressBar    = document.getElementById('progressBar');
+const progressLabel  = document.getElementById('progressLabel');
+const errorBox       = document.getElementById('errorBox');
+const warnBox        = document.getElementById('warnBox');
+const successBox     = document.getElementById('successBox');
+const origSizeEl     = document.getElementById('origSize');
+const newSizeEl      = document.getElementById('newSize');
+const savedBadge     = document.getElementById('savedBadge');
+const downloadLink   = document.getElementById('downloadLink');
+
+dropArea.addEventListener('dragover', e=>{e.preventDefault();dropArea.classList.add('dragover');});
+dropArea.addEventListener('dragleave', ()=>dropArea.classList.remove('dragover'));
+dropArea.addEventListener('drop', e=>{e.preventDefault();dropArea.classList.remove('dragover');handleFile(e.dataTransfer.files[0]);});
+fileInput.addEventListener('change', ()=>handleFile(fileInput.files[0]));
+
+async function handleFile(file) {
+  if(!file) return;
+  if(!file.name.endsWith('.pdf') && file.type !== 'application/pdf') {
+    showError('Please select a PDF file.'); return;
+  }
+  pdfFile = file;
+  try {
+    const bytes = await file.arrayBuffer();
+    const {PDFDocument} = PDFLib;
+    const doc = await PDFDocument.load(bytes);
+    const pages = doc.getPageCount();
+    loadedName.textContent = file.name;
+    loadedMeta.textContent = `${pages} pages · ${fmt(file.size)}`;
+    optionsSection.style.display = 'block';
+    hideError(); hideWarn();
+    successBox.style.display = 'none';
+  } catch(e) {
+    showError('Could not read this PDF. It may be corrupted or password-protected.');
+  }
+}
+
+function selectLevel(level) {
+  selectedLevel = level;
+  document.querySelectorAll('.level-card').forEach(c=>{
+    c.classList.toggle('selected', c.dataset.level === level);
+  });
+}
+
+async function doCompress() {
+  hideError(); hideWarn();
+  successBox.style.display = 'none';
+  compressBtn.disabled = true;
+  progressWrap.style.display = 'block';
+  setProgress(5, 'Loading PDF…');
+
+  try {
+    const arrayBuffer = await pdfFile.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({data: arrayBuffer.slice(0)}).promise;
+    const numPages = pdf.numPages;
+    const quality = qualityMap[selectedLevel];
+    const scale = scaleMap[selectedLevel];
+
+    const {PDFDocument} = PDFLib;
+    const newDoc = await PDFDocument.create();
+
+    for(let i = 1; i <= numPages; i++) {
+      setProgress(10 + Math.round((i/numPages)*75), `Compressing page ${i} of ${numPages}…`);
+
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale: scale * 1.5 });
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      const ctx = canvas.getContext('2d');
+      await page.render({ canvasContext: ctx, viewport }).promise;
+
+      const jpegDataUrl = canvas.toDataURL('image/jpeg', quality);
+      const jpegBytes = await fetch(jpegDataUrl).then(r => r.arrayBuffer());
+
+      const img = await newDoc.embedJpg(jpegBytes);
+      const origViewport = page.getViewport({ scale: 1 });
+      const newPage = newDoc.addPage([origViewport.width, origViewport.height]);
+      newPage.drawImage(img, {
+        x: 0, y: 0,
+        width: origViewport.width,
+        height: origViewport.height
+      });
+
+      canvas.width = 0; canvas.height = 0; // free memory
+    }
+
+    setProgress(92, 'Finalising…');
+    const compressedBytes = await newDoc.save();
+    setProgress(100, 'Done!');
+
+    const originalSize = pdfFile.size;
+    const newSize = compressedBytes.length;
+
+    if(newSize >= originalSize) {
+      showWarn('This PDF was already well-optimized — the compressed version came out larger or similar in size, possibly because it was image-based already. We recommend keeping the original, or try the "Maximum" compression level.');
+    }
+
+    const blob = new Blob([compressedBytes], {type:'application/pdf'});
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = pdfFile.name.replace('.pdf','') + '_compressed.pdf';
+
+    origSizeEl.textContent = fmt(originalSize);
+    newSizeEl.textContent = fmt(newSize);
+    const pct = Math.round((1 - newSize/originalSize) * 100);
+    savedBadge.textContent = pct > 0 ? `${pct}% smaller` : `${Math.abs(pct)}% larger`;
+    savedBadge.style.background = pct > 0 ? 'var(--green)' : 'var(--orange)';
+
+    setTimeout(()=>{
+      progressWrap.style.display='none';
+      successBox.style.display='block';
+      compressBtn.disabled=false;
+    }, 400);
+
+  } catch(err) {
+    progressWrap.style.display='none';
+    showError('Something went wrong: ' + err.message);
+    compressBtn.disabled = false;
+  }
+}
+
+function setProgress(pct,label){progressBar.style.width=pct+'%';progressLabel.textContent=label;}
+function showError(msg){errorBox.textContent='⚠️ '+msg;errorBox.style.display='block';}
+function hideError(){errorBox.style.display='none';}
+function showWarn(msg){warnBox.textContent='ℹ️ '+msg;warnBox.style.display='block';}
+function hideWarn(){warnBox.style.display='none';}
+function fmt(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB';}
+
+function resetUpload(){
+  pdfFile=null;
+  fileInput.value='';
+  optionsSection.style.display='none';
+  successBox.style.display='none';
+  progressWrap.style.display='none';
+  hideError(); hideWarn();
+}
+function resetAll(){resetUpload();}
+</script>
+</body>
+</html>

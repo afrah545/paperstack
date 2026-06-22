@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PDF Too Large to Email? Here's the Fix | PaperStack</title>
+<meta name="description" content="Real Gmail and Outlook attachment limits, why PDFs get bloated, and how to compress one for free without losing quality."/>
+<link rel="canonical" href="https://paperstack.vercel.app/blog-compress-pdf-email.html"/>
+<meta property="og:title" content="PDF Too Large to Email? Here's the Fix | PaperStack"/>
+<meta property="og:description" content="Real Gmail and Outlook attachment limits, why PDFs get bloated, and how to compress one for free without losing quality."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://paperstack.vercel.app/blog-compress-pdf-email.html"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PDF Too Large to Email? Here's the Fix | PaperStack"/>
+<meta name="twitter:description" content="Real Gmail and Outlook attachment limits, why PDFs get bloated, and how to compress one for free without losing quality."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root { --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec; --text:#111827; --muted:#6b7280; --light:#9ca3af; --accent:#4f6ef7; --accent-l:#eef1fe; --green:#16a34a; --green-l:#dcfce7; --orange:#ea580c; --orange-l:#fff7ed; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:700px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .wrap{max-width:700px;margin:0 auto;padding:28px 24px 64px;}
+  .post-tag{display:inline-block;background:var(--accent-l);color:var(--accent);font-size:.7rem;font-weight:700;padding:3px 11px;border-radius:6px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.4px;}
+  h1{font-size:1.6rem;font-weight:800;letter-spacing:-.4px;margin-bottom:10px;line-height:1.25;}
+  .meta{font-size:.78rem;color:var(--muted);margin-bottom:24px;}
+
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px 30px;margin-bottom:18px;}
+
+  h2{font-size:1.15rem;font-weight:700;margin:30px 0 12px;}
+  h2:first-child{margin-top:0;}
+  h3{font-size:.98rem;font-weight:700;margin:18px 0 8px;}
+  p{color:var(--text);font-size:.92rem;margin-bottom:12px;}
+  ul,ol{margin:10px 0 14px 22px;color:var(--text);font-size:.92rem;}
+  li{margin-bottom:8px;line-height:1.6;}
+
+  .limit-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.85rem;}
+  .limit-table th{background:var(--bg);text-align:left;padding:9px 12px;font-weight:700;border-bottom:2px solid var(--border);}
+  .limit-table td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text);}
+  .limit-table tr:last-child td{border-bottom:none;}
+
+  .step-card{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;}
+  .step-num{background:var(--accent);color:white;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;}
+  .step-text{font-size:.88rem;color:var(--text);padding-top:2px;}
+  .step-text strong{display:block;margin-bottom:3px;}
+
+  .cta-box{background:var(--accent-l);border:1.5px solid var(--accent);border-radius:12px;padding:20px 24px;text-align:center;margin:24px 0;}
+  .cta-box p{color:var(--text);font-size:.9rem;margin-bottom:14px;}
+  .cta-btn{display:inline-block;background:var(--accent);color:white;text-decoration:none;padding:11px 26px;border-radius:8px;font-size:.88rem;font-weight:700;transition:opacity .15s;}
+  .cta-btn:hover{opacity:.88;}
+
+  .level-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+  .level-mini{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+  .level-mini .lic{font-size:1.2rem;margin-bottom:6px;}
+  .level-mini h4{font-size:.82rem;font-weight:700;margin-bottom:3px;}
+  .level-mini p{font-size:.72rem;color:var(--muted);margin:0;}
+
+  .faq-item{border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;}
+  .faq-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .faq-q{font-size:.92rem;font-weight:700;margin-bottom:6px;display:flex;gap:8px;}
+  .faq-q span{color:var(--accent);}
+  .faq-a{font-size:.87rem;color:var(--muted);line-height:1.6;padding-left:22px;}
+
+  .note-box{background:var(--orange-l);border:1.5px solid #fed7aa;border-radius:9px;padding:14px 18px;font-size:.85rem;color:#9a3412;margin:16px 0;}
+  .note-box strong{display:block;margin-bottom:3px;}
+
+  .related{margin-top:32px;}
+  .related-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .related-card{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--text);transition:border-color .2s;}
+  .related-card:hover{border-color:var(--accent);}
+  .related-card .rtitle{font-size:.85rem;font-weight:700;margin-bottom:3px;}
+  .related-card .rdesc{font-size:.75rem;color:var(--muted);}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;text-align:center;}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .card{padding:22px 18px;}
+    .related-grid{grid-template-columns:1fr;}
+    .level-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html"><div class="logo-icon">📄</div>PaperStack</a>
+  <a class="back-link" href="blog.html">← Blog</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <a href="blog.html">Blog</a>
+  <span class="sep">›</span>
+  <span class="current">Compress PDF for Email</span>
+</div>
+
+<div class="wrap">
+  <span class="post-tag">Guide</span>
+  <h1>PDF Too Large to Email? Here's How to Fix It</h1>
+  <div class="meta">7 min read · Updated June 2026</div>
+
+  <div class="card">
+    <p>You've attached a PDF to an email, hit send, and gotten a bounce-back message saying the file is too large. It's one of the most common PDF headaches — and it almost always comes down to one thing: scanned pages or embedded images bloating the file size far beyond what the actual content needs.</p>
+    <p>Here's why it happens, what the actual email size limits are, and how to fix it in under a minute using <a href="tool-3-compress-pdf.html" style="color:var(--accent);font-weight:600;">PaperStack's Compress PDF tool</a>.</p>
+
+    <h2>Why PDFs get so big in the first place</h2>
+    <p>A PDF made from typed text (like a Word document exported to PDF) is usually tiny — often under 500 KB even for 20+ pages. The problem is almost always one of these:</p>
+    <ul>
+      <li><strong>Scanned documents</strong> — each page is actually a high-resolution photo, not text, so file sizes balloon fast</li>
+      <li><strong>Embedded high-res images</strong> — photos or screenshots pasted into the document at full camera resolution</li>
+      <li><strong>Multiple merged PDFs</strong> — combining several already-large files compounds the problem</li>
+    </ul>
+
+    <h2>What are the actual email attachment limits?</h2>
+    <table class="limit-table">
+      <tr><th>Email provider</th><th>Attachment limit</th></tr>
+      <tr><td>Gmail</td><td>25 MB</td></tr>
+      <tr><td>Outlook / Microsoft 365</td><td>20–25 MB (varies by plan)</td></tr>
+      <tr><td>Yahoo Mail</td><td>25 MB</td></tr>
+      <tr><td>WhatsApp (document)</td><td>100 MB, but many recipients have data-saving limits</td></tr>
+    </table>
+    <p>If your PDF is hovering near these limits — or a recipient's company mail server has a stricter limit than these defaults — compression is the fastest fix.</p>
+
+    <h2>Step-by-step: compressing your PDF</h2>
+
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Open the Compress PDF tool</strong>Works directly in your browser — nothing to install.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Upload your PDF</strong>Drag and drop, or browse your files. You'll see the original file size right away.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Pick a compression level</strong>Light, Recommended, or Maximum — see below for which to choose.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>Download and check the size</strong>You'll see a before/after comparison so you know exactly how much smaller it got.</div>
+    </div>
+
+    <h2>Which compression level should you pick?</h2>
+    <div class="level-grid">
+      <div class="level-mini">
+        <div class="lic">🟢</div>
+        <h4>Light</h4>
+        <p>Best for documents you'll print or that have small text — keeps quality nearly untouched.</p>
+      </div>
+      <div class="level-mini">
+        <div class="lic">🟡</div>
+        <h4>Recommended</h4>
+        <p>The right choice for most people — solid size reduction, no visible quality loss on screen.</p>
+      </div>
+      <div class="level-mini">
+        <div class="lic">🔴</div>
+        <h4>Maximum</h4>
+        <p>Use when you just need it under a size limit and don't care about minor quality loss — good for quick WhatsApp/email sends.</p>
+      </div>
+    </div>
+
+    <div class="cta-box">
+      <p>Try it now — see your file shrink in seconds, right in your browser.</p>
+      <a class="cta-btn" href="tool-3-compress-pdf.html">Open Compress PDF Tool →</a>
+    </div>
+
+    <h2>Common problems people run into</h2>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>I compressed my PDF but it's still too big — why?</div>
+      <div class="faq-a">This usually happens with scanned documents at very high resolution (300+ DPI). Try the "Maximum" compression level, which more aggressively reduces image quality. If it's still too large, consider splitting the PDF and sending it in parts, or sharing via Google Drive link instead of attaching it directly.</div>
+    </div>
+
+    <div class="faq-q" style="margin-top:0;"></div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Will compression make my PDF blurry or unreadable?</div>
+      <div class="faq-a">At "Light" or "Recommended" levels, no — text and most images stay clearly readable. "Maximum" trades more visible quality for a smaller file, so it's best used only when you genuinely need the smallest possible size, not for documents where fine detail matters (like design proofs).</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Does compressing remove pages or content from my PDF?</div>
+      <div class="faq-a">No. Compression only reduces the quality of embedded images — it never removes pages, text, or content. The document structure stays exactly the same, just lighter.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Is it safe to compress a PDF with sensitive information (like a bank statement)?</div>
+      <div class="faq-a">Yes — PaperStack compresses your file entirely inside your browser. It's never uploaded to a server, so nobody but you ever sees the content, compressed or not.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>My compressed file came out larger than the original — what happened?</div>
+      <div class="faq-a">This can happen if your PDF is already mostly text with no large images — there's simply nothing left to compress, and the rebuild process can occasionally add a small amount of overhead. In that case, your original file was already efficient, and it's fine to send as-is.</div>
+    </div>
+
+    <div class="note-box">
+      <strong>💡 Quick tip</strong>
+      If you regularly send the same type of document (like scanned forms), consider scanning at a lower DPI (150–200) to begin with — you'll get smaller files from the start without needing to compress every time.
+    </div>
+
+    <div class="related">
+      <h2>Related tools</h2>
+      <div class="related-grid">
+        <a class="related-card" href="tool-2-split-pdf.html">
+          <div class="rtitle">✂️ Split PDF</div>
+          <div class="rdesc">Send a large PDF in smaller chunks instead.</div>
+        </a>
+        <a class="related-card" href="tool-1-merge-pdf.html">
+          <div class="rtitle">🔗 Merge PDF</div>
+          <div class="rdesc">Combine PDFs into one file before compressing.</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+</body>
+</html>

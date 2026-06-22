@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rotate PDF Pages Free Online | PaperStack</title>
+<meta name="description" content="Fix sideways or upside-down PDF pages for free. Rotate individual pages or the whole document, right in your browser."/>
+<link rel="canonical" href="https://paperstack.vercel.app/tool-5-rotate-pdf.html"/>
+<meta property="og:title" content="Rotate PDF Pages Free Online | PaperStack"/>
+<meta property="og:description" content="Fix sideways or upside-down PDF pages for free. Rotate individual pages or the whole document, right in your browser."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://paperstack.vercel.app/tool-5-rotate-pdf.html"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Rotate PDF Pages Free Online | PaperStack"/>
+<meta name="twitter:description" content="Fix sideways or upside-down PDF pages for free. Rotate individual pages or the whole document, right in your browser."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+  :root {
+    --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec;
+    --text:#111827; --muted:#6b7280; --light:#9ca3af;
+    --accent:#4f6ef7; --accent-l:#eef1fe;
+    --green:#16a34a; --green-l:#dcfce7;
+    --red:#dc2626; --red-l:#fee2e2;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:760px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .tool-hero{max-width:760px;margin:0 auto;padding:28px 24px 24px;display:flex;align-items:center;gap:18px;}
+  .tool-hero-icon{width:56px;height:56px;background:var(--accent-l);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+  .tool-hero h1{font-size:1.5rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px;}
+  .tool-hero p{font-size:.875rem;color:var(--muted);}
+
+  .tool-wrap{max-width:760px;margin:0 auto;padding:0 24px 48px;}
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px;margin-bottom:16px;}
+  .card-title{font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px;}
+
+  .drop-area{border:2px dashed var(--border);border-radius:10px;background:var(--bg);padding:44px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;}
+  .drop-area.dragover{border-color:var(--accent);background:var(--accent-l);}
+  .drop-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .drop-icon{font-size:2.2rem;margin-bottom:12px;}
+  .drop-area h3{font-size:.95rem;font-weight:700;margin-bottom:5px;}
+  .drop-area p{font-size:.8rem;color:var(--muted);}
+  .drop-area .browse{color:var(--accent);font-weight:600;text-decoration:underline;}
+
+  .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+  .toolbar-label{font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;}
+  .toolbar-actions{display:flex;gap:8px;}
+  .tbtn{background:var(--white);border:1.5px solid var(--border);color:var(--text);padding:6px 13px;border-radius:7px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;display:flex;align-items:center;gap:5px;}
+  .tbtn:hover{border-color:var(--accent);color:var(--accent);}
+
+  .hint-box{background:var(--accent-l);border-radius:8px;padding:9px 13px;font-size:.77rem;color:var(--accent);margin-bottom:14px;font-weight:500;}
+
+  /* PAGE THUMB GRID */
+  .pages-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:14px;}
+  .page-tile{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:10px;text-align:center;transition:border-color .2s;}
+  .page-tile:hover{border-color:var(--accent);}
+  .page-canvas-wrap{position:relative;width:100%;aspect-ratio:3/4;background:var(--white);border-radius:6px;overflow:hidden;margin-bottom:8px;display:flex;align-items:center;justify-content:center;}
+  .page-canvas-wrap canvas{max-width:100%;max-height:100%;transition:transform .25s;}
+  .page-label{font-size:.72rem;color:var(--muted);font-weight:600;margin-bottom:8px;}
+  .rotate-controls{display:flex;justify-content:center;gap:6px;}
+  .rotate-btn{width:30px;height:30px;border:1.5px solid var(--border);background:var(--white);border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.85rem;transition:all .15s;color:var(--muted);}
+  .rotate-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-l);}
+
+  .apply-btn{width:100%;padding:14px;background:var(--accent);border:none;border-radius:10px;color:white;font-size:.95rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:opacity .15s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:18px;}
+  .apply-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px);}
+  .apply-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+  .progress-wrap{margin-top:14px;display:none;}
+  .progress-bg{background:var(--bg);border-radius:6px;height:6px;overflow:hidden;margin-bottom:7px;}
+  .progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),#818cf8);width:0%;border-radius:6px;transition:width .3s;}
+  .progress-label{font-size:.77rem;color:var(--muted);text-align:center;}
+
+  .error-box{display:none;background:var(--red-l);border:1.5px solid #fca5a5;border-radius:9px;padding:12px 16px;color:var(--red);font-size:.83rem;margin-top:12px;}
+
+  .success-box{display:none;background:var(--green-l);border:1.5px solid #86efac;border-radius:12px;padding:24px;text-align:center;margin-top:14px;}
+  .success-box .s-icon{font-size:2rem;margin-bottom:8px;}
+  .success-box h3{font-size:1rem;font-weight:700;color:var(--green);margin-bottom:4px;}
+  .success-box p{font-size:.82rem;color:#15803d;margin-bottom:16px;}
+  .download-btn{display:inline-flex;align-items:center;gap:7px;background:var(--green);color:white;border:none;padding:11px 24px;border-radius:8px;font-size:.875rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;transition:opacity .15s;}
+  .download-btn:hover{opacity:.85;}
+  .again-btn{margin-top:10px;background:none;border:1.5px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;display:block;margin-left:auto;margin-right:auto;}
+  .again-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  .ad-slot{background:var(--white);border:1.5px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--light);font-size:.7rem;letter-spacing:.5px;text-transform:uppercase;height:90px;margin-bottom:16px;}
+
+  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .feat{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:16px;}
+  .feat-icon{font-size:1.2rem;margin-bottom:8px;}
+  .feat h4{font-size:.83rem;font-weight:700;margin-bottom:3px;}
+  .feat p{font-size:.75rem;color:var(--muted);line-height:1.5;}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  .footer-logo{font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:7px;}
+  .footer-links{display:flex;gap:16px;}
+  .footer-links a{font-size:.78rem;color:var(--muted);text-decoration:none;}
+  .footer-links a:hover{color:var(--text);}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .tool-hero{flex-direction:column;align-items:flex-start;gap:12px;}
+    .features-grid{grid-template-columns:1fr;}
+    footer{padding:16px;flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">
+    <div class="logo-icon">📄</div>
+    PaperStack
+  </a>
+  <a class="back-link" href="index.html">← All Tools</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <span class="current">Rotate PDF</span>
+</div>
+
+<div class="tool-hero">
+  <div class="tool-hero-icon">↩️</div>
+  <div>
+    <h1>Rotate PDF</h1>
+    <p>Fix portrait or landscape orientation. Rotate each page individually or all at once.</p>
+  </div>
+</div>
+
+<div class="tool-wrap">
+
+
+  <div class="card" id="uploadCard">
+    <div class="card-title">Step 1 — Upload your PDF</div>
+    <div class="drop-area" id="dropArea">
+      <input type="file" id="fileInput" accept=".pdf"/>
+      <div class="drop-icon">📄</div>
+      <h3>Drop your PDF here</h3>
+      <p>or <span class="browse">browse to choose a file</span> · Single PDF only</p>
+    </div>
+  </div>
+
+  <div class="card" id="pagesCard" style="display:none;">
+    <div class="toolbar">
+      <span class="toolbar-label" id="pagesLabel">Pages</span>
+      <div class="toolbar-actions">
+        <button class="tbtn" onclick="rotateAll(-90)">↺ Rotate all left</button>
+        <button class="tbtn" onclick="rotateAll(90)">↻ Rotate all right</button>
+      </div>
+    </div>
+    <div class="hint-box">☝️ Use ↺ ↻ on each page to rotate individually, or use the buttons above to rotate all pages at once</div>
+    <div class="pages-grid" id="pagesGrid"></div>
+
+    <button class="apply-btn" id="applyBtn" onclick="applyRotation()">↩️ Apply & Download</button>
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bg"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="progress-label" id="progressLabel">Processing…</div>
+    </div>
+    <div class="error-box" id="errorBox"></div>
+
+    <div class="success-box" id="successBox">
+      <div class="s-icon">✅</div>
+      <h3>Rotated successfully!</h3>
+      <p id="successDesc">Your PDF is ready to download.</p>
+      <a class="download-btn" id="downloadLink" href="#" download="rotated.pdf">⬇️ Download rotated PDF</a>
+      <button class="again-btn" onclick="resetAll()">Rotate a different file</button>
+    </div>
+  </div>
+
+
+  <div class="features-grid">
+    <div class="feat">
+      <div class="feat-icon">🔒</div>
+      <h4>100% Private</h4>
+      <p>Files stay on your device. Nothing is uploaded to any server.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">👁️</div>
+      <h4>Visual preview</h4>
+      <p>See exactly how each page will look before downloading.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🎯</div>
+      <h4>Page by page</h4>
+      <p>Rotate individual pages differently, or all pages together.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">
+    <div style="width:24px;height:24px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.75rem;">📄</div>
+    PaperStack
+  </div>
+  <div class="footer-links">
+    <a href="about.html">About</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="blog.html">Blog</a><a href="mailto:paperstack.help@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+let pdfFile = null;
+let pdfDocProxy = null;
+let rotations = []; // rotation in degrees per page, additive (0,90,180,270)
+
+const dropArea     = document.getElementById('dropArea');
+const fileInput    = document.getElementById('fileInput');
+const pagesCard    = document.getElementById('pagesCard');
+const pagesGrid    = document.getElementById('pagesGrid');
+const pagesLabel   = document.getElementById('pagesLabel');
+const applyBtn     = document.getElementById('applyBtn');
+const progressWrap = document.getElementById('progressWrap');
+const progressBar  = document.getElementById('progressBar');
+const progressLabel= document.getElementById('progressLabel');
+const errorBox     = document.getElementById('errorBox');
+const successBox   = document.getElementById('successBox');
+const downloadLink = document.getElementById('downloadLink');
+const successDesc  = document.getElementById('successDesc');
+
+dropArea.addEventListener('dragover', e=>{e.preventDefault();dropArea.classList.add('dragover');});
+dropArea.addEventListener('dragleave', ()=>dropArea.classList.remove('dragover'));
+dropArea.addEventListener('drop', e=>{e.preventDefault();dropArea.classList.remove('dragover');handleFile(e.dataTransfer.files[0]);});
+fileInput.addEventListener('change', ()=>handleFile(fileInput.files[0]));
+
+async function handleFile(file) {
+  if(!file) return;
+  if(!file.name.endsWith('.pdf') && file.type !== 'application/pdf') {
+    showError('Please select a PDF file.'); return;
+  }
+  pdfFile = file;
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    pdfDocProxy = await pdfjsLib.getDocument({data: arrayBuffer.slice(0)}).promise;
+    const numPages = pdfDocProxy.numPages;
+    rotations = new Array(numPages).fill(0);
+    pagesLabel.textContent = `${numPages} page${numPages>1?'s':''}`;
+    await renderThumbs();
+    pagesCard.style.display = 'block';
+    hideError();
+    successBox.style.display = 'none';
+  } catch(e) {
+    showError('Could not read this PDF. It may be corrupted or password-protected.');
+  }
+}
+
+async function renderThumbs() {
+  pagesGrid.innerHTML = '';
+  const numPages = pdfDocProxy.numPages;
+  for(let i = 1; i <= numPages; i++) {
+    const tile = document.createElement('div');
+    tile.className = 'page-tile';
+    tile.innerHTML = `
+      <div class="page-canvas-wrap" id="canvasWrap-${i}"></div>
+      <div class="page-label">Page ${i}</div>
+      <div class="rotate-controls">
+        <button class="rotate-btn" onclick="rotatePage(${i},-90)">↺</button>
+        <button class="rotate-btn" onclick="rotatePage(${i},90)">↻</button>
+      </div>
+    `;
+    pagesGrid.appendChild(tile);
+
+    const page = await pdfDocProxy.getPage(i);
+    const viewport = page.getViewport({ scale: 0.4 });
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    const ctx = canvas.getContext('2d');
+    await page.render({ canvasContext: ctx, viewport }).promise;
+    document.getElementById(`canvasWrap-${i}`).appendChild(canvas);
+  }
+}
+
+function rotatePage(pageNum, deg) {
+  const idx = pageNum - 1;
+  rotations[idx] = ((rotations[idx] + deg) % 360 + 360) % 360;
+  const wrap = document.getElementById(`canvasWrap-${pageNum}`);
+  const canvas = wrap.querySelector('canvas');
+  canvas.style.transform = `rotate(${rotations[idx]}deg)`;
+}
+
+function rotateAll(deg) {
+  for(let i = 1; i <= rotations.length; i++) rotatePage(i, deg);
+}
+
+async function applyRotation() {
+  hideError();
+  successBox.style.display = 'none';
+  applyBtn.disabled = true;
+  progressWrap.style.display = 'block';
+  setProgress(10, 'Loading PDF…');
+
+  try {
+    const { PDFDocument, degrees } = PDFLib;
+    const bytes = await pdfFile.arrayBuffer();
+    const doc = await PDFDocument.load(bytes);
+    const pages = doc.getPages();
+
+    pages.forEach((page, idx) => {
+      if (rotations[idx]) {
+        const current = page.getRotation().angle;
+        page.setRotation(degrees((current + rotations[idx]) % 360));
+      }
+    });
+
+    setProgress(80, 'Finalising…');
+    const outBytes = await doc.save();
+    setProgress(100, 'Done!');
+
+    const blob = new Blob([outBytes], { type: 'application/pdf' });
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = pdfFile.name.replace('.pdf','') + '_rotated.pdf';
+    successDesc.textContent = `${pages.length} page PDF ready · ${fmt(outBytes.length)}`;
+
+    setTimeout(()=>{
+      progressWrap.style.display='none';
+      successBox.style.display='block';
+      applyBtn.disabled=false;
+    }, 400);
+
+  } catch(err) {
+    progressWrap.style.display='none';
+    showError('Something went wrong: ' + err.message);
+    applyBtn.disabled = false;
+  }
+}
+
+function setProgress(pct,label){progressBar.style.width=pct+'%';progressLabel.textContent=label;}
+function showError(msg){errorBox.textContent='⚠️ '+msg;errorBox.style.display='block';}
+function hideError(){errorBox.style.display='none';}
+function fmt(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB';}
+
+function resetAll(){
+  pdfFile=null; pdfDocProxy=null; rotations=[];
+  fileInput.value='';
+  pagesCard.style.display='none';
+  successBox.style.display='none';
+  progressWrap.style.display='none';
+  hideError();
+}
+</script>
+</body>
+</html>

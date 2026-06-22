@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PaperStack — Free Online PDF Tools, No Sign-Up</title>
+<meta name="description" content="Merge, split, compress, sign, and convert PDFs free in your browser. No uploads, no sign-up, 12 tools — files never leave your device."/>
+<link rel="canonical" href="https://paperstack.vercel.app/"/>
+<meta property="og:title" content="PaperStack — Free Online PDF Tools, No Sign-Up"/>
+<meta property="og:description" content="Merge, split, compress, sign, and convert PDFs free in your browser. Files never leave your device."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://paperstack.vercel.app/"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PaperStack — Free Online PDF Tools, No Sign-Up"/>
+<meta name="twitter:description" content="Merge, split, compress, sign, and convert PDFs free in your browser. Files never leave your device."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec;
+    --text:#111827; --muted:#6b7280; --light:#9ca3af;
+    --accent:#4f6ef7; --accent-l:#eef1fe;
+    --green:#16a34a; --green-l:#dcfce7;
+    --shadow:0 1px 3px rgba(0,0,0,.08); --shadow-md:0 4px 12px rgba(0,0,0,.08);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+  /* NAV */
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .nav-links{display:flex;gap:2px;list-style:none;}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:.875rem;font-weight:500;padding:6px 12px;border-radius:6px;transition:color .15s,background .15s;}
+  .nav-links a:hover{color:var(--text);background:var(--bg);}
+  .nav-links a.active{color:var(--accent);background:var(--accent-l);}
+
+  /* HERO */
+  .hero{background:var(--white);border-bottom:1px solid var(--border);text-align:center;padding:60px 24px 52px;}
+  .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-l);color:var(--accent);font-size:.75rem;font-weight:600;padding:4px 12px;border-radius:20px;margin-bottom:20px;}
+  .hero h1{font-size:clamp(1.8rem,5vw,2.7rem);font-weight:800;letter-spacing:-.5px;line-height:1.15;margin-bottom:12px;}
+  .hero h1 span{color:var(--accent);}
+  .hero p{color:var(--muted);font-size:.95rem;max-width:420px;margin:0 auto 28px;}
+  .search-bar{display:flex;max-width:400px;margin:0 auto;background:var(--white);border:1.5px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .2s,box-shadow .2s;}
+  .search-bar:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,110,247,.1);}
+  .search-bar input{flex:1;border:none;outline:none;background:none;font-family:'Inter',sans-serif;font-size:.875rem;color:var(--text);padding:11px 16px;}
+  .search-bar input::placeholder{color:var(--light);}
+  .search-bar button{background:var(--accent);color:white;border:none;padding:0 18px;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;margin:4px;border-radius:7px;transition:opacity .15s;}
+  .search-bar button:hover{opacity:.88;}
+
+  /* STATS */
+  .stats-strip{display:flex;justify-content:center;gap:48px;padding:16px 24px;background:var(--white);border-bottom:1px solid var(--border);flex-wrap:wrap;}
+  .stat{display:flex;align-items:center;gap:8px;}
+  .stat-num{font-size:1.05rem;font-weight:700;color:var(--text);}
+  .stat-label{font-size:.78rem;color:var(--muted);}
+
+  /* PAGE */
+  .page-wrap{max-width:1080px;margin:0 auto;padding:32px 24px 64px;}
+
+  /* SECTION TITLE */
+  .section-title{font-size:.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;}
+
+  /* TABS */
+  .tabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;}
+  .tab{font-size:.8rem;font-weight:500;padding:6px 14px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);color:var(--muted);cursor:pointer;transition:all .15s;}
+  .tab.active,.tab:hover{background:var(--accent);border-color:var(--accent);color:white;}
+
+  /* TOOL CARDS */
+  .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:10px;margin-bottom:32px;}
+  .tool-card{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:18px 16px;cursor:pointer;text-decoration:none;color:var(--text);display:block;transition:border-color .2s,box-shadow .2s,transform .15s;}
+  .tool-card:hover{border-color:var(--accent);box-shadow:var(--shadow-md);transform:translateY(-2px);}
+  .tool-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:11px;}
+  .tool-name{font-size:.9rem;font-weight:700;margin-bottom:4px;}
+  .tool-desc{font-size:.75rem;color:var(--muted);line-height:1.5;}
+  .tool-tag{display:inline-block;font-size:.67rem;font-weight:600;padding:2px 7px;border-radius:4px;margin-top:9px;background:var(--accent-l);color:var(--accent);}
+  .tool-tag.green{background:var(--green-l);color:var(--green);}
+
+  /* AD SLOT */
+  .ad-slot{background:var(--white);border:1.5px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--light);font-size:.7rem;letter-spacing:.5px;text-transform:uppercase;margin-bottom:32px;}
+  .ad-slot.tall{height:90px;}
+  .ad-slot.med{height:110px;}
+
+  /* HOW IT WORKS */
+  .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:32px;}
+  .step-card{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:20px 16px;}
+  .step-num{width:30px;height:30px;background:var(--accent-l);color:var(--accent);border-radius:8px;font-size:.82rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:11px;}
+  .step-card h4{font-size:.88rem;font-weight:700;margin-bottom:4px;}
+  .step-card p{font-size:.76rem;color:var(--muted);line-height:1.55;}
+
+  /* TRUST */
+  .trust-bar{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:18px 24px;display:flex;justify-content:space-around;flex-wrap:wrap;gap:14px;margin-bottom:32px;}
+  .trust-item{display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--muted);}
+  .trust-icon{width:32px;height:32px;border-radius:8px;background:var(--accent-l);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+  .trust-item strong{display:block;color:var(--text);font-size:.83rem;}
+
+  /* FOOTER */
+  footer{background:var(--white);border-top:1px solid var(--border);padding:24px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+  .footer-logo{font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:7px;}
+  .footer-links{display:flex;gap:18px;}
+  .footer-links a{font-size:.78rem;color:var(--muted);text-decoration:none;}
+  .footer-links a:hover{color:var(--text);}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:680px){
+    nav{padding:0 16px;}
+    .nav-links{display:none;}
+    .steps-row{grid-template-columns:1fr;}
+    .stats-strip{gap:20px;}
+    footer{padding:18px 16px;flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">
+    <div class="logo-icon">📄</div>
+    PaperStack
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">All Tools</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">✦ 100% Free · No sign-up needed</div>
+  <h1>All your PDF tools,<br/><span>in one place</span></h1>
+  <p>Merge, split, compress, convert — done in seconds, right in your browser. Nothing is uploaded anywhere.</p>
+  <div class="search-bar">
+    <input type="text" id="toolSearchInput" placeholder="Search a tool… e.g. merge, compress" oninput="filterTools()"/>
+    <button onclick="filterTools()">Search</button>
+  </div>
+  <div id="noResultsMsg" style="display:none;font-size:.82rem;color:var(--muted);margin-top:14px;">No tools found — try a different word.</div>
+</section>
+
+<div class="stats-strip">
+  <div class="stat"><span class="stat-num">2.4M+</span><span class="stat-label">Files processed</span></div>
+  <div class="stat"><span class="stat-num">12</span><span class="stat-label">Free tools</span></div>
+  <div class="stat"><span class="stat-num">₹0</span><span class="stat-label">Cost to you</span></div>
+  <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Private</span></div>
+</div>
+
+<div class="page-wrap">
+
+
+  <div class="tools-grid">
+    <a class="tool-card" href="tool-1-merge-pdf.html">
+      <div class="tool-icon" style="background:#eef1fe">🔗</div>
+      <div class="tool-name">Merge PDF</div>
+      <div class="tool-desc">Combine multiple PDFs into one. Drag to reorder.</div>
+      <span class="tool-tag">🔥 Most used</span>
+    </a>
+    <a class="tool-card" href="tool-2-split-pdf.html">
+      <div class="tool-icon" style="background:#fef9ee">✂️</div>
+      <div class="tool-name">Split PDF</div>
+      <div class="tool-desc">Extract pages or split a PDF by range.</div>
+    </a>
+    <a class="tool-card" href="tool-3-compress-pdf.html">
+      <div class="tool-icon" style="background:#f0fdf4">📦</div>
+      <div class="tool-name">Compress PDF</div>
+      <div class="tool-desc">Reduce file size without losing quality.</div>
+      <span class="tool-tag">Popular</span>
+    </a>
+    <a class="tool-card" href="tool-11-pdf-to-word.html">
+      <div class="tool-icon" style="background:#fff7ed">📝</div>
+      <div class="tool-name">PDF to Word</div>
+      <div class="tool-desc">Convert PDF to an editable .docx file.</div>
+      <span class="tool-tag">🔥 Trending</span>
+    </a>
+    <a class="tool-card" href="tool-4-image-to-pdf.html">
+      <div class="tool-icon" style="background:#eff6ff">🖼️</div>
+      <div class="tool-name">Image to PDF</div>
+      <div class="tool-desc">JPG, PNG, WEBP → PDF in one click.</div>
+      <span class="tool-tag">Popular</span>
+    </a>
+    <a class="tool-card" href="tool-6-protect-pdf.html">
+      <div class="tool-icon" style="background:#fef2f2">🔒</div>
+      <div class="tool-name">Protect PDF</div>
+      <div class="tool-desc">Add password encryption to your PDF.</div>
+    </a>
+    <a class="tool-card" href="tool-7-unlock-pdf.html">
+      <div class="tool-icon" style="background:#f0fdf4">🔓</div>
+      <div class="tool-name">Unlock PDF</div>
+      <div class="tool-desc">Remove password from a PDF you own.</div>
+    </a>
+    <a class="tool-card" href="tool-5-rotate-pdf.html">
+      <div class="tool-icon" style="background:#eef1fe">↩️</div>
+      <div class="tool-name">Rotate PDF</div>
+      <div class="tool-desc">Fix portrait or landscape issues per page.</div>
+    </a>
+    <a class="tool-card" href="tool-10-sign-pdf.html">
+      <div class="tool-icon" style="background:#fff7ed">✒️</div>
+      <div class="tool-name">Sign PDF</div>
+      <div class="tool-desc">Add your e-signature without printing.</div>
+      <span class="tool-tag green">New</span>
+    </a>
+    <a class="tool-card" href="tool-9-page-numbers.html">
+      <div class="tool-icon" style="background:#f5f3ff">🔢</div>
+      <div class="tool-name">Page Numbers</div>
+      <div class="tool-desc">Add page numbers automatically to any PDF.</div>
+      <span class="tool-tag green">New</span>
+    </a>
+    <a class="tool-card" href="tool-8-watermark-pdf.html">
+      <div class="tool-icon" style="background:#fef9ee">💧</div>
+      <div class="tool-name">Watermark</div>
+      <div class="tool-desc">Stamp text or image watermarks on pages.</div>
+      <span class="tool-tag green">New</span>
+    </a>
+    <a class="tool-card" href="tool-12-pdf-to-images.html">
+      <div class="tool-icon" style="background:#eff6ff">🖼️</div>
+      <div class="tool-name">PDF to Images</div>
+      <div class="tool-desc">Export every page as a high-res image file.</div>
+      <span class="tool-tag green">New</span>
+    </a>
+  </div>
+
+
+  <div class="section-title">How it works</div>
+  <div class="steps-row">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <h4>Pick a tool</h4>
+      <p>Choose what you need above. No account or login needed.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <h4>Upload your file</h4>
+      <p>Drag & drop or browse. Everything runs locally in your browser.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <h4>Download the result</h4>
+      <p>Your file is ready in seconds. Click download and you're done.</p>
+    </div>
+  </div>
+
+  <div class="trust-bar">
+    <div class="trust-item">
+      <div class="trust-icon">🔒</div>
+      <div><strong>100% Private</strong>Files never leave your device</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">⚡</div>
+      <div><strong>Instant</strong>No waiting, no queues</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">✅</div>
+      <div><strong>No Sign-up</strong>Just open and use</div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">💸</div>
+      <div><strong>Always Free</strong>No hidden charges</div>
+    </div>
+  </div>
+
+
+</div>
+
+<footer>
+  <div class="footer-logo">
+    <div style="width:26px;height:26px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.8rem;">📄</div>
+    PaperStack
+  </div>
+  <div class="footer-links">
+    <a href="about.html">About</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="blog.html">Blog</a>
+    <a href="mailto:paperstack.help@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 PaperStack · Made with ☕ in Kerala</div>
+</footer>
+
+<script>
+function filterTools() {
+  const query = document.getElementById('toolSearchInput').value.trim().toLowerCase();
+  const cards = document.querySelectorAll('.tools-grid .tool-card');
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+    const name = card.querySelector('.tool-name').textContent.toLowerCase();
+    const desc = card.querySelector('.tool-desc').textContent.toLowerCase();
+    const matches = !query || name.includes(query) || desc.includes(query);
+    card.style.display = matches ? '' : 'none';
+    if (matches) visibleCount++;
+  });
+
+  document.getElementById('noResultsMsg').style.display = visibleCount === 0 ? 'block' : 'none';
+}
+
+// Allow pressing Enter in the search box to trigger search (already live via oninput, this just avoids page reload)
+document.getElementById('toolSearchInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { e.preventDefault(); filterTools(); }
+});
+</script>
+</body>
+</html>

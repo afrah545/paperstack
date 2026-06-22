@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Are Online PDF Editors Legal? User Rights Explained | PaperStack</title>
+<meta name="description" content="A plain-language look at copyright, e-signature validity, and your privacy rights when using free online PDF tools."/>
+<link rel="canonical" href="https://paperstack.vercel.app/blog-pdf-editors-legality.html"/>
+<meta property="og:title" content="Are Online PDF Editors Legal? User Rights Explained | PaperStack"/>
+<meta property="og:description" content="A plain-language look at copyright, e-signature validity, and your privacy rights when using free online PDF tools."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://paperstack.vercel.app/blog-pdf-editors-legality.html"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Are Online PDF Editors Legal? User Rights Explained | PaperStack"/>
+<meta name="twitter:description" content="A plain-language look at copyright, e-signature validity, and your privacy rights when using free online PDF tools."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root { --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec; --text:#111827; --muted:#6b7280; --light:#9ca3af; --accent:#4f6ef7; --accent-l:#eef1fe; --orange:#ea580c; --orange-l:#fff7ed; --red:#dc2626; --red-l:#fee2e2; }
+  *,*::before,*::as{box-sizing:border-box;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:700px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .wrap{max-width:700px;margin:0 auto;padding:28px 24px 64px;}
+  .post-tag{display:inline-block;background:var(--accent-l);color:var(--accent);font-size:.7rem;font-weight:700;padding:3px 11px;border-radius:6px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.4px;}
+  h1{font-size:1.55rem;font-weight:800;letter-spacing:-.4px;margin-bottom:10px;line-height:1.28;}
+  .meta{font-size:.78rem;color:var(--muted);margin-bottom:24px;}
+
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px 30px;margin-bottom:18px;}
+
+  h2{font-size:1.12rem;font-weight:700;margin:28px 0 12px;}
+  h2:first-child{margin-top:0;}
+  h3{font-size:.96rem;font-weight:700;margin:16px 0 8px;}
+  p{color:var(--text);font-size:.91rem;margin-bottom:12px;}
+  ul,ol{margin:10px 0 14px 22px;color:var(--text);font-size:.91rem;}
+  li{margin-bottom:8px;line-height:1.6;}
+
+  .disclaimer-box{background:var(--orange-l);border:1.5px solid #fed7aa;border-radius:10px;padding:16px 20px;font-size:.83rem;color:#9a3412;margin-bottom:22px;line-height:1.6;}
+  .disclaimer-box strong{display:block;margin-bottom:4px;font-size:.88rem;}
+
+  .right-card{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:10px;}
+  .right-card h4{font-size:.88rem;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:8px;}
+  .right-card p{font-size:.84rem;color:var(--muted);margin:0;}
+
+  .faq-item{border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;}
+  .faq-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .faq-q{font-size:.91rem;font-weight:700;margin-bottom:6px;display:flex;gap:8px;}
+  .faq-q span{color:var(--accent);}
+  .faq-a{font-size:.86rem;color:var(--muted);line-height:1.6;padding-left:22px;}
+
+  .note-box{background:var(--red-l);border:1.5px solid #fca5a5;border-radius:9px;padding:14px 18px;font-size:.85rem;color:#991b1b;margin:16px 0;}
+  .note-box strong{display:block;margin-bottom:3px;}
+
+  .cta-box{background:var(--accent-l);border:1.5px solid var(--accent);border-radius:12px;padding:20px 24px;text-align:center;margin:24px 0;}
+  .cta-box p{color:var(--text);font-size:.9rem;margin-bottom:14px;}
+  .cta-btn{display:inline-block;background:var(--accent);color:white;text-decoration:none;padding:11px 26px;border-radius:8px;font-size:.88rem;font-weight:700;transition:opacity .15s;}
+  .cta-btn:hover{opacity:.88;}
+
+  .related{margin-top:32px;}
+  .related-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .related-card{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--text);transition:border-color .2s;}
+  .related-card:hover{border-color:var(--accent);}
+  .related-card .rtitle{font-size:.85rem;font-weight:700;margin-bottom:3px;}
+  .related-card .rdesc{font-size:.75rem;color:var(--muted);}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;text-align:center;}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .card{padding:22px 18px;}
+    .related-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html"><div class="logo-icon">📄</div>PaperStack</a>
+  <a class="back-link" href="blog.html">← Blog</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <a href="blog.html">Blog</a>
+  <span class="sep">›</span>
+  <span class="current">PDF Editor Legality</span>
+</div>
+
+<div class="wrap">
+  <span class="post-tag">Explainer</span>
+  <h1>Are Online PDF Editors Legal? What You Should Know as a User</h1>
+  <div class="meta">9 min read · Updated June 2026</div>
+
+  <div class="card">
+
+    <div class="disclaimer-box">
+      <strong>⚠️ This is general information, not legal advice</strong>
+      We're not lawyers, and laws vary by country and situation. If you're dealing with a contract, court document, or anything with real legal stakes, talk to an actual lawyer. This article is meant to clear up common confusion, not replace professional advice.
+    </div>
+
+    <p>People often assume that using a free online PDF tool is somehow legally risky — like it's in a grey area, or that the tool itself needs special permission to exist. In reality, the legality almost never comes from the <em>tool</em> — it comes from <strong>what you do with it</strong> and <strong>whose document you're editing</strong>. Here's a breakdown of what actually matters.</p>
+
+    <h2>1. The tool is legal. What you upload might not be.</h2>
+    <p>Using a PDF editor — to merge, split, sign, compress, or password-protect a file — is not illegal anywhere. These are standard productivity tools, the same category as Microsoft Word or a photo editor. What matters is the content and ownership of the file you're processing:</p>
+    <ul>
+      <li><strong>Your own documents</strong> — completely fine to edit, merge, sign, compress, or modify however you like.</li>
+      <li><strong>Documents you have permission to edit</strong> — also fine, as long as that permission is real (e.g. a shared work document, a form someone sent you to fill out).</li>
+      <li><strong>Copyrighted material you don't own</strong> — like a paid textbook, licensed software manual, or someone else's confidential contract — editing or redistributing these can violate copyright law regardless of which tool you used.</li>
+      <li><strong>Documents secured against you specifically</strong> — like removing a password from a PDF that was deliberately locked by someone else to keep you out — this crosses from "tool use" into unauthorized access, which can have legal consequences depending on your jurisdiction.</li>
+    </ul>
+
+    <h2>2. Are e-signatures from PDF tools actually legally binding?</h2>
+    <p>This is one of the most common questions, and the honest answer is: <strong>it depends on what you're signing and where you live</strong>, but in most everyday situations, yes.</p>
+    <p>In India, for example, Section 5 of the IT Act states that any electronic signature that follows the rules of the IT Act is legally valid, just like a physical signature. Under Section 5, an electronic signature is valid if it is unique to the signatory, under their sole control, and linked to the electronic record in a manner that detects any alterations.</p>
+    <p>That said, certain documents still require a physical signature and notarization under the IT Act — these typically include things like wills, certain property transfers, and a handful of other specific legal instruments. For everyday use — signing a form, agreeing to a freelance contract, approving an internal document — a typed or drawn signature from a tool like PaperStack's Sign PDF is generally accepted.</p>
+    <p><strong>The practical takeaway:</strong> for low-stakes documents (internal approvals, simple agreements, forms), a basic e-signature is usually fine. For high-stakes documents (property, government filings, anything that might end up in court), check with the receiving party or a lawyer about whether they require a more formal digital signature certificate.</p>
+
+    <h2>3. What rights do you have as a user of a free PDF tool?</h2>
+
+    <div class="right-card">
+      <h4>🔒 Right to privacy</h4>
+      <p>A reputable PDF tool should clearly state what happens to your file. Tools that process files locally in your browser (like PaperStack) never see your content at all. Tools that upload your file to a server should have a privacy policy explaining what's stored and for how long.</p>
+    </div>
+
+    <div class="right-card">
+      <h4>📄 Right to your own content</h4>
+      <p>Using a PDF tool doesn't transfer any ownership of your document to the tool provider. Your content remains yours — a legitimate tool is just helping you process it, not claiming rights over it.</p>
+    </div>
+
+    <div class="right-card">
+      <h4>🚫 Right to not be tracked without consent</h4>
+      <p>Reputable sites disclose their use of cookies and advertising trackers (often required by law, like India's DPDP Act or the EU's GDPR). Always check a site's privacy policy if you're unsure what's being collected.</p>
+    </div>
+
+    <h2>4. When you should actually be cautious</h2>
+    <ul>
+      <li><strong>Uploading sensitive personal documents</strong> (Aadhaar, passports, bank statements) to tools that don't clearly explain their privacy practices — prefer tools that process files locally in-browser, like PaperStack, over those that require file uploads to unknown servers.</li>
+      <li><strong>Editing or unlocking a document that isn't yours</strong> without permission — this is where real legal risk can appear, separate from the tool itself.</li>
+      <li><strong>Relying on a free e-signature for high-value legal matters</strong> — when in doubt, ask the receiving party what signature standard they require.</li>
+    </ul>
+
+    <div class="cta-box">
+      <p>Want a PDF tool that never sees your files at all? Every PaperStack tool runs entirely in your browser.</p>
+      <a class="cta-btn" href="index.html">Browse All Tools →</a>
+    </div>
+
+    <h2>Common questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Is it illegal to remove a password from a PDF?</div>
+      <div class="faq-a">Not if it's your own file and you've simply forgotten the password, or you have explicit permission from whoever set it. It becomes a legal problem only if you're bypassing protection on a document someone else secured specifically to keep you out.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Can I get in trouble for converting a copyrighted PDF to Word?</div>
+      <div class="faq-a">Converting the format itself isn't the issue — redistributing or republishing copyrighted content without permission is. Converting a textbook PDF to Word for your own personal study use is generally treated differently than sharing that converted file publicly.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Are typed signatures (not drawn or uploaded) legally valid?</div>
+      <div class="faq-a">In most everyday contexts, yes — what typically matters legally is intent to sign and some form of authentication, not the specific visual style of the signature. For high-stakes documents, the receiving party's own requirements matter more than the method you used to create the signature.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Does a PDF tool's privacy policy actually protect me legally?</div>
+      <div class="faq-a">A privacy policy is a legal commitment from the company about how they'll handle your data — it doesn't replace your own caution, but it does mean you have grounds for complaint or legal recourse if a company violates its own stated policy.</div>
+    </div>
+
+    <div class="note-box">
+      <strong>📌 Bottom line</strong>
+      The tool isn't the legal risk — ownership, permission, and what you do with the output are. Stick to your own documents (or ones you're authorized to edit), choose tools that are upfront about privacy, and you're on solid ground for the vast majority of everyday PDF tasks.
+    </div>
+
+    <div class="related">
+      <h2>Related reading</h2>
+      <div class="related-grid">
+        <a class="related-card" href="terms.html">
+          <div class="rtitle">📋 Terms of Use</div>
+          <div class="rdesc">PaperStack's own usage terms and acceptable use policy.</div>
+        </a>
+        <a class="related-card" href="privacy.html">
+          <div class="rtitle">🔒 Privacy Policy</div>
+          <div class="rdesc">How PaperStack handles (or rather, doesn't handle) your data.</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How to Split a PDF File for Free (Step-by-Step) | PaperStack</title>
+<meta name="description" content="Learn 3 ways to split a PDF for free — by page range, individual pages, or every page separately. Common problems answered."/>
+<link rel="canonical" href="https://paperstack.vercel.app/blog-split-pdf-guide.html"/>
+<meta property="og:title" content="How to Split a PDF File for Free (Step-by-Step) | PaperStack"/>
+<meta property="og:description" content="Learn 3 ways to split a PDF for free — by page range, individual pages, or every page separately. Common problems answered."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://paperstack.vercel.app/blog-split-pdf-guide.html"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How to Split a PDF File for Free (Step-by-Step) | PaperStack"/>
+<meta name="twitter:description" content="Learn 3 ways to split a PDF for free — by page range, individual pages, or every page separately. Common problems answered."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root { --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec; --text:#111827; --muted:#6b7280; --light:#9ca3af; --accent:#4f6ef7; --accent-l:#eef1fe; --green:#16a34a; --green-l:#dcfce7; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:700px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .wrap{max-width:700px;margin:0 auto;padding:28px 24px 64px;}
+  .post-tag{display:inline-block;background:var(--accent-l);color:var(--accent);font-size:.7rem;font-weight:700;padding:3px 11px;border-radius:6px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.4px;}
+  h1{font-size:1.6rem;font-weight:800;letter-spacing:-.4px;margin-bottom:10px;line-height:1.25;}
+  .meta{font-size:.78rem;color:var(--muted);margin-bottom:24px;}
+
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px 30px;margin-bottom:18px;}
+
+  h2{font-size:1.15rem;font-weight:700;margin:30px 0 12px;}
+  h2:first-child{margin-top:0;}
+  h3{font-size:.98rem;font-weight:700;margin:18px 0 8px;}
+  p{color:var(--text);font-size:.92rem;margin-bottom:12px;}
+  ul,ol{margin:10px 0 14px 22px;color:var(--text);font-size:.92rem;}
+  li{margin-bottom:8px;line-height:1.6;}
+
+  .step-card{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;}
+  .step-num{background:var(--accent);color:white;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;}
+  .step-text{font-size:.88rem;color:var(--text);padding-top:2px;}
+  .step-text strong{display:block;margin-bottom:3px;}
+
+  .cta-box{background:var(--accent-l);border:1.5px solid var(--accent);border-radius:12px;padding:20px 24px;text-align:center;margin:24px 0;}
+  .cta-box p{color:var(--text);font-size:.9rem;margin-bottom:14px;}
+  .cta-btn{display:inline-block;background:var(--accent);color:white;text-decoration:none;padding:11px 26px;border-radius:8px;font-size:.88rem;font-weight:700;transition:opacity .15s;}
+  .cta-btn:hover{opacity:.88;}
+
+  .faq-item{border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;}
+  .faq-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .faq-q{font-size:.92rem;font-weight:700;margin-bottom:6px;display:flex;gap:8px;}
+  .faq-q span{color:var(--accent);}
+  .faq-a{font-size:.87rem;color:var(--muted);line-height:1.6;padding-left:22px;}
+
+  .note-box{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:9px;padding:14px 18px;font-size:.85rem;color:#9a3412;margin:16px 0;}
+  .note-box strong{display:block;margin-bottom:3px;}
+
+  .related{margin-top:32px;}
+  .related-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .related-card{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--text);transition:border-color .2s;}
+  .related-card:hover{border-color:var(--accent);}
+  .related-card .rtitle{font-size:.85rem;font-weight:700;margin-bottom:3px;}
+  .related-card .rdesc{font-size:.75rem;color:var(--muted);}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;text-align:center;}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .card{padding:22px 18px;}
+    .related-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html"><div class="logo-icon">📄</div>PaperStack</a>
+  <a class="back-link" href="blog.html">← Blog</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <a href="blog.html">Blog</a>
+  <span class="sep">›</span>
+  <span class="current">Split PDF Guide</span>
+</div>
+
+<div class="wrap">
+  <span class="post-tag">Guide</span>
+  <h1>How to Split a PDF File for Free (Without Installing Anything)</h1>
+  <div class="meta">8 min read · Updated June 2026</div>
+
+  <div class="card">
+    <p>If you've ever needed to pull a few pages out of a long PDF — maybe just chapter 3 of a textbook, or page 12 of a contract — you've probably run into the same problem: most "free" PDF splitters either want you to install software, create an account, or upload your file to a server you've never heard of.</p>
+    <p>Here's how to split a PDF properly, for free, directly in your browser, using <a href="tool-2-split-pdf.html" style="color:var(--accent);font-weight:600;">PaperStack's Split PDF tool</a> — plus answers to the questions people actually ask when they're stuck.</p>
+
+    <h2>Three ways to split a PDF</h2>
+    <p>Not every "split" job is the same. Depending on what you're trying to do, you'll want one of these three approaches:</p>
+
+    <h3>1. Extract a specific page range</h3>
+    <p>Use this when you need, say, "pages 5 to 12" pulled out as their own document — common for pulling a single chapter, a signed section of a contract, or a specific form from a longer packet.</p>
+
+    <h3>2. Pick individual pages</h3>
+    <p>Use this when the pages you need aren't in a neat range — for example, page 2, page 7, and page 15, but nothing in between. PaperStack lets you click directly on page thumbnails to select exactly which ones you want.</p>
+
+    <h3>3. Split every page into its own file</h3>
+    <p>Use this when you need each page as a completely separate PDF — for example, splitting a scanned batch of 20 invoices (all merged into one PDF) back into 20 individual files.</p>
+
+    <h2>Step-by-step: splitting a PDF</h2>
+
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Open the Split PDF tool</strong>No sign-up, no install — just open it in your browser.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Upload your PDF</strong>Drag and drop it in, or click to browse your files. It loads instantly since nothing is uploaded to a server.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Choose your split mode</strong>Pick "By Page Range," "Select Pages," or "Split Every Page" depending on what you need (see above).</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>Download your file(s)</strong>Your split PDF(s) are ready in seconds. Download individually or grab everything at once.</div>
+    </div>
+
+    <div class="cta-box">
+      <p>Try it now — takes less than a minute, and your file never leaves your device.</p>
+      <a class="cta-btn" href="tool-2-split-pdf.html">Open Split PDF Tool →</a>
+    </div>
+
+    <h2>Common problems people run into</h2>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>I typed a page range but it says the page doesn't exist</div>
+      <div class="faq-a">This usually means you've mismatched the page count — for example, typing "1-15" on a PDF that only has 12 pages. Check the page count shown right after you upload the file, and make sure your range fits inside it.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Can I split a password-protected PDF?</div>
+      <div class="faq-a">Not directly — you'll need to remove the password first using a tool like PaperStack's <a href="tool-7-unlock-pdf.html" style="color:var(--accent);">Unlock PDF</a> tool (only for files you own or have permission to access), then split it afterward.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Will splitting reduce the quality of my PDF?</div>
+      <div class="faq-a">No. Splitting just separates existing pages into new files — it doesn't re-compress or alter the content, so quality stays exactly the same as your original.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Is my file actually private, or does it get uploaded somewhere?</div>
+      <div class="faq-a">It's genuinely private. PaperStack's tools run entirely in your browser using JavaScript — your PDF is processed on your own device and never sent to any server. You can even disconnect your internet after the page loads and the tool will still work.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>What's the maximum file size I can split?</div>
+      <div class="faq-a">Since everything happens in your browser rather than on a server, the practical limit depends on your device's memory rather than a fixed cap. Most PDFs — even ones in the hundreds of pages — work fine on a typical phone or laptop.</div>
+    </div>
+
+    <div class="note-box">
+      <strong>⚠️ A note on splitting files you don't own</strong>
+      Only split PDFs you have the legal right to modify — your own documents, or files you've been given explicit permission to edit. See our <a href="terms.html" style="color:#9a3412;text-decoration:underline;">Terms of Use</a> for details.
+    </div>
+
+    <div class="related">
+      <h2>Related tools</h2>
+      <div class="related-grid">
+        <a class="related-card" href="tool-1-merge-pdf.html">
+          <div class="rtitle">🔗 Merge PDF</div>
+          <div class="rdesc">Combine multiple PDFs back into one file.</div>
+        </a>
+        <a class="related-card" href="tool-3-compress-pdf.html">
+          <div class="rtitle">📦 Compress PDF</div>
+          <div class="rdesc">Shrink file size before sharing or emailing.</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Why PaperStack Skips File Uploads | PaperStack</title>
+<meta name="description" content="Most PDF tools upload your file to a server. PaperStack doesn't — here's exactly why, and how to verify it yourself."/>
+<link rel="canonical" href="https://paperstack.vercel.app/blog-why-different.html"/>
+<meta property="og:title" content="Why PaperStack Skips File Uploads | PaperStack"/>
+<meta property="og:description" content="Most PDF tools upload your file to a server. PaperStack doesn't — here's exactly why, and how to verify it yourself."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://paperstack.vercel.app/blog-why-different.html"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Why PaperStack Skips File Uploads | PaperStack"/>
+<meta name="twitter:description" content="Most PDF tools upload your file to a server. PaperStack doesn't — here's exactly why, and how to verify it yourself."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root { --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec; --text:#111827; --muted:#6b7280; --light:#9ca3af; --accent:#4f6ef7; --accent-l:#eef1fe; --green:#16a34a; --green-l:#dcfce7; --red:#dc2626; --red-l:#fee2e2; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:700px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .wrap{max-width:700px;margin:0 auto;padding:28px 24px 64px;}
+  .post-tag{display:inline-block;background:var(--accent-l);color:var(--accent);font-size:.7rem;font-weight:700;padding:3px 11px;border-radius:6px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.4px;}
+  h1{font-size:1.6rem;font-weight:800;letter-spacing:-.4px;margin-bottom:10px;line-height:1.25;}
+  .meta{font-size:.78rem;color:var(--muted);margin-bottom:24px;}
+
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px 30px;margin-bottom:18px;}
+
+  h2{font-size:1.15rem;font-weight:700;margin:28px 0 12px;}
+  h2:first-child{margin-top:0;}
+  h3{font-size:.96rem;font-weight:700;margin:16px 0 8px;}
+  p{color:var(--text);font-size:.91rem;margin-bottom:12px;}
+  ul,ol{margin:10px 0 14px 22px;color:var(--text);font-size:.91rem;}
+  li{margin-bottom:8px;line-height:1.6;}
+
+  /* COMPARISON */
+  .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0;}
+  .compare-col{border-radius:12px;padding:18px 20px;}
+  .compare-col.them{background:var(--red-l);border:1.5px solid #fca5a5;}
+  .compare-col.us{background:var(--green-l);border:1.5px solid #86efac;}
+  .compare-col h4{font-size:.9rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+  .compare-col.them h4{color:#991b1b;}
+  .compare-col.us h4{color:#15803d;}
+  .compare-col ul{margin:0;list-style:none;}
+  .compare-col li{font-size:.82rem;color:var(--text);margin-bottom:8px;padding-left:18px;position:relative;}
+  .compare-col.them li::before{content:"✕";position:absolute;left:0;color:#dc2626;font-weight:700;}
+  .compare-col.us li::before{content:"✓";position:absolute;left:0;color:#16a34a;font-weight:700;}
+
+  .flow-step{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:8px;display:flex;align-items:center;gap:14px;}
+  .flow-num{background:var(--accent);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.74rem;font-weight:700;flex-shrink:0;}
+  .flow-step p{margin:0;font-size:.85rem;}
+
+  .faq-item{border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;}
+  .faq-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .faq-q{font-size:.91rem;font-weight:700;margin-bottom:6px;display:flex;gap:8px;}
+  .faq-q span{color:var(--accent);}
+  .faq-a{font-size:.86rem;color:var(--muted);line-height:1.6;padding-left:22px;}
+
+  .note-box{background:var(--accent-l);border:1.5px solid var(--accent);border-radius:9px;padding:14px 18px;font-size:.85rem;color:var(--text);margin:16px 0;}
+  .note-box strong{display:block;margin-bottom:3px;color:var(--accent);}
+
+  .cta-box{background:var(--accent-l);border:1.5px solid var(--accent);border-radius:12px;padding:20px 24px;text-align:center;margin:24px 0;}
+  .cta-box p{color:var(--text);font-size:.9rem;margin-bottom:14px;}
+  .cta-btn{display:inline-block;background:var(--accent);color:white;text-decoration:none;padding:11px 26px;border-radius:8px;font-size:.88rem;font-weight:700;transition:opacity .15s;}
+  .cta-btn:hover{opacity:.88;}
+
+  .related{margin-top:32px;}
+  .related-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .related-card{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--text);transition:border-color .2s;}
+  .related-card:hover{border-color:var(--accent);}
+  .related-card .rtitle{font-size:.85rem;font-weight:700;margin-bottom:3px;}
+  .related-card .rdesc{font-size:.75rem;color:var(--muted);}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;text-align:center;}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .card{padding:22px 18px;}
+    .related-grid, .compare-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html"><div class="logo-icon">📄</div>PaperStack</a>
+  <a class="back-link" href="blog.html">← Blog</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <a href="blog.html">Blog</a>
+  <span class="sep">›</span>
+  <span class="current">Why We Built This Differently</span>
+</div>
+
+<div class="wrap">
+  <span class="post-tag">Behind the scenes</span>
+  <h1>Why We Built PaperStack Differently</h1>
+  <div class="meta">6 min read · June 2026</div>
+
+  <div class="card">
+    <p>Most free PDF tools online work the same way: you upload your file to their server, their server processes it, and then you download the result. It works — but it means your document, even briefly, sits on a computer you don't control.</p>
+    <p>PaperStack doesn't do that. Every tool — merge, split, compress, sign, protect, all of it — runs entirely inside your browser. Your file is never uploaded anywhere. Here's why we built it that way, and what that actually means in practice.</p>
+
+    <h2>The usual way PDF tools work</h2>
+    <p>When you use a typical "free" online PDF tool, the flow usually looks like this:</p>
+    <div class="flow-step"><div class="flow-num">1</div><p>You select a file on your device.</p></div>
+    <div class="flow-step"><div class="flow-num">2</div><p>The file is uploaded to the company's server over the internet.</p></div>
+    <div class="flow-step"><div class="flow-num">3</div><p>Their server processes it (merges, compresses, whatever the tool does).</p></div>
+    <div class="flow-step"><div class="flow-num">4</div><p>You download the result, and the company (hopefully) deletes your original file afterward.</p></div>
+    <p>This isn't necessarily malicious — most reputable PDF sites do say they delete files after a short window, and use encryption in transit. But it does mean, even briefly, your document exists on a server outside your control, and you're trusting a company's word that it's actually deleted.</p>
+
+    <h2>How PaperStack works instead</h2>
+    <p>PaperStack uses your browser's own processing power to do the work, using open-source JavaScript libraries that run locally. There's no upload step at all:</p>
+    <div class="flow-step"><div class="flow-num">1</div><p>You select a file on your device.</p></div>
+    <div class="flow-step"><div class="flow-num">2</div><p>Your browser processes it — right there, on your own machine.</p></div>
+    <div class="flow-step"><div class="flow-num">3</div><p>You download the result. That's it — only two steps, no server in between.</p></div>
+
+    <div class="note-box">
+      <strong>🔍 You can verify this yourself</strong>
+      Open any PaperStack tool, load a file, then disconnect your internet (turn on airplane mode). The tool will still work — because there's nothing to connect to. That's not possible with a server-based tool.
+    </div>
+
+    <h2>What this actually means for you</h2>
+
+    <div class="compare-grid">
+      <div class="compare-col them">
+        <h4>🔴 Typical PDF tools</h4>
+        <ul>
+          <li>Your file is uploaded to a remote server</li>
+          <li>You're trusting their deletion policy</li>
+          <li>Requires a stable internet connection throughout</li>
+          <li>Slower for large files (upload + download time)</li>
+          <li>Sensitive documents pass through a third party</li>
+        </ul>
+      </div>
+      <div class="compare-col us">
+        <h4>🟢 PaperStack</h4>
+        <ul>
+          <li>Your file never leaves your device</li>
+          <li>Nothing to delete — we never had it</li>
+          <li>Works even with a weak connection once loaded</li>
+          <li>Often faster — no upload/download round-trip</li>
+          <li>Sensitive documents stay fully private</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Why this matters more than it might seem</h2>
+    <p>Think about what people actually use PDF tools for: bank statements, ID documents, signed contracts, medical reports, salary slips. These aren't throwaway files — they're often the most sensitive documents people have. Handing them to a server, even briefly, even from a well-meaning company, is a small but real risk that simply doesn't need to exist.</p>
+    <p>We built PaperStack because there was no good reason for that risk to be there in the first place — the technology to do this entirely in-browser has existed for years.</p>
+
+    <div class="cta-box">
+      <p>See it for yourself — try any tool, then turn off your Wi-Fi.</p>
+      <a class="cta-btn" href="index.html">Browse All Tools →</a>
+    </div>
+
+    <h2>Common questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>If nothing is uploaded, how does PaperStack make money?</div>
+      <div class="faq-a">Through ads shown on the page — the same way most free websites are funded. The ads have nothing to do with your file; they're just placed around the tool, not connected to anything you upload.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Does browser-based processing have any downsides?</div>
+      <div class="faq-a">The main trade-off is that very large files (in the hundreds of MB) can be slower to process, since it relies on your own device's processing power rather than a powerful server. For the vast majority of everyday PDFs, this isn't noticeable.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Is this actually more secure, or just a marketing claim?</div>
+      <div class="faq-a">It's verifiable, not just a claim — that's the difference. You can open your browser's developer tools (Network tab) while using any PaperStack tool and see for yourself that no file data is being sent anywhere. We'd genuinely encourage you to check.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Why doesn't every PDF tool work this way, then?</div>
+      <div class="faq-a">Browser-based processing is more limited in raw power compared to a dedicated server, and historically harder to build well. Many larger PDF tool companies built their systems years ago around server processing and haven't rearchitected since. It's a deliberate choice we made from day one, not a constraint we're working around.</div>
+    </div>
+
+    <div class="related">
+      <h2>Related reading</h2>
+      <div class="related-grid">
+        <a class="related-card" href="privacy.html">
+          <div class="rtitle">🔒 Privacy Policy</div>
+          <div class="rdesc">The full details on what data we do (and don't) collect.</div>
+        </a>
+        <a class="related-card" href="blog-pdf-editors-legality.html">
+          <div class="rtitle">⚖️ PDF Editor Legality</div>
+          <div class="rdesc">What rights you have as a user of any PDF tool.</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sign PDF Online Free — E-Signature | PaperStack</title>
+<meta name="description" content="Sign a PDF online for free — draw, type, or upload your signature. No printing or scanning required."/>
+<link rel="canonical" href="https://paperstack.vercel.app/tool-10-sign-pdf.html"/>
+<meta property="og:title" content="Sign PDF Online Free — E-Signature | PaperStack"/>
+<meta property="og:description" content="Sign a PDF online for free — draw, type, or upload your signature. No printing or scanning required."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://paperstack.vercel.app/tool-10-sign-pdf.html"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Sign PDF Online Free — E-Signature | PaperStack"/>
+<meta name="twitter:description" content="Sign a PDF online for free — draw, type, or upload your signature. No printing or scanning required."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Caveat:wght@500;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+  :root {
+    --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec;
+    --text:#111827; --muted:#6b7280; --light:#9ca3af;
+    --accent:#4f6ef7; --accent-l:#eef1fe;
+    --green:#16a34a; --green-l:#dcfce7;
+    --red:#dc2626; --red-l:#fee2e2;
+    --orange:#ea580c; --orange-l:#fff7ed;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:760px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .tool-hero{max-width:760px;margin:0 auto;padding:28px 24px 24px;display:flex;align-items:center;gap:18px;}
+  .tool-hero-icon{width:56px;height:56px;background:var(--orange-l);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+  .tool-hero h1{font-size:1.5rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px;}
+  .tool-hero p{font-size:.875rem;color:var(--muted);}
+
+  .tool-wrap{max-width:820px;margin:0 auto;padding:0 24px 48px;}
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px;margin-bottom:16px;}
+  .card-title{font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px;}
+
+  .drop-area{border:2px dashed var(--border);border-radius:10px;background:var(--bg);padding:44px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;}
+  .drop-area.dragover{border-color:var(--accent);background:var(--accent-l);}
+  .drop-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .drop-icon{font-size:2.2rem;margin-bottom:12px;}
+  .drop-area h3{font-size:.95rem;font-weight:700;margin-bottom:5px;}
+  .drop-area p{font-size:.8rem;color:var(--muted);}
+  .drop-area .browse{color:var(--accent);font-weight:600;text-decoration:underline;}
+
+  .file-info-bar{background:var(--accent-l);border-radius:8px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .file-info-bar .fname{font-size:.875rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .file-info-bar .fmeta{font-size:.75rem;color:var(--accent);flex-shrink:0;}
+  .change-file{background:none;border:1.5px solid var(--accent);color:var(--accent);padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;flex-shrink:0;}
+  .change-file:hover{background:var(--accent);color:white;}
+
+  /* SIGNATURE MODE TABS */
+  .mode-tabs{display:flex;gap:0;border:1.5px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:18px;}
+  .mode-tab{flex:1;padding:10px;text-align:center;font-size:.82rem;font-weight:600;cursor:pointer;background:var(--white);color:var(--muted);transition:all .15s;border-right:1.5px solid var(--border);}
+  .mode-tab:last-child{border-right:none;}
+  .mode-tab.active{background:var(--accent);color:white;}
+  .mode-tab:hover:not(.active){background:var(--bg);}
+  .mode-panel{display:none;}
+  .mode-panel.active{display:block;}
+
+  /* DRAW PAD */
+  .draw-pad-wrap{border:1.5px solid var(--border);border-radius:10px;background:var(--bg);overflow:hidden;}
+  #drawCanvas{display:block;width:100%;height:180px;cursor:crosshair;background:var(--white);touch-action:none;}
+  .draw-tools{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-top:1px solid var(--border);}
+  .draw-tools .left{display:flex;gap:8px;align-items:center;}
+  .color-dot{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;}
+  .color-dot.selected{border-color:var(--text);}
+  .small-btn{background:var(--white);border:1.5px solid var(--border);color:var(--muted);padding:6px 13px;border-radius:7px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+  .small-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* TYPE SIGNATURE */
+  .type-input{width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:8px;font-family:'Caveat',cursive;font-size:2.2rem;color:var(--text);background:var(--white);outline:none;margin-bottom:14px;transition:border-color .2s;}
+  .type-input:focus{border-color:var(--accent);}
+  .font-options{display:flex;gap:8px;flex-wrap:wrap;}
+  .font-opt{padding:10px 16px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-family:'Caveat',cursive;font-size:1.3rem;background:var(--white);transition:all .15s;}
+  .font-opt.selected{border-color:var(--accent);background:var(--accent-l);}
+
+  /* UPLOAD IMAGE SIGNATURE */
+  .sig-upload-area{border:2px dashed var(--border);border-radius:10px;background:var(--bg);padding:28px;text-align:center;cursor:pointer;position:relative;}
+  .sig-upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+  .sig-preview-img{max-height:100px;margin:0 auto;display:block;}
+
+  .save-sig-btn{width:100%;padding:12px;background:var(--accent);border:none;border-radius:9px;color:white;font-size:.875rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;margin-top:14px;transition:opacity .15s;}
+  .save-sig-btn:hover{opacity:.88;}
+
+  /* PDF PAGE PLACEMENT */
+  .placement-wrap{border:1.5px solid var(--border);border-radius:10px;background:var(--bg);padding:16px;text-align:center;}
+  .placement-canvas-holder{position:relative;display:inline-block;box-shadow:0 2px 8px rgba(0,0,0,.08);margin:0 auto;}
+  .placement-canvas-holder canvas{display:block;max-width:100%;}
+  .sig-drag-box{position:absolute;border:2px dashed var(--accent);background:rgba(79,110,247,.08);cursor:move;display:flex;align-items:center;justify-content:center;border-radius:4px;overflow:hidden;}
+  .sig-drag-box img{width:100%;height:100%;object-fit:contain;pointer-events:none;}
+  .sig-drag-box .resize-handle{position:absolute;bottom:-4px;right:-4px;width:14px;height:14px;background:var(--accent);border-radius:50%;cursor:nwse-resize;border:2px solid white;}
+  .page-nav{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:14px;}
+  .page-nav button{background:var(--white);border:1.5px solid var(--border);width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:.85rem;color:var(--muted);transition:all .15s;}
+  .page-nav button:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+  .page-nav button:disabled{opacity:.35;cursor:not-allowed;}
+  .page-nav span{font-size:.8rem;color:var(--muted);font-weight:600;}
+
+  .hint-box{background:var(--accent-l);border-radius:8px;padding:9px 13px;font-size:.77rem;color:var(--accent);margin-bottom:14px;font-weight:500;}
+
+  .apply-btn{width:100%;padding:14px;background:var(--accent);border:none;border-radius:10px;color:white;font-size:.95rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:opacity .15s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;}
+  .apply-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px);}
+  .apply-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+  .progress-wrap{margin-top:14px;display:none;}
+  .progress-bg{background:var(--bg);border-radius:6px;height:6px;overflow:hidden;margin-bottom:7px;}
+  .progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),#818cf8);width:0%;border-radius:6px;transition:width .3s;}
+  .progress-label{font-size:.77rem;color:var(--muted);text-align:center;}
+
+  .error-box{display:none;background:var(--red-l);border:1.5px solid #fca5a5;border-radius:9px;padding:12px 16px;color:var(--red);font-size:.83rem;margin-top:12px;}
+
+  .success-box{display:none;background:var(--green-l);border:1.5px solid #86efac;border-radius:12px;padding:24px;text-align:center;margin-top:14px;}
+  .success-box .s-icon{font-size:2rem;margin-bottom:8px;}
+  .success-box h3{font-size:1rem;font-weight:700;color:var(--green);margin-bottom:4px;}
+  .success-box p{font-size:.82rem;color:#15803d;margin-bottom:16px;}
+  .download-btn{display:inline-flex;align-items:center;gap:7px;background:var(--green);color:white;border:none;padding:11px 24px;border-radius:8px;font-size:.875rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;transition:opacity .15s;}
+  .download-btn:hover{opacity:.85;}
+  .again-btn{margin-top:10px;background:none;border:1.5px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;display:block;margin-left:auto;margin-right:auto;}
+  .again-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  .ad-slot{background:var(--white);border:1.5px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--light);font-size:.7rem;letter-spacing:.5px;text-transform:uppercase;height:90px;margin-bottom:16px;}
+
+  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .feat{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:16px;}
+  .feat-icon{font-size:1.2rem;margin-bottom:8px;}
+  .feat h4{font-size:.83rem;font-weight:700;margin-bottom:3px;}
+  .feat p{font-size:.75rem;color:var(--muted);line-height:1.5;}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  .footer-logo{font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:7px;}
+  .footer-links{display:flex;gap:16px;}
+  .footer-links a{font-size:.78rem;color:var(--muted);text-decoration:none;}
+  .footer-links a:hover{color:var(--text);}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .tool-hero{flex-direction:column;align-items:flex-start;gap:12px;}
+    .features-grid{grid-template-columns:1fr;}
+    footer{padding:16px;flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">
+    <div class="logo-icon">📄</div>
+    PaperStack
+  </a>
+  <a class="back-link" href="index.html">← All Tools</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <span class="current">Sign PDF</span>
+</div>
+
+<div class="tool-hero">
+  <div class="tool-hero-icon">✒️</div>
+  <div>
+    <h1>Sign PDF</h1>
+    <p>Draw, type, or upload your signature, then place it anywhere on your document.</p>
+  </div>
+</div>
+
+<div class="tool-wrap">
+
+
+  <div class="card" id="uploadCard">
+    <div class="card-title">Step 1 — Upload your PDF</div>
+    <div class="drop-area" id="dropArea">
+      <input type="file" id="fileInput" accept=".pdf"/>
+      <div class="drop-icon">📄</div>
+      <h3>Drop your PDF here</h3>
+      <p>or <span class="browse">browse to choose a file</span> · Single PDF only</p>
+    </div>
+  </div>
+
+  <div id="optionsSection" style="display:none;">
+
+    <div class="card">
+      <div class="card-title">File loaded</div>
+      <div class="file-info-bar">
+        <div>
+          <div class="fname" id="loadedName">file.pdf</div>
+          <div class="fmeta" id="loadedMeta">0 pages · 0 KB</div>
+        </div>
+        <button class="change-file" onclick="resetUpload()">Change file</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: CREATE SIGNATURE -->
+    <div class="card" id="createSigCard">
+      <div class="card-title">Step 2 — Create your signature</div>
+      <div class="mode-tabs">
+        <div class="mode-tab active" onclick="setSigMode('draw')">✍️ Draw</div>
+        <div class="mode-tab" onclick="setSigMode('type')">⌨️ Type</div>
+        <div class="mode-tab" onclick="setSigMode('upload')">🖼️ Upload</div>
+      </div>
+
+      <!-- DRAW -->
+      <div class="mode-panel active" id="panel-draw">
+        <div class="draw-pad-wrap">
+          <canvas id="drawCanvas"></canvas>
+          <div class="draw-tools">
+            <div class="left">
+              <div class="color-dot selected" style="background:#111827" data-color="#111827" onclick="setDrawColor('#111827',this)"></div>
+              <div class="color-dot" style="background:#1d4ed8" data-color="#1d4ed8" onclick="setDrawColor('#1d4ed8',this)"></div>
+              <div class="color-dot" style="background:#dc2626" data-color="#dc2626" onclick="setDrawColor('#dc2626',this)"></div>
+            </div>
+            <button class="small-btn" onclick="clearDraw()">Clear</button>
+          </div>
+        </div>
+        <button class="save-sig-btn" onclick="saveSignature('draw')">Use this signature →</button>
+      </div>
+
+      <!-- TYPE -->
+      <div class="mode-panel" id="panel-type">
+        <input class="type-input" id="typeInput" type="text" placeholder="Type your name" value="Your Name" oninput="updateTypePreview()" style="font-family:'Caveat',cursive;"/>
+        <div class="font-options" id="fontOptions">
+          <div class="font-opt selected" data-font="'Caveat',cursive" onclick="setTypeFont(this)" style="font-family:'Caveat',cursive;">Signature</div>
+          <div class="font-opt" data-font="'Brush Script MT',cursive" onclick="setTypeFont(this)" style="font-family:cursive;">Elegant</div>
+          <div class="font-opt" data-font="Georgia,serif" onclick="setTypeFont(this)" style="font-family:Georgia,serif;font-style:italic;">Classic</div>
+        </div>
+        <button class="save-sig-btn" onclick="saveSignature('type')">Use this signature →</button>
+      </div>
+
+      <!-- UPLOAD -->
+      <div class="mode-panel" id="panel-upload">
+        <div class="sig-upload-area" id="sigUploadArea">
+          <input type="file" id="sigFileInput" accept="image/*"/>
+          <div id="sigUploadPrompt">
+            <div class="drop-icon" style="font-size:1.8rem;">🖼️</div>
+            <h3 style="font-size:.9rem;font-weight:700;margin-bottom:4px;">Upload a signature image</h3>
+            <p style="font-size:.78rem;color:var(--muted);">PNG with transparent background works best</p>
+          </div>
+          <img id="sigPreviewImg" class="sig-preview-img" style="display:none;"/>
+        </div>
+        <button class="save-sig-btn" onclick="saveSignature('upload')">Use this signature →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: PLACE ON PDF -->
+    <div class="card" id="placeCard" style="display:none;">
+      <div class="card-title">Step 3 — Place your signature</div>
+      <div class="hint-box">☝️ Drag the signature box to position it. Drag the bottom-right dot to resize. Use page arrows to sign other pages too.</div>
+      <div class="placement-wrap">
+        <div class="placement-canvas-holder" id="placementHolder">
+          <canvas id="placementCanvas"></canvas>
+        </div>
+        <div class="page-nav">
+          <button id="prevPageBtn" onclick="changePage(-1)">←</button>
+          <span id="pageIndicator">Page 1 of 1</span>
+          <button id="nextPageBtn" onclick="changePage(1)">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="applyCard" style="display:none;">
+      <button class="apply-btn" id="applyBtn" onclick="applySignature()">✒️ Sign & Download</button>
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bg"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="progress-label" id="progressLabel">Processing…</div>
+      </div>
+      <div class="error-box" id="errorBox"></div>
+
+      <div class="success-box" id="successBox">
+        <div class="s-icon">✅</div>
+        <h3>Signed successfully!</h3>
+        <p id="successDesc">Your signed PDF is ready.</p>
+        <a class="download-btn" id="downloadLink" href="#" download="signed.pdf">⬇️ Download signed PDF</a>
+        <button class="again-btn" onclick="resetAll()">Sign a different file</button>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="features-grid">
+    <div class="feat">
+      <div class="feat-icon">🔒</div>
+      <h4>100% Private</h4>
+      <p>Files stay on your device. Nothing is uploaded to any server.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">✍️</div>
+      <h4>3 ways to sign</h4>
+      <p>Draw with your mouse/finger, type in a script font, or upload an image.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🎯</div>
+      <h4>Drag & resize</h4>
+      <p>Place your signature exactly where you want it, on any page.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">
+    <div style="width:24px;height:24px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.75rem;">📄</div>
+    PaperStack
+  </div>
+  <div class="footer-links">
+    <a href="about.html">About</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="blog.html">Blog</a><a href="mailto:paperstack.help@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+let pdfFile = null;
+let pdfDocProxy = null;
+let totalPages = 0;
+let currentPage = 1;
+let sigDataUrl = null; // final signature as image data URL
+let sigMode = 'draw';
+let drawColor = '#111827';
+let typeFont = "'Caveat',cursive";
+
+// signature placement state per page: {page: {x,y,w,h}} in canvas px (relative to displayed canvas)
+let placements = {};
+let placementScale = 1; // canvas px per pdf pt at render scale
+
+const dropArea       = document.getElementById('dropArea');
+const fileInput      = document.getElementById('fileInput');
+const optionsSection = document.getElementById('optionsSection');
+const loadedName     = document.getElementById('loadedName');
+const loadedMeta     = document.getElementById('loadedMeta');
+const createSigCard  = document.getElementById('createSigCard');
+const placeCard      = document.getElementById('placeCard');
+const applyCard      = document.getElementById('applyCard');
+const applyBtn       = document.getElementById('applyBtn');
+const progressWrap   = document.getElementById('progressWrap');
+const progressBar    = document.getElementById('progressBar');
+const progressLabel  = document.getElementById('progressLabel');
+const errorBox       = document.getElementById('errorBox');
+const successBox     = document.getElementById('successBox');
+const downloadLink   = document.getElementById('downloadLink');
+const successDesc    = document.getElementById('successDesc');
+const placementCanvas= document.getElementById('placementCanvas');
+const placementHolder= document.getElementById('placementHolder');
+const pageIndicator  = document.getElementById('pageIndicator');
+const prevPageBtn    = document.getElementById('prevPageBtn');
+const nextPageBtn    = document.getElementById('nextPageBtn');
+
+dropArea.addEventListener('dragover', e=>{e.preventDefault();dropArea.classList.add('dragover');});
+dropArea.addEventListener('dragleave', ()=>dropArea.classList.remove('dragover'));
+dropArea.addEventListener('drop', e=>{e.preventDefault();dropArea.classList.remove('dragover');handleFile(e.dataTransfer.files[0]);});
+fileInput.addEventListener('change', ()=>handleFile(fileInput.files[0]));
+
+async function handleFile(file) {
+  if(!file) return;
+  if(!file.name.endsWith('.pdf') && file.type !== 'application/pdf') {
+    showError('Please select a PDF file.'); return;
+  }
+  if(typeof pdfjsLib === 'undefined' || typeof PDFLib === 'undefined') {
+    showError('PDF libraries failed to load. Please check your internet connection and refresh.'); return;
+  }
+  pdfFile = file;
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    pdfDocProxy = await pdfjsLib.getDocument({ data: arrayBuffer.slice(0) }).promise;
+    totalPages = pdfDocProxy.numPages;
+    currentPage = 1;
+    loadedName.textContent = file.name;
+    loadedMeta.textContent = `${totalPages} pages · ${fmt(file.size)}`;
+    optionsSection.style.display = 'block';
+    hideError();
+    successBox.style.display = 'none';
+    initDrawCanvas();
+  } catch(e) {
+    showError('Could not read this PDF. It may be corrupted or password-protected.');
+  }
+}
+
+/* ===== DRAW SIGNATURE ===== */
+let drawCanvas, drawCtx, isDrawing = false, hasDrawn = false;
+
+function initDrawCanvas() {
+  drawCanvas = document.getElementById('drawCanvas');
+  const rect = drawCanvas.getBoundingClientRect();
+  drawCanvas.width = drawCanvas.offsetWidth * 2;
+  drawCanvas.height = drawCanvas.offsetHeight * 2;
+  drawCtx = drawCanvas.getContext('2d');
+  drawCtx.scale(2,2);
+  drawCtx.lineWidth = 2.5;
+  drawCtx.lineCap = 'round';
+  drawCtx.strokeStyle = drawColor;
+
+  const getPos = (e) => {
+    const r = drawCanvas.getBoundingClientRect();
+    const cx = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+    const cy = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+    return {x: cx, y: cy};
+  };
+
+  const start = (e) => { isDrawing = true; hasDrawn = true; const p = getPos(e); drawCtx.beginPath(); drawCtx.moveTo(p.x,p.y); e.preventDefault(); };
+  const move = (e) => { if(!isDrawing) return; const p = getPos(e); drawCtx.lineTo(p.x,p.y); drawCtx.stroke(); e.preventDefault(); };
+  const end = () => { isDrawing = false; };
+
+  drawCanvas.addEventListener('mousedown', start);
+  drawCanvas.addEventListener('mousemove', move);
+  drawCanvas.addEventListener('mouseup', end);
+  drawCanvas.addEventListener('mouseleave', end);
+  drawCanvas.addEventListener('touchstart', start);
+  drawCanvas.addEventListener('touchmove', move);
+  drawCanvas.addEventListener('touchend', end);
+}
+
+function setDrawColor(color, el) {
+  drawColor = color;
+  drawCtx.strokeStyle = color;
+  document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function clearDraw() {
+  drawCtx.clearRect(0,0,drawCanvas.width,drawCanvas.height);
+  hasDrawn = false;
+}
+
+/* ===== MODE SWITCHING ===== */
+function setSigMode(mode) {
+  sigMode = mode;
+  document.querySelectorAll('.mode-tab').forEach((t,i)=>{
+    t.classList.toggle('active', ['draw','type','upload'][i] === mode);
+  });
+  document.querySelectorAll('.mode-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+mode).classList.add('active');
+}
+
+/* ===== TYPE SIGNATURE ===== */
+function updateTypePreview() {} // live via CSS font already
+function setTypeFont(el) {
+  typeFont = el.dataset.font;
+  document.querySelectorAll('.font-opt').forEach(f=>f.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('typeInput').style.fontFamily = typeFont;
+}
+
+/* ===== UPLOAD SIGNATURE ===== */
+const sigFileInput = document.getElementById('sigFileInput');
+const sigPreviewImg = document.getElementById('sigPreviewImg');
+const sigUploadPrompt = document.getElementById('sigUploadPrompt');
+let uploadedSigUrl = null;
+
+sigFileInput.addEventListener('change', () => {
+  const f = sigFileInput.files[0];
+  if(!f) return;
+  uploadedSigUrl = URL.createObjectURL(f);
+  sigPreviewImg.src = uploadedSigUrl;
+  sigPreviewImg.style.display = 'block';
+  sigUploadPrompt.style.display = 'none';
+});
+
+/* ===== SAVE SIGNATURE (any mode -> sigDataUrl) ===== */
+function saveSignature(mode) {
+  if (mode === 'draw') {
+    if (!hasDrawn) { showError('Please draw a signature first.'); return; }
+    sigDataUrl = drawCanvas.toDataURL('image/png');
+  } else if (mode === 'type') {
+    const text = document.getElementById('typeInput').value.trim();
+    if (!text) { showError('Please type your name.'); return; }
+    const c = document.createElement('canvas');
+    c.width = 600; c.height = 150;
+    const ctx = c.getContext('2d');
+    ctx.font = `64px ${typeFont}`;
+    ctx.fillStyle = '#111827';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, 20, 75);
+    sigDataUrl = c.toDataURL('image/png');
+  } else if (mode === 'upload') {
+    if (!uploadedSigUrl) { showError('Please upload a signature image.'); return; }
+    sigDataUrl = uploadedSigUrl; // browser will handle via fetch later (works for blob URLs too)
+  }
+  hideError();
+  placeCard.style.display = 'block';
+  applyCard.style.display = 'block';
+  renderPlacementPage();
+}
+
+/* ===== PLACEMENT ON PDF PAGE ===== */
+async function renderPlacementPage() {
+  const page = await pdfDocProxy.getPage(currentPage);
+  const viewport = page.getViewport({ scale: 0.75 });
+  placementCanvas.width = viewport.width;
+  placementCanvas.height = viewport.height;
+  const ctx = placementCanvas.getContext('2d');
+  await page.render({ canvasContext: ctx, viewport }).promise;
+
+  pageIndicator.textContent = `Page ${currentPage} of ${totalPages}`;
+  prevPageBtn.disabled = currentPage === 1;
+  nextPageBtn.disabled = currentPage === totalPages;
+
+  // remove old drag box
+  const old = document.getElementById('sigDragBox');
+  if (old) old.remove();
+
+  if (!placements[currentPage]) {
+    placements[currentPage] = { x: viewport.width/2 - 60, y: viewport.height/2 - 30, w: 120, h: 60 };
+  }
+  createDragBox();
+}
+
+function createDragBox() {
+  const p = placements[currentPage];
+  const box = document.createElement('div');
+  box.className = 'sig-drag-box';
+  box.id = 'sigDragBox';
+  box.style.left = p.x + 'px';
+  box.style.top = p.y + 'px';
+  box.style.width = p.w + 'px';
+  box.style.height = p.h + 'px';
+  box.innerHTML = `<img src="${sigDataUrl}"/><div class="resize-handle" id="resizeHandle"></div>`;
+  placementHolder.appendChild(box);
+
+  let dragging = false, resizing = false, startX, startY, startBoxX, startBoxY, startW, startH;
+
+  box.addEventListener('mousedown', (e) => {
+    if (e.target.id === 'resizeHandle') return;
+    dragging = true;
+    startX = e.clientX; startY = e.clientY;
+    startBoxX = p.x; startBoxY = p.y;
+    e.preventDefault();
+  });
+
+  document.getElementById('resizeHandle').addEventListener('mousedown', (e) => {
+    resizing = true;
+    startX = e.clientX; startY = e.clientY;
+    startW = p.w; startH = p.h;
+    e.preventDefault(); e.stopPropagation();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (dragging) {
+      p.x = Math.max(0, Math.min(placementCanvas.width - p.w, startBoxX + (e.clientX - startX)));
+      p.y = Math.max(0, Math.min(placementCanvas.height - p.h, startBoxY + (e.clientY - startY)));
+      box.style.left = p.x + 'px';
+      box.style.top = p.y + 'px';
+    }
+    if (resizing) {
+      p.w = Math.max(40, startW + (e.clientX - startX));
+      p.h = Math.max(20, startH + (e.clientY - startY));
+      box.style.width = p.w + 'px';
+      box.style.height = p.h + 'px';
+    }
+  });
+
+  document.addEventListener('mouseup', () => { dragging = false; resizing = false; });
+
+  // touch support
+  box.addEventListener('touchstart', (e) => {
+    dragging = true;
+    const t = e.touches[0];
+    startX = t.clientX; startY = t.clientY;
+    startBoxX = p.x; startBoxY = p.y;
+  });
+  document.addEventListener('touchmove', (e) => {
+    if (!dragging) return;
+    const t = e.touches[0];
+    p.x = Math.max(0, Math.min(placementCanvas.width - p.w, startBoxX + (t.clientX - startX)));
+    p.y = Math.max(0, Math.min(placementCanvas.height - p.h, startBoxY + (t.clientY - startY)));
+    box.style.left = p.x + 'px';
+    box.style.top = p.y + 'px';
+  });
+  document.addEventListener('touchend', () => { dragging = false; });
+}
+
+function changePage(delta) {
+  const newPage = currentPage + delta;
+  if (newPage < 1 || newPage > totalPages) return;
+  currentPage = newPage;
+  renderPlacementPage();
+}
+
+/* ===== APPLY SIGNATURE TO PDF ===== */
+async function applySignature() {
+  hideError();
+  successBox.style.display = 'none';
+  applyBtn.disabled = true;
+  progressWrap.style.display = 'block';
+  setProgress(10, 'Loading PDF…');
+
+  try {
+    const { PDFDocument } = PDFLib;
+    const bytes = await pdfFile.arrayBuffer();
+    const doc = await PDFDocument.load(bytes);
+    const pages = doc.getPages();
+
+    setProgress(30, 'Embedding signature…');
+    const sigBytes = await fetch(sigDataUrl).then(r => r.arrayBuffer());
+    let sigImage;
+    try {
+      sigImage = await doc.embedPng(sigBytes);
+    } catch(e) {
+      sigImage = await doc.embedJpg(sigBytes);
+    }
+
+    const renderScale = 0.75; // matches the scale used in renderPlacementPage
+
+    let count = 0;
+    const pageNumbers = Object.keys(placements);
+    for (const pageNumStr of pageNumbers) {
+      count++;
+      setProgress(40 + Math.round((count/pageNumbers.length)*50), `Placing signature on page ${pageNumStr}…`);
+      const pageNum = parseInt(pageNumStr);
+      const pos = placements[pageNum];
+      const page = pages[pageNum - 1];
+      const { height: pdfHeight } = page.getSize();
+
+      // convert canvas px (at renderScale) back to PDF points
+      const pdfX = pos.x / renderScale;
+      const pdfW = pos.w / renderScale;
+      const pdfH = pos.h / renderScale;
+      const pdfY = pdfHeight - (pos.y / renderScale) - pdfH;
+
+      page.drawImage(sigImage, { x: pdfX, y: pdfY, width: pdfW, height: pdfH });
+    }
+
+    setProgress(95, 'Finalising…');
+    const outBytes = await doc.save();
+    setProgress(100, 'Done!');
+
+    const blob = new Blob([outBytes], { type: 'application/pdf' });
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = pdfFile.name.replace('.pdf','') + '_signed.pdf';
+    successDesc.textContent = `Signed on ${pageNumbers.length} page${pageNumbers.length>1?'s':''} · ${fmt(outBytes.length)}`;
+
+    setTimeout(()=>{
+      progressWrap.style.display='none';
+      successBox.style.display='block';
+      applyBtn.disabled=false;
+    }, 400);
+
+  } catch(err) {
+    progressWrap.style.display='none';
+    showError('Something went wrong: ' + err.message);
+    applyBtn.disabled = false;
+  }
+}
+
+function setProgress(pct,label){progressBar.style.width=pct+'%';progressLabel.textContent=label;}
+function showError(msg){errorBox.textContent='⚠️ '+msg;errorBox.style.display='block';}
+function hideError(){errorBox.style.display='none';}
+function fmt(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB';}
+
+function resetUpload(){
+  pdfFile=null; pdfDocProxy=null; totalPages=0; currentPage=1;
+  sigDataUrl=null; placements={};
+  fileInput.value='';
+  optionsSection.style.display='none';
+  placeCard.style.display='none';
+  applyCard.style.display='none';
+  successBox.style.display='none';
+  progressWrap.style.display='none';
+  hideError();
+}
+function resetAll(){resetUpload();}
+</script>
+</body>
+</html>

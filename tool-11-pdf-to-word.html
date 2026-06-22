@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Convert PDF to Word Free Online | PaperStack</title>
+<meta name="description" content="Convert a PDF to an editable Word (.docx) file for free. Extracts real text, processed locally in your browser."/>
+<link rel="canonical" href="https://paperstack.vercel.app/tool-11-pdf-to-word.html"/>
+<meta property="og:title" content="Convert PDF to Word Free Online | PaperStack"/>
+<meta property="og:description" content="Convert a PDF to an editable Word (.docx) file for free. Extracts real text, processed locally in your browser."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://paperstack.vercel.app/tool-11-pdf-to-word.html"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Convert PDF to Word Free Online | PaperStack"/>
+<meta name="twitter:description" content="Convert a PDF to an editable Word (.docx) file for free. Extracts real text, processed locally in your browser."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
+<style>
+  :root {
+    --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec;
+    --text:#111827; --muted:#6b7280; --light:#9ca3af;
+    --accent:#4f6ef7; --accent-l:#eef1fe;
+    --green:#16a34a; --green-l:#dcfce7;
+    --red:#dc2626; --red-l:#fee2e2;
+    --orange:#ea580c; --orange-l:#fff7ed;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:760px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .tool-hero{max-width:760px;margin:0 auto;padding:28px 24px 24px;display:flex;align-items:center;gap:18px;}
+  .tool-hero-icon{width:56px;height:56px;background:var(--accent-l);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+  .tool-hero h1{font-size:1.5rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px;}
+  .tool-hero p{font-size:.875rem;color:var(--muted);}
+
+  .tool-wrap{max-width:760px;margin:0 auto;padding:0 24px 48px;}
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px;margin-bottom:16px;}
+  .card-title{font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px;}
+
+  .drop-area{border:2px dashed var(--border);border-radius:10px;background:var(--bg);padding:44px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;}
+  .drop-area.dragover{border-color:var(--accent);background:var(--accent-l);}
+  .drop-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .drop-icon{font-size:2.2rem;margin-bottom:12px;}
+  .drop-area h3{font-size:.95rem;font-weight:700;margin-bottom:5px;}
+  .drop-area p{font-size:.8rem;color:var(--muted);}
+  .drop-area .browse{color:var(--accent);font-weight:600;text-decoration:underline;}
+
+  .file-info-bar{background:var(--accent-l);border-radius:8px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .file-info-bar .fname{font-size:.875rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .file-info-bar .fmeta{font-size:.75rem;color:var(--accent);flex-shrink:0;}
+  .change-file{background:none;border:1.5px solid var(--accent);color:var(--accent);padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;flex-shrink:0;}
+  .change-file:hover{background:var(--accent);color:white;}
+
+  .info-box{background:var(--orange-l);border:1.5px solid #fed7aa;border-radius:9px;padding:12px 16px;color:var(--orange);font-size:.8rem;margin-bottom:16px;line-height:1.55;}
+  .info-box strong{display:block;color:#9a3412;margin-bottom:3px;font-size:.85rem;}
+
+  .convert-btn{width:100%;padding:14px;background:var(--accent);border:none;border-radius:10px;color:white;font-size:.95rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:opacity .15s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .convert-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px);}
+  .convert-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+  .progress-wrap{margin-top:14px;display:none;}
+  .progress-bg{background:var(--bg);border-radius:6px;height:6px;overflow:hidden;margin-bottom:7px;}
+  .progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),#818cf8);width:0%;border-radius:6px;transition:width .3s;}
+  .progress-label{font-size:.77rem;color:var(--muted);text-align:center;}
+
+  .error-box{display:none;background:var(--red-l);border:1.5px solid #fca5a5;border-radius:9px;padding:12px 16px;color:var(--red);font-size:.83rem;margin-top:12px;}
+  .warn-box{display:none;background:var(--orange-l);border:1.5px solid #fed7aa;border-radius:9px;padding:12px 16px;color:var(--orange);font-size:.8rem;margin-top:12px;line-height:1.55;}
+
+  .success-box{display:none;background:var(--green-l);border:1.5px solid #86efac;border-radius:12px;padding:24px;text-align:center;margin-top:14px;}
+  .success-box .s-icon{font-size:2rem;margin-bottom:8px;}
+  .success-box h3{font-size:1rem;font-weight:700;color:var(--green);margin-bottom:4px;}
+  .success-box p{font-size:.82rem;color:#15803d;margin-bottom:16px;}
+  .download-btn{display:inline-flex;align-items:center;gap:7px;background:var(--green);color:white;border:none;padding:11px 24px;border-radius:8px;font-size:.875rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;transition:opacity .15s;}
+  .download-btn:hover{opacity:.85;}
+  .again-btn{margin-top:10px;background:none;border:1.5px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;display:block;margin-left:auto;margin-right:auto;}
+  .again-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* PREVIEW */
+  .preview-box{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px;max-height:220px;overflow-y:auto;font-size:.8rem;color:var(--muted);line-height:1.6;margin-top:14px;white-space:pre-wrap;display:none;}
+
+  .ad-slot{background:var(--white);border:1.5px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--light);font-size:.7rem;letter-spacing:.5px;text-transform:uppercase;height:90px;margin-bottom:16px;}
+
+  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .feat{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:16px;}
+  .feat-icon{font-size:1.2rem;margin-bottom:8px;}
+  .feat h4{font-size:.83rem;font-weight:700;margin-bottom:3px;}
+  .feat p{font-size:.75rem;color:var(--muted);line-height:1.5;}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  .footer-logo{font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:7px;}
+  .footer-links{display:flex;gap:16px;}
+  .footer-links a{font-size:.78rem;color:var(--muted);text-decoration:none;}
+  .footer-links a:hover{color:var(--text);}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .tool-hero{flex-direction:column;align-items:flex-start;gap:12px;}
+    .features-grid{grid-template-columns:1fr;}
+    footer{padding:16px;flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">
+    <div class="logo-icon">📄</div>
+    PaperStack
+  </a>
+  <a class="back-link" href="index.html">← All Tools</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <span class="current">PDF to Word</span>
+</div>
+
+<div class="tool-hero">
+  <div class="tool-hero-icon">📝</div>
+  <div>
+    <h1>PDF to Word</h1>
+    <p>Extract text from your PDF into an editable Word (.docx) document.</p>
+  </div>
+</div>
+
+<div class="tool-wrap">
+
+
+  <div class="card" id="uploadCard">
+    <div class="card-title">Step 1 — Upload your PDF</div>
+    <div class="info-box">
+      <strong>ℹ️ How this works</strong>
+      We extract the actual text from your PDF (not an image) and rebuild it as a Word document with paragraphs preserved. Best for text-based PDFs — scanned/image PDFs won't have extractable text.
+    </div>
+    <div class="drop-area" id="dropArea">
+      <input type="file" id="fileInput" accept=".pdf"/>
+      <div class="drop-icon">📄</div>
+      <h3>Drop your PDF here</h3>
+      <p>or <span class="browse">browse to choose a file</span> · Single PDF only</p>
+    </div>
+  </div>
+
+  <div id="optionsSection" style="display:none;">
+
+    <div class="card">
+      <div class="card-title">File loaded</div>
+      <div class="file-info-bar">
+        <div>
+          <div class="fname" id="loadedName">file.pdf</div>
+          <div class="fmeta" id="loadedMeta">0 pages · 0 KB</div>
+        </div>
+        <button class="change-file" onclick="resetUpload()">Change file</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Step 2 — Convert</div>
+      <button class="convert-btn" id="convertBtn" onclick="doConvert()">📝 Convert to Word</button>
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bg"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="progress-label" id="progressLabel">Processing…</div>
+      </div>
+      <div class="error-box" id="errorBox"></div>
+      <div class="warn-box" id="warnBox"></div>
+      <div class="preview-box" id="previewBox"></div>
+
+      <div class="success-box" id="successBox">
+        <div class="s-icon">✅</div>
+        <h3>Converted successfully!</h3>
+        <p id="successDesc">Your Word document is ready.</p>
+        <a class="download-btn" id="downloadLink" href="#" download="converted.docx">⬇️ Download .docx file</a>
+        <button class="again-btn" onclick="resetAll()">Convert a different file</button>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="features-grid">
+    <div class="feat">
+      <div class="feat-icon">🔒</div>
+      <h4>100% Private</h4>
+      <p>Files stay on your device. Nothing is uploaded to any server.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">📄</div>
+      <h4>Real .docx file</h4>
+      <p>Opens directly in Microsoft Word, Google Docs, or LibreOffice.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">📐</div>
+      <h4>Paragraph aware</h4>
+      <p>Keeps your text broken into readable paragraphs, not one big block.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">
+    <div style="width:24px;height:24px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.75rem;">📄</div>
+    PaperStack
+  </div>
+  <div class="footer-links">
+    <a href="about.html">About</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="blog.html">Blog</a><a href="mailto:paperstack.help@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+let pdfFile = null;
+
+const dropArea       = document.getElementById('dropArea');
+const fileInput      = document.getElementById('fileInput');
+const optionsSection = document.getElementById('optionsSection');
+const loadedName     = document.getElementById('loadedName');
+const loadedMeta     = document.getElementById('loadedMeta');
+const convertBtn     = document.getElementById('convertBtn');
+const progressWrap   = document.getElementById('progressWrap');
+const progressBar    = document.getElementById('progressBar');
+const progressLabel  = document.getElementById('progressLabel');
+const errorBox       = document.getElementById('errorBox');
+const warnBox        = document.getElementById('warnBox');
+const previewBox     = document.getElementById('previewBox');
+const successBox     = document.getElementById('successBox');
+const downloadLink   = document.getElementById('downloadLink');
+const successDesc    = document.getElementById('successDesc');
+
+dropArea.addEventListener('dragover', e=>{e.preventDefault();dropArea.classList.add('dragover');});
+dropArea.addEventListener('dragleave', ()=>dropArea.classList.remove('dragover'));
+dropArea.addEventListener('drop', e=>{e.preventDefault();dropArea.classList.remove('dragover');handleFile(e.dataTransfer.files[0]);});
+fileInput.addEventListener('change', ()=>handleFile(fileInput.files[0]));
+
+async function handleFile(file) {
+  if(!file) return;
+  if(!file.name.endsWith('.pdf') && file.type !== 'application/pdf') {
+    showError('Please select a PDF file.'); return;
+  }
+  if(typeof pdfjsLib === 'undefined') {
+    showError('PDF library failed to load. Please check your internet connection and refresh.'); return;
+  }
+  pdfFile = file;
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer.slice(0) }).promise;
+    loadedName.textContent = file.name;
+    loadedMeta.textContent = `${pdf.numPages} pages · ${fmt(file.size)}`;
+    optionsSection.style.display = 'block';
+    hideError(); hideWarn();
+    successBox.style.display = 'none';
+    previewBox.style.display = 'none';
+  } catch(e) {
+    showError('Could not read this PDF. It may be corrupted or password-protected.');
+  }
+}
+
+async function doConvert() {
+  hideError(); hideWarn();
+  successBox.style.display = 'none';
+  previewBox.style.display = 'none';
+  convertBtn.disabled = true;
+  progressWrap.style.display = 'block';
+  setProgress(10, 'Loading PDF…');
+
+  try {
+    const arrayBuffer = await pdfFile.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer.slice(0) }).promise;
+    const numPages = pdf.numPages;
+
+    let allParagraphs = []; // array of strings
+    let totalChars = 0;
+
+    for (let i = 1; i <= numPages; i++) {
+      setProgress(10 + Math.round((i/numPages)*60), `Extracting text from page ${i} of ${numPages}…`);
+      const page = await pdf.getPage(i);
+      const textContent = await page.getTextContent();
+
+      let lines = [];
+      let currentLine = '';
+      let lastY = null;
+
+      textContent.items.forEach(item => {
+        const y = item.transform[5];
+        if (lastY !== null && Math.abs(y - lastY) > 2) {
+          if (currentLine.trim()) lines.push(currentLine.trim());
+          currentLine = item.str;
+        } else {
+          currentLine += item.str;
+        }
+        lastY = y;
+      });
+      if (currentLine.trim()) lines.push(currentLine.trim());
+
+      // group lines into paragraphs (simple heuristic: blank gaps already broken by line array)
+      const pageText = lines.join('\n');
+      totalChars += pageText.length;
+
+      if (lines.length) {
+        allParagraphs.push(...lines);
+        allParagraphs.push(''); // page break spacer
+      }
+    }
+
+    if (totalChars < 20) {
+      throw new Error('NO_TEXT');
+    }
+
+    setProgress(75, 'Building Word document…');
+
+    const { Document, Packer, Paragraph, TextRun } = docx;
+
+    const docParagraphs = allParagraphs.map(line => {
+      if (line === '') {
+        return new Paragraph({ text: '' });
+      }
+      return new Paragraph({
+        children: [ new TextRun({ text: line, size: 24 }) ],
+        spacing: { after: 120 }
+      });
+    });
+
+    const doc = new Document({
+      sections: [{
+        properties: {},
+        children: docParagraphs
+      }]
+    });
+
+    setProgress(90, 'Packaging file…');
+    const blob = await Packer.toBlob(doc);
+
+    setProgress(100, 'Done!');
+
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = pdfFile.name.replace('.pdf','') + '.docx';
+    successDesc.textContent = `${numPages} pages converted · ${fmt(blob.size)}`;
+
+    // preview snippet
+    const previewText = allParagraphs.filter(Boolean).slice(0, 15).join('\n');
+    previewBox.textContent = previewText + (allParagraphs.length > 15 ? '\n…' : '');
+    previewBox.style.display = 'block';
+
+    setTimeout(()=>{
+      progressWrap.style.display='none';
+      successBox.style.display='block';
+      convertBtn.disabled=false;
+    }, 400);
+
+  } catch(err) {
+    progressWrap.style.display='none';
+    convertBtn.disabled = false;
+    if (err.message === 'NO_TEXT') {
+      showWarn('This PDF appears to have little or no extractable text — it may be a scanned image rather than real text. This tool works best with text-based PDFs (created from Word, Google Docs, etc).');
+    } else {
+      showError('Something went wrong: ' + err.message);
+    }
+  }
+}
+
+function setProgress(pct,label){progressBar.style.width=pct+'%';progressLabel.textContent=label;}
+function showError(msg){errorBox.textContent='⚠️ '+msg;errorBox.style.display='block';}
+function hideError(){errorBox.style.display='none';}
+function showWarn(msg){warnBox.textContent='ℹ️ '+msg;warnBox.style.display='block';}
+function hideWarn(){warnBox.style.display='none';}
+function fmt(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB';}
+
+function resetUpload(){
+  pdfFile=null;
+  fileInput.value='';
+  optionsSection.style.display='none';
+  successBox.style.display='none';
+  progressWrap.style.display='none';
+  previewBox.style.display='none';
+  hideError(); hideWarn();
+}
+function resetAll(){resetUpload();}
+</script>
+</body>
+</html>
