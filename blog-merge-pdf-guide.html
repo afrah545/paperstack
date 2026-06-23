@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How to Merge PDF Files for Free (No Signup, No Upload) — PaperStack</title>
+<link rel="icon" href="favicon.ico"/>
+
+<meta name="description" content="Combine multiple PDFs into one file in seconds — free, no account, no upload to a server. Step-by-step guide plus answers to common merge problems."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root { --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec; --text:#111827; --muted:#6b7280; --light:#9ca3af; --accent:#4f6ef7; --accent-l:#eef1fe; --green:#16a34a; --green-l:#dcfce7; --orange:#ea580c; --orange-l:#fff7ed; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:700px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .wrap{max-width:700px;margin:0 auto;padding:28px 24px 64px;}
+  .post-tag{display:inline-block;background:var(--accent-l);color:var(--accent);font-size:.7rem;font-weight:700;padding:3px 11px;border-radius:6px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.4px;}
+  h1{font-size:1.6rem;font-weight:800;letter-spacing:-.4px;margin-bottom:10px;line-height:1.25;}
+  .meta{font-size:.78rem;color:var(--muted);margin-bottom:24px;}
+
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px 30px;margin-bottom:18px;}
+
+  h2{font-size:1.15rem;font-weight:700;margin:30px 0 12px;}
+  h2:first-child{margin-top:0;}
+  h3{font-size:.98rem;font-weight:700;margin:18px 0 8px;}
+  p{color:var(--text);font-size:.92rem;margin-bottom:12px;}
+  ul,ol{margin:10px 0 14px 22px;color:var(--text);font-size:.92rem;}
+  li{margin-bottom:8px;line-height:1.6;}
+
+  .step-card{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;}
+  .step-num{background:var(--accent);color:white;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;}
+  .step-text{font-size:.88rem;color:var(--text);padding-top:2px;}
+  .step-text strong{display:block;margin-bottom:3px;}
+
+  .cta-box{background:var(--accent-l);border:1.5px solid var(--accent);border-radius:12px;padding:20px 24px;text-align:center;margin:24px 0;}
+  .cta-box p{color:var(--text);font-size:.9rem;margin-bottom:14px;}
+  .cta-btn{display:inline-block;background:var(--accent);color:white;text-decoration:none;padding:11px 26px;border-radius:8px;font-size:.88rem;font-weight:700;transition:opacity .15s;}
+  .cta-btn:hover{opacity:.88;}
+
+  .faq-item{border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;}
+  .faq-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .faq-q{font-size:.92rem;font-weight:700;margin-bottom:6px;display:flex;gap:8px;}
+  .faq-q span{color:var(--accent);}
+  .faq-a{font-size:.87rem;color:var(--muted);line-height:1.6;padding-left:22px;}
+
+  .note-box{background:var(--orange-l);border:1.5px solid #fed7aa;border-radius:9px;padding:14px 18px;font-size:.85rem;color:#9a3412;margin:16px 0;}
+  .note-box strong{display:block;margin-bottom:3px;}
+
+  .related{margin-top:32px;}
+  .related-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .related-card{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--text);transition:border-color .2s;}
+  .related-card:hover{border-color:var(--accent);}
+  .related-card .rtitle{font-size:.85rem;font-weight:700;margin-bottom:3px;}
+  .related-card .rdesc{font-size:.75rem;color:var(--muted);}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;text-align:center;}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .card{padding:22px 18px;}
+    .related-grid{grid-template-columns:1fr;}
+  }
+</style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L99X3LFWVY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-L99X3LFWVY");
+</script>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html"><div class="logo-icon">📄</div>PaperStack</a>
+  <a class="back-link" href="blog.html">← Blog</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <a href="blog.html">Blog</a>
+  <span class="sep">›</span>
+  <span class="current">Merge PDF Guide</span>
+</div>
+
+<div class="wrap">
+  <span class="post-tag">Guide</span>
+  <h1>How to Merge PDF Files for Free (No Signup, No Upload)</h1>
+  <div class="meta">6 min read · Updated June 2026</div>
+
+  <div class="card">
+    <p>You've got two or three PDFs that really should be one — a cover letter and a resume, a few scanned receipts, separate chapters of a report. Emailing them separately looks unprofessional, and most people receiving them would rather open one file than three.</p>
+    <p>Merging is one of the simplest PDF tasks there is, but a lot of tools make it harder than it needs to be — asking for an account, capping how many merges you get per day, or quietly uploading your file somewhere. Here's how to do it properly, plus the small details that trip people up.</p>
+
+    <h2>When you'd actually need this</h2>
+    <ul>
+      <li><strong>Job applications</strong> — combining a resume, cover letter, and portfolio into one attachment</li>
+      <li><strong>Scanned documents</strong> — multiple single-page scans from your phone that need to become one file</li>
+      <li><strong>Reports and proposals</strong> — separate sections written by different people, merged into a final document</li>
+      <li><strong>Invoices and receipts</strong> — bundling several into one PDF for expense claims</li>
+    </ul>
+
+    <h2>Step-by-step: merging your PDFs</h2>
+
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Open the Merge PDF tool</strong>Works directly in your browser — nothing to install.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Upload all the files you want to combine</strong>Drag and drop them in, or select multiple files at once from your device.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Arrange them in the right order</strong>Drag each file into place — the final order here is the order they'll appear in the merged PDF.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>Merge and download</strong>You'll get a single PDF containing every page from every file, in the order you set.</div>
+    </div>
+
+    <div class="cta-box">
+      <p>Combine your files now — free, no account, no daily limit.</p>
+      <a class="cta-btn" href="tool-1-merge-pdf.html">Open Merge PDF Tool →</a>
+    </div>
+
+    <h2>Things people get wrong</h2>
+    <ul>
+      <li><strong>Order matters</strong> — double-check the file order before merging. Most tools merge in the order you uploaded, not alphabetical or by date.</li>
+      <li><strong>Mixed page sizes</strong> — if your files have different page sizes (A4 mixed with Letter, for example), the merged file will keep each page's original size rather than forcing them to match. This is usually fine, but worth knowing before you print.</li>
+      <li><strong>Password-protected files</strong> — a PDF with a password generally needs to be unlocked before it can be merged. If a file won't upload, that's the most likely reason.</li>
+    </ul>
+
+    <div class="note-box">
+      <strong>💡 Quick tip</strong>
+      If you're merging scanned pages from your phone, check each scan is right-side-up before merging — fixing rotation after the fact means re-doing the merge.
+    </div>
+
+    <h2>Common questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>How many files can I merge at once?</div>
+      <div class="faq-a">There's no daily limit on PaperStack, and you can merge several files in a single session. For very large batches (20+ files), expect the merge to take a few extra seconds since it's processing everything in your browser.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Will merging reduce the quality of my PDFs?</div>
+      <div class="faq-a">No. Merging just combines the existing pages as they are — it doesn't recompress images or alter text. If your merged file feels too large afterward, run it through a compress tool separately.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Can I remove a page after merging, instead of starting over?</div>
+      <div class="faq-a">Yes — use a Split tool on the merged file to remove or extract specific pages rather than redoing the whole merge.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Is it safe to merge files with personal information, like ID scans?</div>
+      <div class="faq-a">Yes — PaperStack merges your files entirely inside your browser. They're never uploaded to a server, so nobody but you ever sees the content.</div>
+    </div>
+
+    <div class="related">
+      <h2>Related guides</h2>
+      <div class="related-grid">
+        <a class="related-card" href="blog-split-pdf-guide.html">
+          <div class="rtitle">✂️ Split PDF</div>
+          <div class="rdesc">Pull pages out or break one PDF into several.</div>
+        </a>
+        <a class="related-card" href="blog-compress-pdf-email.html">
+          <div class="rtitle">📦 Compress PDF</div>
+          <div class="rdesc">Shrink a merged file down for emailing.</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+</body>
+</html>
