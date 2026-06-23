@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How to Add a Watermark to a PDF for Free — PaperStack</title>
+<link rel="icon" href="favicon.ico"/>
+
+<meta name="description" content="Stamp a logo, text, or 'Draft' watermark across your PDF pages — free, no account, no upload. Step-by-step guide plus tips on opacity and placement."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root { --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec; --text:#111827; --muted:#6b7280; --light:#9ca3af; --accent:#4f6ef7; --accent-l:#eef1fe; --green:#16a34a; --green-l:#dcfce7; --orange:#ea580c; --orange-l:#fff7ed; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:700px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .wrap{max-width:700px;margin:0 auto;padding:28px 24px 64px;}
+  .post-tag{display:inline-block;background:var(--accent-l);color:var(--accent);font-size:.7rem;font-weight:700;padding:3px 11px;border-radius:6px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.4px;}
+  h1{font-size:1.6rem;font-weight:800;letter-spacing:-.4px;margin-bottom:10px;line-height:1.25;}
+  .meta{font-size:.78rem;color:var(--muted);margin-bottom:24px;}
+
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px 30px;margin-bottom:18px;}
+
+  h2{font-size:1.15rem;font-weight:700;margin:30px 0 12px;}
+  h2:first-child{margin-top:0;}
+  h3{font-size:.98rem;font-weight:700;margin:18px 0 8px;}
+  p{color:var(--text);font-size:.92rem;margin-bottom:12px;}
+  ul,ol{margin:10px 0 14px 22px;color:var(--text);font-size:.92rem;}
+  li{margin-bottom:8px;line-height:1.6;}
+
+  .step-card{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;}
+  .step-num{background:var(--accent);color:white;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;}
+  .step-text{font-size:.88rem;color:var(--text);padding-top:2px;}
+  .step-text strong{display:block;margin-bottom:3px;}
+
+  .cta-box{background:var(--accent-l);border:1.5px solid var(--accent);border-radius:12px;padding:20px 24px;text-align:center;margin:24px 0;}
+  .cta-box p{color:var(--text);font-size:.9rem;margin-bottom:14px;}
+  .cta-btn{display:inline-block;background:var(--accent);color:white;text-decoration:none;padding:11px 26px;border-radius:8px;font-size:.88rem;font-weight:700;transition:opacity .15s;}
+  .cta-btn:hover{opacity:.88;}
+
+  .faq-item{border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;}
+  .faq-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .faq-q{font-size:.92rem;font-weight:700;margin-bottom:6px;display:flex;gap:8px;}
+  .faq-q span{color:var(--accent);}
+  .faq-a{font-size:.87rem;color:var(--muted);line-height:1.6;padding-left:22px;}
+
+  .note-box{background:var(--orange-l);border:1.5px solid #fed7aa;border-radius:9px;padding:14px 18px;font-size:.85rem;color:#9a3412;margin:16px 0;}
+  .note-box strong{display:block;margin-bottom:3px;}
+
+  .related{margin-top:32px;}
+  .related-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .related-card{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--text);transition:border-color .2s;}
+  .related-card:hover{border-color:var(--accent);}
+  .related-card .rtitle{font-size:.85rem;font-weight:700;margin-bottom:3px;}
+  .related-card .rdesc{font-size:.75rem;color:var(--muted);}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;text-align:center;}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .card{padding:22px 18px;}
+    .related-grid{grid-template-columns:1fr;}
+  }
+</style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L99X3LFWVY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-L99X3LFWVY");
+</script>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html"><div class="logo-icon">📄</div>PaperStack</a>
+  <a class="back-link" href="blog.html">← Blog</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <a href="blog.html">Blog</a>
+  <span class="sep">›</span>
+  <span class="current">Watermark PDF Guide</span>
+</div>
+
+<div class="wrap">
+  <span class="post-tag">Guide</span>
+  <h1>How to Add a Watermark to a PDF for Free</h1>
+  <div class="meta">5 min read · Updated June 2026</div>
+
+  <div class="card">
+    <p>You're sending out a draft, a proposal, or a sample document and want to mark it clearly as not-final — or you're sharing your own work and want your name or logo visibly on every page before it goes out into the world. A watermark does both jobs: it's a quick visual flag stamped across the page without altering the actual content underneath.</p>
+
+    <h2>When you'd actually need this</h2>
+    <ul>
+      <li><strong>Draft documents</strong> — marking a proposal or contract clearly as "DRAFT" before it's finalized</li>
+      <li><strong>Branding your own work</strong> — adding your name, logo, or business name across a portfolio or sample</li>
+      <li><strong>Confidential markings</strong> — flagging internal documents as "Confidential" or "Internal Use Only"</li>
+    </ul>
+
+    <h2>Step-by-step: adding a watermark</h2>
+
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Open the Watermark PDF tool</strong>Works directly in your browser — nothing to install.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Upload your PDF</strong>Drag and drop, or browse your files.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Choose text or an image</strong>Type a word or phrase, or upload a logo image to stamp across each page.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>Adjust position and opacity, then download</strong>See a live preview before exporting the final file.</div>
+    </div>
+
+    <div class="cta-box">
+      <p>Add your watermark now — free, no account, no upload.</p>
+      <a class="cta-btn" href="tool-8-watermark-pdf.html">Open Watermark PDF Tool →</a>
+    </div>
+
+    <h2>Getting the look right</h2>
+    <ul>
+      <li><strong>Keep opacity low for text-heavy documents</strong> — a watermark at 15-25% opacity is visible without making the underlying text hard to read.</li>
+      <li><strong>Diagonal placement reads as more deliberate</strong> — a watermark angled across the page (rather than straight horizontal) is the more common convention for "draft" or "confidential" markings.</li>
+      <li><strong>Logo watermarks work best with transparency</strong> — a PNG with a transparent background looks far cleaner than a logo with a solid white box behind it.</li>
+    </ul>
+
+    <div class="note-box">
+      <strong>💡 Quick tip</strong>
+      If the watermark is meant purely as a visual deterrent against unauthorized reuse rather than for readability, a slightly higher opacity makes it harder to crop or edit out of the page.
+    </div>
+
+    <h2>Common questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Can I remove a watermark once it's added?</div>
+      <div class="faq-a">Not with this tool, and that's intentional — a watermark meant to mark a document as a draft or protect its origin shouldn't be trivially removable. If you need a clean version later, keep your original unwatermarked file saved separately.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Will the watermark appear on every page?</div>
+      <div class="faq-a">Yes, by default it applies across all pages, keeping the marking consistent throughout the document.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Can I use a colored watermark instead of plain gray?</div>
+      <div class="faq-a">Yes — pick any text color, or upload a full-color logo image if you're using an image-based watermark.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Is it safe to watermark a sensitive document using this tool?</div>
+      <div class="faq-a">Yes — PaperStack adds the watermark entirely inside your browser. Your file is never uploaded to a server.</div>
+    </div>
+
+    <div class="related">
+      <h2>Related guides</h2>
+      <div class="related-grid">
+        <a class="related-card" href="blog-protect-pdf-guide.html">
+          <div class="rtitle">🔒 Protect PDF</div>
+          <div class="rdesc">Add a password layer alongside a watermark.</div>
+        </a>
+        <a class="related-card" href="blog-sign-pdf-guide.html">
+          <div class="rtitle">✍️ Sign PDF</div>
+          <div class="rdesc">Add a signature to a finalized document.</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+</body>
+</html>

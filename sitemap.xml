@@ -123,6 +123,31 @@
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://paperstack-one.vercel.app/blog-rotate-pdf-guide.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://paperstack-one.vercel.app/blog-protect-pdf-guide.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://paperstack-one.vercel.app/blog-unlock-pdf-guide.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://paperstack-one.vercel.app/blog-watermark-pdf-guide.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://paperstack-one.vercel.app/blog-page-numbers-guide.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
 
   <url>
     <loc>https://paperstack-one.vercel.app/about.html</loc>
