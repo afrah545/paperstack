@@ -96,7 +96,7 @@
   <url>
     <loc>https://paperstack-one.vercel.app/blog-best-pdf-tools-2026.html</loc>
     <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://paperstack-one.vercel.app/blog-merge-pdf-guide.html</loc>
@@ -118,15 +118,10 @@
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
-   <url>
+  <url>
     <loc>https://paperstack-one.vercel.app/blog-bank-statement-to-pdf.html</loc>
     <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
-  </url>
-   <url>
-    <loc>https://paperstack-one.vercel.app/blog-split-pdf-guide.html</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
 
   <url>
