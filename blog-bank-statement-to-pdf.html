@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How to Convert Bank Statements to PDF for Free — PaperStack</title>
+<link rel="icon" href="favicon.ico"/>
+
+<meta name="description" content="Loan, visa, and rental applications almost always ask for bank statements as a PDF. Here's how to convert screenshots, combine months, and keep the file secure."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root { --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec; --text:#111827; --muted:#6b7280; --light:#9ca3af; --accent:#4f6ef7; --accent-l:#eef1fe; --green:#16a34a; --green-l:#dcfce7; --orange:#ea580c; --orange-l:#fff7ed; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:700px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .wrap{max-width:700px;margin:0 auto;padding:28px 24px 64px;}
+  .post-tag{display:inline-block;background:var(--accent-l);color:var(--accent);font-size:.7rem;font-weight:700;padding:3px 11px;border-radius:6px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.4px;}
+  h1{font-size:1.6rem;font-weight:800;letter-spacing:-.4px;margin-bottom:10px;line-height:1.25;}
+  .meta{font-size:.78rem;color:var(--muted);margin-bottom:24px;}
+
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px 30px;margin-bottom:18px;}
+
+  h2{font-size:1.15rem;font-weight:700;margin:30px 0 12px;}
+  h2:first-child{margin-top:0;}
+  h3{font-size:.98rem;font-weight:700;margin:18px 0 8px;}
+  p{color:var(--text);font-size:.92rem;margin-bottom:12px;}
+  ul,ol{margin:10px 0 14px 22px;color:var(--text);font-size:.92rem;}
+  li{margin-bottom:8px;line-height:1.6;}
+
+  .step-card{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;}
+  .step-num{background:var(--accent);color:white;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;}
+  .step-text{font-size:.88rem;color:var(--text);padding-top:2px;}
+  .step-text strong{display:block;margin-bottom:3px;}
+
+  .cta-box{background:var(--accent-l);border:1.5px solid var(--accent);border-radius:12px;padding:20px 24px;text-align:center;margin:24px 0;}
+  .cta-box p{color:var(--text);font-size:.9rem;margin-bottom:14px;}
+  .cta-btn{display:inline-block;background:var(--accent);color:white;text-decoration:none;padding:11px 26px;border-radius:8px;font-size:.88rem;font-weight:700;transition:opacity .15s;}
+  .cta-btn:hover{opacity:.88;}
+
+  .path-grid{display:flex;flex-direction:column;gap:10px;margin:14px 0;}
+  .path-card{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;}
+  .path-ic{font-size:1.1rem;flex-shrink:0;}
+  .path-text strong{display:block;font-size:.88rem;margin-bottom:3px;}
+  .path-text p{font-size:.83rem;color:var(--muted);margin:0;}
+  .path-text a{color:var(--accent);font-weight:600;text-decoration:none;}
+
+  .faq-item{border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;}
+  .faq-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .faq-q{font-size:.92rem;font-weight:700;margin-bottom:6px;display:flex;gap:8px;}
+  .faq-q span{color:var(--accent);}
+  .faq-a{font-size:.87rem;color:var(--muted);line-height:1.6;padding-left:22px;}
+
+  .note-box{background:var(--orange-l);border:1.5px solid #fed7aa;border-radius:9px;padding:14px 18px;font-size:.85rem;color:#9a3412;margin:16px 0;}
+  .note-box strong{display:block;margin-bottom:3px;}
+
+  .related{margin-top:32px;}
+  .related-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .related-card{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--text);transition:border-color .2s;}
+  .related-card:hover{border-color:var(--accent);}
+  .related-card .rtitle{font-size:.85rem;font-weight:700;margin-bottom:3px;}
+  .related-card .rdesc{font-size:.75rem;color:var(--muted);}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;text-align:center;}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .card{padding:22px 18px;}
+    .related-grid{grid-template-columns:1fr;}
+  }
+</style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L99X3LFWVY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-L99X3LFWVY");
+</script>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html"><div class="logo-icon">📄</div>PaperStack</a>
+  <a class="back-link" href="blog.html">← Blog</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <a href="blog.html">Blog</a>
+  <span class="sep">›</span>
+  <span class="current">Bank Statement to PDF</span>
+</div>
+
+<div class="wrap">
+  <span class="post-tag">Guide</span>
+  <h1>How to Convert Bank Statements to PDF for Free</h1>
+  <div class="meta">7 min read · Updated June 2026</div>
+
+  <div class="card">
+    <p>A loan officer, visa application, or landlord asks for your "last 3 months of bank statements as a PDF." Simple enough — except your bank's app only shows statements as screenshots, or each month downloaded separately, or as a password-locked file you can't get into the way the application portal expects.</p>
+    <p>This is one of the most common document headaches because banking apps and document requirements rarely line up cleanly. Here's how to handle the most common starting points, using tools that never upload your financial data anywhere.</p>
+
+    <h2>When you'd actually need this</h2>
+    <ul>
+      <li><strong>Loan and mortgage applications</strong> — lenders almost always want several months of statements as one document</li>
+      <li><strong>Visa applications</strong> — proof of funds is a near-universal requirement, usually as a combined PDF</li>
+      <li><strong>Rental applications</strong> — landlords and agencies asking for proof of income or savings</li>
+      <li><strong>Business expense claims</strong> — combining statement pages as backup documentation</li>
+    </ul>
+
+    <h2>Find your starting point</h2>
+    <p>The right tool depends entirely on what format you're starting from:</p>
+
+    <div class="path-grid">
+      <div class="path-card">
+        <div class="path-ic">📷</div>
+        <div class="path-text">
+          <strong>You only have screenshots or photos of your statement</strong>
+          <p>Common with mobile-only banks. Use <a href="tool-4-image-to-pdf.html">Image to PDF</a> to combine the screenshots into one clean file.</p>
+        </div>
+      </div>
+      <div class="path-card">
+        <div class="path-ic">🔗</div>
+        <div class="path-text">
+          <strong>You have separate PDF statements, one per month</strong>
+          <p>Most banks let you download a PDF per statement period. Use <a href="tool-1-merge-pdf.html">Merge PDF</a> to combine 2–6 months into a single file.</p>
+        </div>
+      </div>
+      <div class="path-card">
+        <div class="path-ic">🔓</div>
+        <div class="path-text">
+          <strong>Your bank's PDF is password-protected and the portal you're uploading to can't open locked files</strong>
+          <p>Use <a href="tool-7-unlock-pdf.html">Unlock PDF</a> — only on statements that are genuinely yours.</p>
+        </div>
+      </div>
+      <div class="path-card">
+        <div class="path-ic">🔒</div>
+        <div class="path-text">
+          <strong>You need to add a password before emailing it somewhere</strong>
+          <p>Use <a href="tool-6-protect-pdf.html">Protect PDF</a> so only the intended recipient can open it.</p>
+        </div>
+      </div>
+      <div class="path-card">
+        <div class="path-ic">📦</div>
+        <div class="path-text">
+          <strong>The combined file is too large for the application's upload limit</strong>
+          <p>Use <a href="tool-3-compress-pdf.html">Compress PDF</a> to shrink it down without losing readability.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>Step-by-step: turning screenshots into one PDF</h2>
+    <p>This is the most common path, so here's the walkthrough for it specifically:</p>
+
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Open the Image to PDF tool</strong>Works directly in your browser — nothing to install.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Upload your screenshots, in order</strong>Select all the pages at once if your statement spans several screenshots.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Check the page order</strong>Drag to reorder if needed — most application reviewers expect chronological order.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>Convert and download</strong>You'll get a single PDF with one page per screenshot.</div>
+    </div>
+
+    <div class="cta-box">
+      <p>Combine your statement screenshots now — free, no account, no upload.</p>
+      <a class="cta-btn" href="tool-4-image-to-pdf.html">Open Image to PDF Tool →</a>
+    </div>
+
+    <h2>A note on accuracy</h2>
+    <p>These tools combine, lock, unlock, or shrink the file you already have — they don't and shouldn't be used to alter the actual figures or content of a statement. Some institutions specifically require an official PDF exported directly from your bank's own portal rather than a self-assembled one, since they want to verify the document came straight from the source. If your application says "official statement only," check that requirement before submitting a converted version — for everything else, combining your own real statements into one file is exactly what these tools are for.</p>
+
+    <div class="note-box">
+      <strong>💡 Quick tip</strong>
+      If you're combining statements from multiple bank accounts for the same application, keep each account's statement clearly labeled (a filename like "Jan-2026-Savings.pdf") before merging, so the reviewer can tell which account is which at a glance.
+    </div>
+
+    <h2>Common questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Is it safe to process financial documents through an online tool?</div>
+      <div class="faq-a">With PaperStack specifically, yes — every tool runs entirely inside your browser. Your statement is never uploaded to a server, so nobody but you ever sees the content. Not every online PDF tool works this way, so it's worth checking before using a different site for anything financial.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Can I combine statements from more than one bank account?</div>
+      <div class="faq-a">Yes — Merge PDF or Image to PDF can combine files regardless of which bank they came from. Just make sure the order and labeling makes sense for whoever's reviewing them.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Will converting from a screenshot make the text harder to read?</div>
+      <div class="faq-a">As long as the original screenshot is clear and not blurry or low-resolution, the converted PDF will look just as readable. If your bank's app lets you export an actual PDF instead of taking a screenshot, that's always the cleaner option when available.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Why is my bank's PDF statement password-protected in the first place?</div>
+      <div class="faq-a">Most banks add a password by default as a security measure for emailed or downloaded statements. If the receiving party's system can't accept a locked file, removing the password before uploading is a normal step — just keep the unlocked copy somewhere secure afterward.</div>
+    </div>
+
+    <div class="related">
+      <h2>Related guides</h2>
+      <div class="related-grid">
+        <a class="related-card" href="blog-merge-pdf-guide.html">
+          <div class="rtitle">🔗 Merge PDF</div>
+          <div class="rdesc">Combine multiple statement files into one.</div>
+        </a>
+        <a class="related-card" href="blog-image-to-pdf-guide.html">
+          <div class="rtitle">🖼️ Image to PDF</div>
+          <div class="rdesc">Turn screenshots and scans into one PDF.</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+</body>
+</html>
