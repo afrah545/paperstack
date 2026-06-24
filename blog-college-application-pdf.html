@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How to Compress a PDF for College Applications — PaperStack</title>
+<link rel="icon" href="favicon.ico"/>
+
+<meta name="description" content="Common App and university portals reject oversized PDFs. Here's how to compress transcripts, recommendation letters, and portfolios without losing readability."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root { --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec; --text:#111827; --muted:#6b7280; --light:#9ca3af; --accent:#4f6ef7; --accent-l:#eef1fe; --green:#16a34a; --green-l:#dcfce7; --orange:#ea580c; --orange-l:#fff7ed; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:700px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .wrap{max-width:700px;margin:0 auto;padding:28px 24px 64px;}
+  .post-tag{display:inline-block;background:var(--accent-l);color:var(--accent);font-size:.7rem;font-weight:700;padding:3px 11px;border-radius:6px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.4px;}
+  h1{font-size:1.6rem;font-weight:800;letter-spacing:-.4px;margin-bottom:10px;line-height:1.25;}
+  .meta{font-size:.78rem;color:var(--muted);margin-bottom:24px;}
+
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px 30px;margin-bottom:18px;}
+
+  h2{font-size:1.15rem;font-weight:700;margin:30px 0 12px;}
+  h2:first-child{margin-top:0;}
+  h3{font-size:.98rem;font-weight:700;margin:18px 0 8px;}
+  p{color:var(--text);font-size:.92rem;margin-bottom:12px;}
+  ul,ol{margin:10px 0 14px 22px;color:var(--text);font-size:.92rem;}
+  li{margin-bottom:8px;line-height:1.6;}
+
+  .limit-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.85rem;}
+  .limit-table th{background:var(--bg);text-align:left;padding:9px 12px;font-weight:700;border-bottom:2px solid var(--border);}
+  .limit-table td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text);}
+  .limit-table tr:last-child td{border-bottom:none;}
+
+  .step-card{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;}
+  .step-num{background:var(--accent);color:white;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;}
+  .step-text{font-size:.88rem;color:var(--text);padding-top:2px;}
+  .step-text strong{display:block;margin-bottom:3px;}
+
+  .cta-box{background:var(--accent-l);border:1.5px solid var(--accent);border-radius:12px;padding:20px 24px;text-align:center;margin:24px 0;}
+  .cta-box p{color:var(--text);font-size:.9rem;margin-bottom:14px;}
+  .cta-btn{display:inline-block;background:var(--accent);color:white;text-decoration:none;padding:11px 26px;border-radius:8px;font-size:.88rem;font-weight:700;transition:opacity .15s;}
+  .cta-btn:hover{opacity:.88;}
+
+  .level-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+  .level-mini{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+  .level-mini .lic{font-size:1.2rem;margin-bottom:6px;}
+  .level-mini h4{font-size:.82rem;font-weight:700;margin-bottom:3px;}
+  .level-mini p{font-size:.72rem;color:var(--muted);margin:0;}
+
+  .faq-item{border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;}
+  .faq-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .faq-q{font-size:.92rem;font-weight:700;margin-bottom:6px;display:flex;gap:8px;}
+  .faq-q span{color:var(--accent);}
+  .faq-a{font-size:.87rem;color:var(--muted);line-height:1.6;padding-left:22px;}
+
+  .note-box{background:var(--orange-l);border:1.5px solid #fed7aa;border-radius:9px;padding:14px 18px;font-size:.85rem;color:#9a3412;margin:16px 0;}
+  .note-box strong{display:block;margin-bottom:3px;}
+
+  .related{margin-top:32px;}
+  .related-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .related-card{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--text);transition:border-color .2s;}
+  .related-card:hover{border-color:var(--accent);}
+  .related-card .rtitle{font-size:.85rem;font-weight:700;margin-bottom:3px;}
+  .related-card .rdesc{font-size:.75rem;color:var(--muted);}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;text-align:center;}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .card{padding:22px 18px;}
+    .related-grid{grid-template-columns:1fr;}
+    .level-grid{grid-template-columns:1fr;}
+  }
+</style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L99X3LFWVY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-L99X3LFWVY");
+</script>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html"><div class="logo-icon">📄</div>PaperStack</a>
+  <a class="back-link" href="blog.html">← Blog</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <a href="blog.html">Blog</a>
+  <span class="sep">›</span>
+  <span class="current">College Application PDF Guide</span>
+</div>
+
+<div class="wrap">
+  <span class="post-tag">Guide</span>
+  <h1>How to Compress a PDF for College Applications</h1>
+  <div class="meta">6 min read · Updated June 2026</div>
+
+  <div class="card">
+    <p>You're a few clicks from submitting your application, and the portal throws an error: "File exceeds maximum upload size." It's almost always the transcript — a scanned copy from your school, often saved at a resolution way higher than anyone actually needs to read it.</p>
+    <p>This happens constantly during application season, and the fix takes under a minute once you know which tool to reach for.</p>
+
+    <h2>When you'd actually need this</h2>
+    <ul>
+      <li><strong>Scanned transcripts</strong> — school-issued transcripts scanned at high resolution are the most common culprit</li>
+      <li><strong>Recommendation letters</strong> — combined or scanned letters that add up in size</li>
+      <li><strong>Portfolio submissions</strong> — art, design, or writing portfolios with multiple images embedded</li>
+      <li><strong>Supplemental documents</strong> — financial aid forms, certificates, or supporting paperwork</li>
+    </ul>
+
+    <h2>Typical upload limits</h2>
+    <table class="limit-table">
+      <tr><th>Platform</th><th>Typical limit</th></tr>
+      <tr><td>Common App document uploads</td><td>Around 5 MB per document (check the specific field)</td></tr>
+      <tr><td>University-specific portals</td><td>Varies widely, often 2–10 MB</td></tr>
+      <tr><td>Scholarship application platforms</td><td>Often 2–5 MB</td></tr>
+      <tr><td>Email submission (where allowed)</td><td>20–25 MB, limited by the recipient's email provider</td></tr>
+    </table>
+    <p>Always check the specific limit listed on the portal you're using — these vary by institution and platform, and the numbers above are typical ranges, not guarantees.</p>
+
+    <h2>Step-by-step: compressing your document</h2>
+
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>Open the Compress PDF tool</strong>Works directly in your browser — nothing to install.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>Upload your document</strong>You'll see the original file size right away.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Pick a compression level</strong>Light, Recommended, or Maximum — see below for which to use on application documents specifically.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>Download and check the size</strong>Compare it against the portal's stated limit before uploading.</div>
+    </div>
+
+    <div class="cta-box">
+      <p>Shrink your document now — free, no account, no upload.</p>
+      <a class="cta-btn" href="tool-3-compress-pdf.html">Open Compress PDF Tool →</a>
+    </div>
+
+    <h2>Which compression level to use for application documents</h2>
+    <div class="level-grid">
+      <div class="level-mini">
+        <div class="lic">🟢</div>
+        <h4>Light</h4>
+        <p>Best when every detail matters — a portfolio piece where image quality is part of what's being judged.</p>
+      </div>
+      <div class="level-mini">
+        <div class="lic">🟡</div>
+        <h4>Recommended</h4>
+        <p>The right default for transcripts and letters — text stays crisp, file size drops significantly.</p>
+      </div>
+      <div class="level-mini">
+        <div class="lic">🔴</div>
+        <h4>Maximum</h4>
+        <p>Use only if you're right at the size limit and the document is plain text — admissions readers need to read it, not admire it.</p>
+      </div>
+    </div>
+
+    <h2>If it's still too large after compressing</h2>
+    <ul>
+      <li><strong>Ask for a digital original instead of scanning a printed copy</strong> — many schools can email a transcript directly as a PDF, which starts out far smaller than a phone-scanned version of a printed page.</li>
+      <li><strong>Combine documents only where the portal asks for one file</strong> — if recommendation letters and a transcript need to go in as a single upload, merge them first, then compress the combined file once rather than compressing each separately.</li>
+      <li><strong>Re-scan at a lower resolution</strong> — if you're scanning yourself, 200 DPI is plenty for a readable text document and produces a much smaller starting file than 300+ DPI.</li>
+    </ul>
+
+    <div class="note-box">
+      <strong>💡 Quick tip</strong>
+      Compress and check the file size before the night your application is due — portal errors are far more stressful with a deadline closing in an hour than with a few days to spare.
+    </div>
+
+    <h2>Common questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Will compressing make my transcript hard for admissions officers to read?</div>
+      <div class="faq-a">At Light or Recommended compression, no — text stays sharp and fully legible. Compression mainly affects embedded images, not text clarity, so a text-based transcript holds up well even at higher compression.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Can I combine my transcript and recommendation letters into one PDF before uploading?</div>
+      <div class="faq-a">Yes — if a portal field asks for a single file, use a Merge PDF tool to combine them first, then compress the merged result once.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>Is it safe to compress documents with my personal academic records?</div>
+      <div class="faq-a">Yes — PaperStack compresses your file entirely inside your browser. It's never uploaded to a server, so nobody but you ever sees the content.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Q.</span>My file is still too big even at Maximum compression — now what?</div>
+      <div class="faq-a">This usually means the original scan was at a very high resolution or contains large embedded images. Try re-scanning at a lower DPI, or contact the institution that issued the document and ask if they can provide a smaller digital copy directly.</div>
+    </div>
+
+    <div class="related">
+      <h2>Related guides</h2>
+      <div class="related-grid">
+        <a class="related-card" href="blog-compress-pdf-email.html">
+          <div class="rtitle">📦 Compress PDF for Email</div>
+          <div class="rdesc">The general guide to shrinking any PDF.</div>
+        </a>
+        <a class="related-card" href="blog-merge-pdf-guide.html">
+          <div class="rtitle">🔗 Merge PDF</div>
+          <div class="rdesc">Combine multiple documents into one file.</div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+</body>
+</html>

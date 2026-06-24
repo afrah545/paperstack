@@ -159,5 +159,9 @@
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
+<url>
+    <loc>https://paperstack-one.vercel.app/blog-college-application-pdf.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
 </urlset>
