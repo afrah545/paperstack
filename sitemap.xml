@@ -57,6 +57,11 @@
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
+   <url>
+    <loc>https://paperstack-one.vercel.app/tool-delete-pages-pdf.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
   <url>
     <loc>https://paperstack-one.vercel.app/tool-11-pdf-to-word.html</loc>
     <changefreq>monthly</changefreq>
