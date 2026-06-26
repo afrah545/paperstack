@@ -10,11 +10,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>PaperStack — Free Online PDF Tools, No Sign-Up</title>
 <meta name="description" content="Merge, split, compress, sign, and convert PDFs free in your browser. No uploads, no sign-up, 12 tools — files never leave your device."/>
-<link rel="canonical" href="https://paperstack-one.vercel.app//"/>
+<link rel="canonical" href="https://paperstack.vercel.app/"/>
 <meta property="og:title" content="PaperStack — Free Online PDF Tools, No Sign-Up"/>
 <meta property="og:description" content="Merge, split, compress, sign, and convert PDFs free in your browser. Files never leave your device."/>
 <meta property="og:type" content="website"/>
-<meta property="og:url" content="https://paperstack-one.vercel.app//"/>
+<meta property="og:url" content="https://paperstack.vercel.app/"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="PaperStack — Free Online PDF Tools, No Sign-Up"/>
 <meta name="twitter:description" content="Merge, split, compress, sign, and convert PDFs free in your browser. Files never leave your device."/>
@@ -113,6 +113,14 @@
     footer{padding:18px 16px;flex-direction:column;align-items:flex-start;}
   }
 </style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L99X3LFWVY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-L99X3LFWVY");
+</script>
 </head>
 <body>
 
@@ -297,5 +305,6 @@ document.getElementById('toolSearchInput').addEventListener('keydown', function(
   if (e.key === 'Enter') { e.preventDefault(); filterTools(); }
 });
 </script>
+<script src="cookie-banner.js"></script>
 </body>
 </html>
