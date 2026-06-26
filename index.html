@@ -20,6 +20,25 @@
 <meta name="twitter:description" content="Merge, split, compress, sign, and convert PDFs free in your browser. Files never leave your device."/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
+.tool-hero-icon{
+    width:56px;
+    height:56px;
+    background:linear-gradient(135deg,#EF4444,#DC2626);
+    color:#fff;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.6rem;
+    flex-shrink:0;
+    box-shadow:0 8px 20px rgba(220,38,38,.25);
+    transition:all .3s ease;
+}
+
+.tool-hero-icon:hover{
+    transform:translateY(-2px) scale(1.05);
+    box-shadow:0 12px 28px rgba(220,38,38,.35);
+}
   :root {
     --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec;
     --text:#111827; --muted:#6b7280; --light:#9ca3af;
@@ -225,9 +244,17 @@
       <span class="tool-tag green">New</span>
     </a>
     <a class="tool-card" href="tool-delete-pages-pdf.html">
-  <div class="tool-icon" style="background:#FEF2F2">🗑️</div>
-      <div class="tool-name">Delete PDF Page</div>
-      <div class="tool-desc">Delete Pages Easly</div>
+ 
+      <div class="tool-hero">
+    <div class="tool-hero-icon">
+        🗑️
+    </div>
+
+    <div class="tool-hero-content">
+        <h1>Delete PDF Pages</h1>
+        <p>Remove unwanted pages from your PDF quickly, securely, and for free.</p>
+    </div>
+</div>
       <span class="tool-tag green">New</span>
     </a>
   </div>
