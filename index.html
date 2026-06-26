@@ -20,10 +20,6 @@
 <meta name="twitter:description" content="Merge, split, compress, sign, and convert PDFs free in your browser. Files never leave your device."/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-.tool-hero-icon:hover{
-    transform:translateY(-2px) scale(1.05);
-    box-shadow:0 12px 28px rgba(220,38,38,.35);
-}
   :root {
     --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec;
     --text:#111827; --muted:#6b7280; --light:#9ca3af;
@@ -68,11 +64,6 @@
   /* SECTION TITLE */
   .section-title{font-size:.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;}
 
-  /* TABS */
-  .tabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;}
-  .tab{font-size:.8rem;font-weight:500;padding:6px 14px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);color:var(--muted);cursor:pointer;transition:all .15s;}
-  .tab.active,.tab:hover{background:var(--accent);border-color:var(--accent);color:white;}
-
   /* TOOL CARDS */
   .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:10px;margin-bottom:32px;}
   .tool-card{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:18px 16px;cursor:pointer;text-decoration:none;color:var(--text);display:block;transition:border-color .2s,box-shadow .2s,transform .15s;}
@@ -82,11 +73,6 @@
   .tool-desc{font-size:.75rem;color:var(--muted);line-height:1.5;}
   .tool-tag{display:inline-block;font-size:.67rem;font-weight:600;padding:2px 7px;border-radius:4px;margin-top:9px;background:var(--accent-l);color:var(--accent);}
   .tool-tag.green{background:var(--green-l);color:var(--green);}
-
-  /* AD SLOT */
-  .ad-slot{background:var(--white);border:1.5px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--light);font-size:.7rem;letter-spacing:.5px;text-transform:uppercase;margin-bottom:32px;}
-  .ad-slot.tall{height:90px;}
-  .ad-slot.med{height:110px;}
 
   /* HOW IT WORKS */
   .steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:32px;}
@@ -151,13 +137,12 @@
 
 <div class="stats-strip">
   <div class="stat"><span class="stat-num">2.4M+</span><span class="stat-label">Files processed</span></div>
-  <div class="stat"><span class="stat-num">12</span><span class="stat-label">Free tools</span></div>
+  <div class="stat"><span class="stat-num">13</span><span class="stat-label">Free tools</span></div>
   <div class="stat"><span class="stat-num">₹0</span><span class="stat-label">Cost to you</span></div>
   <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Private</span></div>
 </div>
 
 <div class="page-wrap">
-
 
   <div class="tools-grid">
     <a class="tool-card" href="tool-1-merge-pdf.html">
@@ -229,21 +214,12 @@
       <span class="tool-tag green">New</span>
     </a>
     <a class="tool-card" href="tool-delete-pages-pdf.html">
- 
-      <div class="tool-hero">
-    <div class="tool-hero-icon">
-        🗑️
-    </div>
-
-    <div class="">
-        <h1>Delete PDF Pages</h1>
-        <p>Remove unwanted pages from your PDF quickly, securely, and for free.</p>
-    </div>
-</div>
+      <div class="tool-icon" style="background:#fef2f2">🗑️</div>
+      <div class="tool-name">Delete PDF Pages</div>
+      <div class="tool-desc">Remove unwanted pages from your PDF quickly and for free.</div>
       <span class="tool-tag green">New</span>
     </a>
   </div>
-
 
   <div class="section-title">How it works</div>
   <div class="steps-row">
@@ -283,7 +259,6 @@
     </div>
   </div>
 
-
 </div>
 
 <footer>
@@ -318,7 +293,6 @@ function filterTools() {
   document.getElementById('noResultsMsg').style.display = visibleCount === 0 ? 'block' : 'none';
 }
 
-// Allow pressing Enter in the search box to trigger search (already live via oninput, this just avoids page reload)
 document.getElementById('toolSearchInput').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') { e.preventDefault(); filterTools(); }
 });
