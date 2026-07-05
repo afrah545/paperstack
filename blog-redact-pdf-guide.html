@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How to Redact a PDF for Free (Permanently Black Out Text) | PaperStack</title>
+<meta name="description" content="Step-by-step guide to redacting sensitive text or images in a PDF for free, right in your browser — plus why 'drawing a black box' in most PDF viewers doesn't actually delete anything."/>
+<link rel="canonical" href="https://paperstack-one.vercel.app/blog-redact-pdf-guide.html"/>
+<meta property="og:title" content="How to Redact a PDF for Free (Permanently Black Out Text)"/>
+<meta property="og:description" content="Step-by-step guide to redacting sensitive text or images in a PDF for free, right in your browser."/>
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://paperstack-one.vercel.app/blog-redact-pdf-guide.html"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How to Redact a PDF for Free (Permanently Black Out Text)"/>
+<meta name="twitter:description" content="Step-by-step guide to redacting sensitive text or images in a PDF for free, right in your browser."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec;
+    --text:#111827; --muted:#6b7280; --light:#9ca3af;
+    --accent:#4f6ef7; --accent-l:#eef1fe;
+    --green:#16a34a; --green-l:#dcfce7;
+    --amber:#d97706; --amber-l:#fef3c7;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:760px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .article-hero{max-width:760px;margin:0 auto;padding:28px 24px 20px;}
+  .article-tag{display:inline-block;background:var(--accent-l);color:var(--accent);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:5px 12px;border-radius:6px;margin-bottom:14px;}
+  .article-hero h1{font-size:1.85rem;font-weight:800;letter-spacing:-.5px;line-height:1.25;margin-bottom:12px;}
+  .article-meta{font-size:.82rem;color:var(--muted);display:flex;gap:10px;align-items:center;}
+  .article-meta .dot{color:var(--light);}
+
+  .article-wrap{max-width:760px;margin:0 auto;padding:0 24px 48px;}
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:32px;margin-bottom:16px;}
+
+  .article-body{font-size:.95rem;color:var(--text);}
+  .article-body p{margin-bottom:16px;color:#374151;}
+  .article-body h2{font-size:1.25rem;font-weight:800;letter-spacing:-.3px;margin:28px 0 12px;}
+  .article-body h2:first-child{margin-top:0;}
+  .article-body h3{font-size:1.02rem;font-weight:700;margin:20px 0 8px;}
+  .article-body strong{color:var(--text);font-weight:700;}
+  .article-body ol,.article-body ul{margin:0 0 16px 20px;color:#374151;}
+  .article-body li{margin-bottom:6px;}
+  .article-body hr{border:none;border-top:1px solid var(--border);margin:28px 0;}
+
+  .callout{background:var(--accent-l);border-left:3px solid var(--accent);border-radius:8px;padding:14px 16px;margin-bottom:16px;font-size:.85rem;color:#374151;}
+  .callout strong{color:var(--accent);}
+  .warn-callout{background:var(--amber-l);border-left:3px solid var(--amber);border-radius:8px;padding:14px 16px;margin-bottom:16px;font-size:.85rem;color:#78350f;}
+  .warn-callout strong{color:#92400e;}
+
+  .cta-box{background:var(--accent-l);border:1.5px solid var(--accent);border-radius:12px;padding:24px;text-align:center;margin-top:8px;}
+  .cta-box h3{font-size:1.05rem;font-weight:800;margin-bottom:6px;}
+  .cta-box p{font-size:.83rem;color:var(--muted);margin-bottom:16px;}
+  .cta-btn{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:white;border:none;padding:11px 24px;border-radius:8px;font-size:.875rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;transition:opacity .15s;}
+  .cta-btn:hover{opacity:.88;}
+
+  .faq-item{border-bottom:1px solid var(--border);padding:16px 0;}
+  .faq-item:last-child{border-bottom:none;}
+  .faq-q{font-size:.9rem;font-weight:700;margin-bottom:6px;}
+  .faq-a{font-size:.85rem;color:#374151;line-height:1.6;}
+
+  .related-title{font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px;}
+  .related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .related-card{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:16px;text-decoration:none;color:var(--text);transition:border-color .15s;}
+  .related-card:hover{border-color:var(--accent);}
+  .related-icon{font-size:1.2rem;margin-bottom:8px;}
+  .related-card h4{font-size:.83rem;font-weight:700;margin-bottom:3px;}
+  .related-card p{font-size:.75rem;color:var(--muted);line-height:1.5;}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  .footer-logo{font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:7px;}
+  .footer-links{display:flex;gap:16px;}
+  .footer-links a{font-size:.78rem;color:var(--muted);text-decoration:none;}
+  .footer-links a:hover{color:var(--text);}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .article-hero h1{font-size:1.5rem;}
+    .card{padding:22px;}
+    .related-grid{grid-template-columns:1fr;}
+    footer{padding:16px;flex-direction:column;align-items:flex-start;}
+  }
+</style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L99X3LFWVY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-L99X3LFWVY");
+</script>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">
+    <div class="logo-icon">📄</div>
+    PaperStack
+  </a>
+  <a class="back-link" href="blog.html">← All Posts</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <a href="blog.html">Blog</a>
+  <span class="sep">›</span>
+  <span class="current">How to Redact a PDF</span>
+</div>
+
+<div class="article-hero">
+  <span class="article-tag">Guide</span>
+  <h1>How to Redact a PDF for Free (Permanently Black Out Text)</h1>
+  <div class="article-meta">
+    <span>PaperStack Team</span>
+    <span class="dot">·</span>
+    <span>July 5, 2026</span>
+    <span class="dot">·</span>
+    <span>6 min read</span>
+  </div>
+</div>
+
+<div class="article-wrap">
+
+  <div class="card">
+    <div class="article-body">
+
+      <p>Before you send a contract, ID copy, or financial statement to someone, there's usually a name, account number, or clause you'd rather they not see. Redacting a PDF removes that content permanently — but most people redact PDFs wrong without realizing it. Here's how to do it properly, for free, without installing anything.</p>
+
+      <h2>The mistake almost everyone makes</h2>
+      <p>Opening a PDF and drawing a black rectangle over text with an annotation tool feels like redaction — but it usually isn't. That black box sits on a separate layer <strong>on top of</strong> the original text. The text underneath is still there. Anyone can select it, copy it, or extract it with basic tools. This has caused real, documented leaks in legal and government documents.</p>
+      <div class="warn-callout"><strong>Real redaction</strong> means the underlying content is gone — not covered, not hidden behind a shape, actually removed from the file.</div>
+
+      <h2>How to redact a PDF properly, step by step</h2>
+      <ol>
+        <li>Open <a href="tool-redact-pdf.html">PaperStack's Redact PDF tool</a> — no sign-up, nothing uploaded to a server.</li>
+        <li>Upload your PDF. Every page renders as a thumbnail.</li>
+        <li>Click the page containing sensitive content to open the editor.</li>
+        <li>Click and drag to draw a black box over each piece of text or image you want removed. Make sure the box fully covers the content — zoom in first if it's small.</li>
+        <li>Click "Done with this page" once you're satisfied, and repeat for any other pages.</li>
+        <li>Click "Apply Redactions & Download." Only the pages you edited are flattened into images — everything else stays untouched.</li>
+        <li>Open the downloaded file and try selecting text where you redacted. If nothing is selectable there, it worked.</li>
+      </ol>
+
+      <h2>Why the result works</h2>
+      <p>Once you draw a box, that page is converted into a flattened image before being placed back into the PDF. There's no separate text layer left underneath the box to extract — the pixels you see are all that exists on that page. The tradeoff: a redacted page is no longer searchable or copy-pasteable as text, since it's now an image. Pages you didn't touch stay exactly as they were.</p>
+
+      <h2>Common questions</h2>
+
+      <div class="faq-item">
+        <div class="faq-q">Will this work on scanned documents or photos turned into PDFs?</div>
+        <div class="faq-a">Yes — since those pages are typically already images, redacting them the same way (draw a box, flatten) works the same.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I undo a redaction after downloading?</div>
+        <div class="faq-a">No. Once the file is downloaded, that content is gone from that copy. Keep your original file separately if you might need the unredacted version later.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Does this remove metadata too, like author name or GPS data?</div>
+        <div class="faq-a">No — this tool only removes what's inside the boxes you draw on the page itself. For hidden metadata, that's a separate step (worth checking your PDF's document properties before sharing).</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is my file uploaded anywhere?</div>
+        <div class="faq-a">No. Rendering, drawing, and rebuilding the PDF all happen in your browser using JavaScript libraries — your file never touches a server.</div>
+      </div>
+
+      <hr/>
+
+      <div class="cta-box">
+        <h3>Redact your PDF now</h3>
+        <p>Free, private, and runs entirely in your browser — no uploads, no sign-up.</p>
+        <a class="cta-btn" href="tool-redact-pdf.html">Open Redact PDF Tool →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="related-title">Related</div>
+  <div class="related-grid">
+    <a class="related-card" href="blog-pdf-privacy-security-tips.html">
+      <div class="related-icon">🔐</div>
+      <h4>PDF Privacy Tips</h4>
+      <p>7 practical steps to protect sensitive data in your PDFs.</p>
+    </a>
+    <a class="related-card" href="tool-6-protect-pdf.html">
+      <div class="related-icon">🔒</div>
+      <h4>Protect PDF</h4>
+      <p>Add a password before sharing a sensitive document.</p>
+    </a>
+    <a class="related-card" href="tool-delete-pages-pdf.html">
+      <div class="related-icon">🗑️</div>
+      <h4>Delete PDF Pages</h4>
+      <p>Remove entire pages you don't want to share at all.</p>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">
+    <div style="width:24px;height:24px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.75rem;">📄</div>
+    PaperStack
+  </div>
+  <div class="footer-links">
+    <a href="about.html">About</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="blog.html">Blog</a>
+    <a href="mailto:paperstack.help@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+<script src="cookie-banner.js"></script>
+</body>
+</html>
