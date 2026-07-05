@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Redact PDF Free | PaperStack</title>
+<meta name="description" content="Permanently black out sensitive text and images in a PDF, right in your browser. No uploads, no sign-up, files never leave your device."/>
+<link rel="canonical" href="https://paperstack-one.vercel.app/tool-redact-pdf.html"/>
+<meta property="og:title" content="Redact PDF Free | PaperStack"/>
+<meta property="og:description" content="Permanently black out sensitive text and images in a PDF, right in your browser. No uploads, no sign-up, files never leave your device."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://paperstack-one.vercel.app/tool-redact-pdf.html"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Redact PDF Free | PaperStack"/>
+<meta name="twitter:description" content="Permanently black out sensitive text and images in a PDF, right in your browser. No uploads, no sign-up, files never leave your device."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+  :root {
+    --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec;
+    --text:#111827; --muted:#6b7280; --light:#9ca3af;
+    --accent:#4f6ef7; --accent-l:#eef1fe;
+    --green:#16a34a; --green-l:#dcfce7;
+    --red:#dc2626; --red-l:#fee2e2;
+    --amber:#d97706; --amber-l:#fef3c7;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:760px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .tool-hero{max-width:760px;margin:0 auto;padding:28px 24px 24px;display:flex;align-items:center;gap:18px;}
+  .tool-hero-icon{width:56px;height:56px;background:#111827;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+  .tool-hero h1{font-size:1.5rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px;}
+  .tool-hero p{font-size:.875rem;color:var(--muted);}
+
+  .tool-wrap{max-width:760px;margin:0 auto;padding:0 24px 48px;}
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px;margin-bottom:16px;}
+  .card-title{font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px;}
+
+  .warn-box{background:var(--amber-l);border:1.5px solid #fcd34d;border-radius:10px;padding:14px 16px;font-size:.83rem;color:#92400e;margin-bottom:16px;line-height:1.55;}
+  .warn-box strong{color:#78350f;}
+  .warn-box ul{margin:8px 0 0 18px;}
+  .warn-box li{margin-bottom:4px;}
+
+  .drop-area{border:2px dashed var(--border);border-radius:10px;background:var(--bg);padding:44px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;}
+  .drop-area.dragover{border-color:var(--accent);background:var(--accent-l);}
+  .drop-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .drop-icon{font-size:2.2rem;margin-bottom:12px;}
+  .drop-area h3{font-size:.95rem;font-weight:700;margin-bottom:5px;}
+  .drop-area p{font-size:.8rem;color:var(--muted);}
+  .drop-area .browse{color:var(--accent);font-weight:600;text-decoration:underline;}
+
+  .file-info-bar{background:var(--accent-l);border-radius:8px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .file-info-bar .fname{font-size:.875rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .file-info-bar .fmeta{font-size:.75rem;color:var(--accent);flex-shrink:0;}
+  .change-file{background:none;border:1.5px solid var(--accent);color:var(--accent);padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;flex-shrink:0;}
+  .change-file:hover{background:var(--accent);color:white;}
+
+  .pages-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;margin-top:4px;}
+  .page-thumb{position:relative;border-radius:8px;overflow:hidden;border:2px solid var(--border);cursor:pointer;transition:border-color .2s,box-shadow .2s;background:var(--bg);}
+  .page-thumb canvas{display:block;width:100%;height:auto;}
+  .page-thumb .thumb-label{font-size:.7rem;font-weight:600;color:var(--muted);text-align:center;padding:5px 4px;background:var(--white);border-top:1px solid var(--border);}
+  .page-thumb.edited{border-color:var(--green);}
+  .page-thumb .edited-badge{position:absolute;top:5px;right:5px;background:var(--green);color:white;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:20px;display:none;align-items:center;gap:3px;}
+  .page-thumb.edited .edited-badge{display:flex;}
+
+  .select-hint{font-size:.8rem;color:var(--muted);margin-bottom:14px;}
+  .select-hint strong{color:var(--text);}
+
+  /* EDITOR */
+  .editor-card{display:none;}
+  .editor-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;}
+  .editor-title{font-size:.9rem;font-weight:700;}
+  .editor-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .tbtn{background:var(--white);border:1.5px solid var(--border);color:var(--text);padding:7px 14px;border-radius:7px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+  .tbtn:hover{border-color:var(--accent);color:var(--accent);}
+  .tbtn.primary{background:#111827;border-color:#111827;color:white;}
+  .tbtn.primary:hover{opacity:.85;color:white;}
+  .tbtn:disabled{opacity:.4;cursor:not-allowed;}
+
+  .canvas-wrap{border:1.5px solid var(--border);border-radius:10px;overflow:auto;background:#e5e7eb;padding:10px;text-align:center;}
+  .canvas-wrap canvas{max-width:100%;height:auto;cursor:crosshair;background:white;box-shadow:0 1px 4px rgba(0,0,0,.15);touch-action:none;}
+  .editor-hint{font-size:.78rem;color:var(--muted);margin-top:10px;text-align:center;}
+
+  .apply-btn{width:100%;padding:14px;background:#111827;border:none;border-radius:10px;color:white;font-size:.95rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:opacity .15s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;}
+  .apply-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px);}
+  .apply-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+  .progress-wrap{margin-top:14px;display:none;}
+  .progress-bg{background:var(--bg);border-radius:6px;height:6px;overflow:hidden;margin-bottom:7px;}
+  .progress-bar{height:100%;background:linear-gradient(90deg,#111827,#374151);width:0%;border-radius:6px;transition:width .3s;}
+  .progress-label{font-size:.77rem;color:var(--muted);text-align:center;}
+
+  .error-box{display:none;background:var(--red-l);border:1.5px solid #fca5a5;border-radius:9px;padding:12px 16px;color:var(--red);font-size:.83rem;margin-top:12px;}
+
+  .success-box{display:none;background:var(--green-l);border:1.5px solid #86efac;border-radius:12px;padding:24px;text-align:center;margin-top:14px;}
+  .success-box .s-icon{font-size:2rem;margin-bottom:8px;}
+  .success-box h3{font-size:1rem;font-weight:700;color:var(--green);margin-bottom:4px;}
+  .success-box p{font-size:.82rem;color:#15803d;margin-bottom:16px;}
+  .download-btn{display:inline-flex;align-items:center;gap:7px;background:var(--green);color:white;border:none;padding:11px 24px;border-radius:8px;font-size:.875rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;transition:opacity .15s;}
+  .download-btn:hover{opacity:.85;}
+  .again-btn{margin-top:10px;background:none;border:1.5px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;display:block;margin-left:auto;margin-right:auto;}
+  .again-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .feat{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:16px;}
+  .feat-icon{font-size:1.2rem;margin-bottom:8px;}
+  .feat h4{font-size:.83rem;font-weight:700;margin-bottom:3px;}
+  .feat p{font-size:.75rem;color:var(--muted);line-height:1.5;}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  .footer-logo{font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:7px;}
+  .footer-links{display:flex;gap:16px;}
+  .footer-links a{font-size:.78rem;color:var(--muted);text-decoration:none;}
+  .footer-links a:hover{color:var(--text);}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .tool-hero{flex-direction:column;align-items:flex-start;gap:12px;}
+    .pages-grid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr));}
+    .features-grid{grid-template-columns:1fr;}
+    footer{padding:16px;flex-direction:column;align-items:flex-start;}
+  }
+</style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L99X3LFWVY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-L99X3LFWVY");
+</script>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">
+    <div class="logo-icon">📄</div>
+    PaperStack
+  </a>
+  <a class="back-link" href="index.html">← All Tools</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <span class="current">Redact PDF</span>
+</div>
+
+<div class="tool-hero">
+  <div class="tool-hero-icon">✏️</div>
+  <div>
+    <h1>Redact PDF</h1>
+    <p>Draw over sensitive text or images to permanently black them out.</p>
+  </div>
+</div>
+
+<div class="tool-wrap">
+
+  <div class="warn-box">
+    <strong>⚠️ How this works — please read before you rely on this:</strong>
+    <ul>
+      <li>Any page you redact is converted into a flattened image. This guarantees the covered content can't be recovered, copied, or selected — but that page will no longer be searchable or text-selectable.</li>
+      <li>Pages you don't touch stay exactly as they were (still text/searchable).</li>
+      <li>Make sure your black box fully covers the sensitive area — zoom in if needed. Redaction only removes what's inside the box you draw.</li>
+      <li>Always open the downloaded PDF and double-check before sharing it.</li>
+    </ul>
+  </div>
+
+  <!-- UPLOAD -->
+  <div class="card" id="uploadCard">
+    <div class="card-title">Step 1 — Upload your PDF</div>
+    <div class="drop-area" id="dropArea">
+      <input type="file" id="fileInput" accept=".pdf"/>
+      <div class="drop-icon">📄</div>
+      <h3>Drop your PDF here</h3>
+      <p>or <span class="browse">browse to choose a file</span> · Single PDF only</p>
+    </div>
+  </div>
+
+  <div id="optionsSection" style="display:none;">
+
+    <div class="card">
+      <div class="card-title">File loaded</div>
+      <div class="file-info-bar">
+        <div>
+          <div class="fname" id="loadedName">file.pdf</div>
+          <div class="fmeta" id="loadedMeta">0 pages · 0 KB</div>
+        </div>
+        <button class="change-file" onclick="resetAll()">Change file</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Step 2 — Select a page to redact</div>
+      <div class="select-hint">Click any page to open it and draw black boxes over sensitive content. <strong>Green = already redacted.</strong></div>
+      <div class="pages-grid" id="pagesGrid"></div>
+    </div>
+
+    <!-- EDITOR -->
+    <div class="card editor-card" id="editorCard">
+      <div class="editor-toolbar">
+        <div class="editor-title" id="editorTitle">Editing page 1</div>
+        <div class="editor-actions">
+          <button class="tbtn" id="undoBtn" onclick="undoStroke()" disabled>↩ Undo box</button>
+          <button class="tbtn" id="clearBtn" onclick="clearPage()">Clear page</button>
+          <button class="tbtn primary" onclick="closeEditor()">✓ Done with this page</button>
+        </div>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="editCanvas"></canvas>
+      </div>
+      <div class="editor-hint">Click and drag to draw a black box over anything you want redacted.</div>
+    </div>
+
+    <div class="card">
+      <button class="apply-btn" id="applyBtn" onclick="finalizePdf()" disabled>✏️ Apply Redactions & Download</button>
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bg"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="progress-label" id="progressLabel">Processing…</div>
+      </div>
+      <div class="error-box" id="errorBox"></div>
+      <div class="success-box" id="successBox">
+        <div class="s-icon">✅</div>
+        <h3>Redactions applied!</h3>
+        <p id="successDesc">Your PDF is ready to download.</p>
+        <a class="download-btn" id="downloadLink" href="#" download="redacted.pdf">⬇️ Download PDF</a>
+        <button class="again-btn" onclick="resetAll()">Redact a different file</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="features-grid">
+    <div class="feat">
+      <div class="feat-icon">🔒</div>
+      <h4>100% Private</h4>
+      <p>Files stay on your device. Nothing is uploaded to any server.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🧱</div>
+      <h4>Real redaction</h4>
+      <p>Redacted pages are flattened to images — no hidden text left underneath.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">⚡</div>
+      <h4>Instant result</h4>
+      <p>Processing happens in your browser — no waiting, no queue.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">
+    <div style="width:24px;height:24px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.75rem;">📄</div>
+    PaperStack
+  </div>
+  <div class="footer-links">
+    <a href="about.html">About</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="blog.html">Blog</a>
+    <a href="mailto:paperstack.help@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+let pdfFile = null;
+let pdfDocProxy = null;   // pdf.js doc, for rendering
+let totalPages = 0;
+let currentEditIndex = null; // 0-indexed page currently open in editor
+const EDIT_SCALE = 2.2; // render resolution for redaction (good quality, manageable size)
+
+// Per-page state: null = untouched, or { dataUrl: 'image/png...' } once redacted
+let pageStates = [];
+// Undo stack for current editor session: array of dataURLs (snapshots before each stroke)
+let undoStack = [];
+
+const dropArea       = document.getElementById('dropArea');
+const fileInput      = document.getElementById('fileInput');
+const optionsSection = document.getElementById('optionsSection');
+const loadedName     = document.getElementById('loadedName');
+const loadedMeta     = document.getElementById('loadedMeta');
+const pagesGrid      = document.getElementById('pagesGrid');
+const editorCard     = document.getElementById('editorCard');
+const editorTitle    = document.getElementById('editorTitle');
+const editCanvas     = document.getElementById('editCanvas');
+const editCtx        = editCanvas.getContext('2d');
+const undoBtn        = document.getElementById('undoBtn');
+const applyBtn       = document.getElementById('applyBtn');
+const progressWrap   = document.getElementById('progressWrap');
+const progressBar    = document.getElementById('progressBar');
+const progressLabel  = document.getElementById('progressLabel');
+const errorBox       = document.getElementById('errorBox');
+const successBox     = document.getElementById('successBox');
+const downloadLink   = document.getElementById('downloadLink');
+const successDesc    = document.getElementById('successDesc');
+
+dropArea.addEventListener('dragover', e => { e.preventDefault(); dropArea.classList.add('dragover'); });
+dropArea.addEventListener('dragleave', () => dropArea.classList.remove('dragover'));
+dropArea.addEventListener('drop', e => { e.preventDefault(); dropArea.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
+fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
+
+async function handleFile(file) {
+  if (!file) return;
+  if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
+    showError('Please select a PDF file.'); return;
+  }
+  pdfFile = file;
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    pdfDocProxy = await pdfjsLib.getDocument({ data: arrayBuffer.slice(0) }).promise;
+    totalPages = pdfDocProxy.numPages;
+    pageStates = new Array(totalPages).fill(null);
+    loadedName.textContent = file.name;
+    loadedMeta.textContent = `${totalPages} pages · ${fmtSize(file.size)}`;
+    optionsSection.style.display = 'block';
+    editorCard.style.display = 'none';
+    successBox.style.display = 'none';
+    applyBtn.disabled = true;
+    hideError();
+    await renderThumbnails();
+  } catch(e) {
+    showError('Could not read this PDF. It may be corrupted or password-protected.');
+  }
+}
+
+async function renderThumbnails() {
+  pagesGrid.innerHTML = '';
+  for (let i = 1; i <= totalPages; i++) {
+    const page = await pdfDocProxy.getPage(i);
+    const viewport = page.getViewport({ scale: 0.3 });
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+
+    const thumb = document.createElement('div');
+    thumb.className = 'page-thumb';
+    thumb.dataset.index = i - 1;
+
+    const badge = document.createElement('div');
+    badge.className = 'edited-badge';
+    badge.textContent = '✓ Redacted';
+
+    const label = document.createElement('div');
+    label.className = 'thumb-label';
+    label.textContent = `Page ${i}`;
+
+    thumb.appendChild(canvas);
+    thumb.appendChild(badge);
+    thumb.appendChild(label);
+    thumb.addEventListener('click', () => openEditor(i - 1));
+    pagesGrid.appendChild(thumb);
+  }
+}
+
+function refreshThumbBadges() {
+  document.querySelectorAll('.page-thumb').forEach(t => {
+    const idx = parseInt(t.dataset.index, 10);
+    t.classList.toggle('edited', !!pageStates[idx]);
+  });
+  applyBtn.disabled = !pageStates.some(s => !!s);
+}
+
+async function openEditor(idx) {
+  currentEditIndex = idx;
+  editorTitle.textContent = `Editing page ${idx + 1}`;
+  undoStack = [];
+  undoBtn.disabled = true;
+  editorCard.style.display = 'block';
+  editorCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  if (pageStates[idx]) {
+    // Load previously redacted version
+    await loadImageIntoCanvas(pageStates[idx].dataUrl);
+  } else {
+    // Fresh render from source PDF at edit resolution
+    const page = await pdfDocProxy.getPage(idx + 1);
+    const viewport = page.getViewport({ scale: EDIT_SCALE });
+    editCanvas.width = viewport.width;
+    editCanvas.height = viewport.height;
+    await page.render({ canvasContext: editCtx, viewport }).promise;
+  }
+  attachDrawHandlers();
+}
+
+function loadImageIntoCanvas(dataUrl) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      editCanvas.width = img.width;
+      editCanvas.height = img.height;
+      editCtx.drawImage(img, 0, 0);
+      resolve();
+    };
+    img.src = dataUrl;
+  });
+}
+
+// --- Drawing ---
+let drawing = false;
+let startX = 0, startY = 0;
+
+function canvasCoords(e) {
+  const rect = editCanvas.getBoundingClientRect();
+  const scaleX = editCanvas.width / rect.width;
+  const scaleY = editCanvas.height / rect.height;
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+}
+
+function attachDrawHandlers() {
+  editCanvas.onpointerdown = (e) => {
+    e.preventDefault();
+    undoStack.push(editCanvas.toDataURL('image/png'));
+    undoBtn.disabled = false;
+    const p = canvasCoords(e);
+    startX = p.x; startY = p.y;
+    drawing = true;
+    editCanvas.setPointerCapture(e.pointerId);
+  };
+  editCanvas.onpointermove = (e) => {
+    if (!drawing) return;
+    e.preventDefault();
+    const p = canvasCoords(e);
+    // redraw base from last undo snapshot, then draw live preview box
+    const base = new Image();
+    base.src = undoStack[undoStack.length - 1];
+    editCtx.putImageData ? null : null;
+    // simpler: draw preview directly without reloading each move for performance
+    redrawPreview(startX, startY, p.x, p.y);
+  };
+  editCanvas.onpointerup = (e) => {
+    if (!drawing) return;
+    drawing = false;
+    const p = canvasCoords(e);
+    commitBox(startX, startY, p.x, p.y);
+  };
+  editCanvas.onpointercancel = () => { drawing = false; };
+}
+
+let previewSnapshot = null;
+function redrawPreview(x0, y0, x1, y1) {
+  if (!previewSnapshot || previewSnapshot.width !== editCanvas.width) {
+    previewSnapshot = document.createElement('canvas');
+    previewSnapshot.width = editCanvas.width;
+    previewSnapshot.height = editCanvas.height;
+  }
+  // capture current committed state once at drag start
+  if (!drawing.__captured) { /* no-op placeholder */ }
+  const ctx2 = previewSnapshot.getContext('2d');
+  // Redraw from the last undo snapshot (committed state before this stroke)
+  const img = new Image();
+  img.onload = () => {
+    ctx2.clearRect(0,0,previewSnapshot.width,previewSnapshot.height);
+    ctx2.drawImage(img, 0, 0);
+    ctx2.fillStyle = '#000000';
+    ctx2.fillRect(Math.min(x0,x1), Math.min(y0,y1), Math.abs(x1-x0), Math.abs(y1-y0));
+    editCtx.clearRect(0,0,editCanvas.width,editCanvas.height);
+    editCtx.drawImage(previewSnapshot, 0, 0);
+  };
+  img.src = undoStack[undoStack.length - 1];
+}
+
+function commitBox(x0, y0, x1, y1) {
+  // Final box is already drawn by the last redrawPreview call; nothing extra needed.
+  // Guard against zero-size accidental clicks (treat as no-op, revert)
+  if (Math.abs(x1 - x0) < 3 || Math.abs(y1 - y0) < 3) {
+    // revert to last undo snapshot (cancel this stroke)
+    const img = new Image();
+    img.onload = () => { editCtx.clearRect(0,0,editCanvas.width,editCanvas.height); editCtx.drawImage(img,0,0); };
+    img.src = undoStack.pop();
+    undoBtn.disabled = undoStack.length === 0;
+  }
+}
+
+function undoStroke() {
+  if (undoStack.length === 0) return;
+  const last = undoStack.pop();
+  const img = new Image();
+  img.onload = () => { editCtx.clearRect(0,0,editCanvas.width,editCanvas.height); editCtx.drawImage(img,0,0); };
+  img.src = last;
+  undoBtn.disabled = undoStack.length === 0;
+}
+
+async function clearPage() {
+  const page = await pdfDocProxy.getPage(currentEditIndex + 1);
+  const viewport = page.getViewport({ scale: EDIT_SCALE });
+  editCanvas.width = viewport.width;
+  editCanvas.height = viewport.height;
+  await page.render({ canvasContext: editCtx, viewport }).promise;
+  undoStack = [];
+  undoBtn.disabled = true;
+  pageStates[currentEditIndex] = null;
+  refreshThumbBadges();
+}
+
+function closeEditor() {
+  // Save current canvas as this page's redacted version, only if boxes were drawn
+  // (we detect "edited" simply by whether undoStack was ever used this session OR page already had a state)
+  const hasContent = undoStack.length > 0 || pageStates[currentEditIndex];
+  if (undoStack.length > 0) {
+    pageStates[currentEditIndex] = { dataUrl: editCanvas.toDataURL('image/png') };
+  }
+  editorCard.style.display = 'none';
+  currentEditIndex = null;
+  editCanvas.onpointerdown = editCanvas.onpointermove = editCanvas.onpointerup = null;
+  refreshThumbBadges();
+}
+
+// --- Build final PDF ---
+async function finalizePdf() {
+  hideError();
+  successBox.style.display = 'none';
+  applyBtn.disabled = true;
+  progressWrap.style.display = 'block';
+  setProgress(10, 'Loading original PDF…');
+
+  try {
+    const { PDFDocument } = PDFLib;
+    const bytes = await pdfFile.arrayBuffer();
+    const srcDoc = await PDFDocument.load(bytes);
+    const newDoc = await PDFDocument.create();
+
+    for (let i = 0; i < totalPages; i++) {
+      setProgress(10 + Math.round((i / totalPages) * 75), `Processing page ${i + 1} of ${totalPages}…`);
+      if (pageStates[i]) {
+        // Embed the flattened, redacted image as this page
+        const pngBytes = await (await fetch(pageStates[i].dataUrl)).arrayBuffer();
+        const pngImage = await newDoc.embedPng(pngBytes);
+        const srcPage = srcDoc.getPage(i);
+        const { width, height } = srcPage.getSize();
+        const newPage = newDoc.addPage([width, height]);
+        newPage.drawImage(pngImage, { x: 0, y: 0, width, height });
+      } else {
+        const [copied] = await newDoc.copyPages(srcDoc, [i]);
+        newDoc.addPage(copied);
+      }
+    }
+
+    setProgress(92, 'Finalising…');
+    const outBytes = await newDoc.save();
+    setProgress(100, 'Done!');
+
+    const blob = new Blob([outBytes], { type: 'application/pdf' });
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = pdfFile.name.replace(/\.pdf$/i, '') + '_redacted.pdf';
+    const redactedCount = pageStates.filter(s => !!s).length;
+    successDesc.textContent = `${redactedCount} page${redactedCount !== 1 ? 's' : ''} redacted · ${fmtSize(outBytes.length)}`;
+
+    setTimeout(() => {
+      progressWrap.style.display = 'none';
+      successBox.style.display = 'block';
+      applyBtn.disabled = false;
+    }, 400);
+
+  } catch(err) {
+    progressWrap.style.display = 'none';
+    showError('Something went wrong: ' + err.message);
+    applyBtn.disabled = false;
+  }
+}
+
+function setProgress(pct, label) { progressBar.style.width = pct + '%'; progressLabel.textContent = label; }
+function showError(msg) { errorBox.textContent = '⚠️ ' + msg; errorBox.style.display = 'block'; }
+function hideError() { errorBox.style.display = 'none'; }
+function fmtSize(b) { if(b<1024) return b+' B'; if(b<1048576) return (b/1024).toFixed(1)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
+
+function resetAll() {
+  pdfFile = null; pdfDocProxy = null; totalPages = 0;
+  pageStates = []; undoStack = []; currentEditIndex = null;
+  fileInput.value = '';
+  pagesGrid.innerHTML = '';
+  optionsSection.style.display = 'none';
+  editorCard.style.display = 'none';
+  successBox.style.display = 'none';
+  progressWrap.style.display = 'none';
+  hideError();
+}
+</script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>
