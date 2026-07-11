@@ -80,6 +80,11 @@
 <priority>0.7</priority>
 </url>
 <url>
+<loc>https://paperstack-one.vercel.app/blog-pdf-tools-workplace-risk.html</loc>
+<changefreq>yearly</changefreq>
+<priority>0.8</priority>
+</url>
+<url>
 <loc>https://paperstack-one.vercel.app/blog-redact-pdf-guide.html</loc>
 <changefreq>yearly</changefreq>
 <priority>0.8</priority>
