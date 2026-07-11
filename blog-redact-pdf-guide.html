@@ -7,16 +7,16 @@
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>How to Redact a PDF for Free (Permanently Black Out Text) | PaperStack</title>
-<meta name="description" content="Step-by-step guide to redacting sensitive text or images in a PDF for free, right in your browser — plus why 'drawing a black box' in most PDF viewers doesn't actually delete anything."/>
+<title>How to Redact a PDF for Free (Auto-Detect Aadhaar & PAN) | PaperStack</title>
+<meta name="description" content="Step-by-step guide to redacting sensitive text in a PDF for free — including a tool that auto-detects Aadhaar numbers, PAN numbers, phone numbers, and emails for you."/>
 <link rel="canonical" href="https://paperstack-one.vercel.app/blog-redact-pdf-guide.html"/>
-<meta property="og:title" content="How to Redact a PDF for Free (Permanently Black Out Text)"/>
-<meta property="og:description" content="Step-by-step guide to redacting sensitive text or images in a PDF for free, right in your browser."/>
+<meta property="og:title" content="How to Redact a PDF for Free (Auto-Detect Aadhaar & PAN)"/>
+<meta property="og:description" content="Step-by-step guide to redacting sensitive text in a PDF for free, with automatic Aadhaar and PAN detection."/>
 <meta property="og:type" content="article"/>
 <meta property="og:url" content="https://paperstack-one.vercel.app/blog-redact-pdf-guide.html"/>
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="How to Redact a PDF for Free (Permanently Black Out Text)"/>
-<meta name="twitter:description" content="Step-by-step guide to redacting sensitive text or images in a PDF for free, right in your browser."/>
+<meta name="twitter:title" content="How to Redact a PDF for Free (Auto-Detect Aadhaar & PAN)"/>
+<meta name="twitter:description" content="Step-by-step guide to redacting sensitive text in a PDF for free, with automatic Aadhaar and PAN detection."/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
   :root {
@@ -25,6 +25,7 @@
     --accent:#4f6ef7; --accent-l:#eef1fe;
     --green:#16a34a; --green-l:#dcfce7;
     --amber:#d97706; --amber-l:#fef3c7;
+    --red:#dc2626; --red-l:#fee2e2;
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
   body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
@@ -64,6 +65,11 @@
   .callout strong{color:var(--accent);}
   .warn-callout{background:var(--amber-l);border-left:3px solid var(--amber);border-radius:8px;padding:14px 16px;margin-bottom:16px;font-size:.85rem;color:#78350f;}
   .warn-callout strong{color:#92400e;}
+  .feature-callout{background:var(--green-l);border-left:3px solid var(--green);border-radius:8px;padding:14px 16px;margin-bottom:16px;font-size:.85rem;color:#14532d;}
+  .feature-callout strong{color:#166534;}
+
+  .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+  .tag-pill{background:var(--red-l);color:var(--red);font-size:.75rem;font-weight:700;padding:4px 11px;border-radius:20px;}
 
   .cta-box{background:var(--accent-l);border:1.5px solid var(--accent);border-radius:12px;padding:24px;text-align:center;margin-top:8px;}
   .cta-box h3{font-size:1.05rem;font-weight:800;margin-bottom:6px;}
@@ -128,13 +134,13 @@
 
 <div class="article-hero">
   <span class="article-tag">Guide</span>
-  <h1>How to Redact a PDF for Free (Permanently Black Out Text)</h1>
+  <h1>How to Redact a PDF for Free (Auto-Detect Aadhaar & PAN)</h1>
   <div class="article-meta">
     <span>PaperStack Team</span>
     <span class="dot">·</span>
-    <span>July 5, 2026</span>
+    <span>July 11, 2026</span>
     <span class="dot">·</span>
-    <span>6 min read</span>
+    <span>7 min read</span>
   </div>
 </div>
 
@@ -143,31 +149,47 @@
   <div class="card">
     <div class="article-body">
 
-      <p>Before you send a contract, ID copy, or financial statement to someone, there's usually a name, account number, or clause you'd rather they not see. Redacting a PDF removes that content permanently — but most people redact PDFs wrong without realizing it. Here's how to do it properly, for free, without installing anything.</p>
+      <p>Before you send a contract, ID copy, or bank statement to someone, there's usually an Aadhaar number, PAN number, or phone number you'd rather they not see. Redacting a PDF removes that content permanently — but most people redact PDFs wrong without realizing it, and manually hunting for every sensitive number on a long document is tedious. Here's how to do it properly, for free, with a tool that finds the sensitive bits for you.</p>
+
+      <div class="tag-row">
+        <span class="tag-pill">🆔 Aadhaar</span>
+        <span class="tag-pill">🧾 PAN</span>
+        <span class="tag-pill">📱 Phone</span>
+        <span class="tag-pill">✉️ Email</span>
+      </div>
 
       <h2>The mistake almost everyone makes</h2>
       <p>Opening a PDF and drawing a black rectangle over text with an annotation tool feels like redaction — but it usually isn't. That black box sits on a separate layer <strong>on top of</strong> the original text. The text underneath is still there. Anyone can select it, copy it, or extract it with basic tools. This has caused real, documented leaks in legal and government documents.</p>
       <div class="warn-callout"><strong>Real redaction</strong> means the underlying content is gone — not covered, not hidden behind a shape, actually removed from the file.</div>
 
+      <h2>The bigger problem: finding what to redact</h2>
+      <p>Even once you know how to redact properly, scanning a 10-page bank statement or KYC document line by line for every Aadhaar or account number is slow and easy to get wrong — miss one digit string and your ID is still exposed.</p>
+      <div class="feature-callout"><strong>✨ New:</strong> PaperStack's Redact PDF tool now scans every page automatically and flags likely Aadhaar numbers, PAN numbers, Indian phone numbers, and email addresses with a red box — so you're checking its suggestions instead of hunting blind.</div>
+
       <h2>How to redact a PDF properly, step by step</h2>
       <ol>
         <li>Open <a href="tool-redact-pdf.html">PaperStack's Redact PDF tool</a> — no sign-up, nothing uploaded to a server.</li>
-        <li>Upload your PDF. Every page renders as a thumbnail.</li>
-        <li>Click the page containing sensitive content to open the editor.</li>
-        <li>Click and drag to draw a black box over each piece of text or image you want removed. Make sure the box fully covers the content — zoom in first if it's small.</li>
-        <li>Click "Done with this page" once you're satisfied, and repeat for any other pages.</li>
+        <li>Upload your PDF. Every page renders as a thumbnail, and pages with likely sensitive data get a 🚩 flag automatically.</li>
+        <li>Click a flagged page to open the editor. Detected items are highlighted with red dashed boxes and labeled (Aadhaar, PAN, Phone, or Email).</li>
+        <li>Tap any highlighted box to redact just that item instantly, or click "Redact All Detected" to black out everything found on that page in one go.</li>
+        <li>Draw your own boxes over anything the scanner missed — signatures, photos, addresses, or handwritten notes aren't caught automatically.</li>
+        <li>Click "Done with this page" and repeat for any other flagged pages.</li>
         <li>Click "Apply Redactions & Download." Only the pages you edited are flattened into images — everything else stays untouched.</li>
-        <li>Open the downloaded file and try selecting text where you redacted. If nothing is selectable there, it worked.</li>
+        <li>Open the downloaded file and check every redacted area. Try selecting text where you redacted — if nothing is selectable there, it worked.</li>
       </ol>
 
       <h2>Why the result works</h2>
-      <p>Once you draw a box, that page is converted into a flattened image before being placed back into the PDF. There's no separate text layer left underneath the box to extract — the pixels you see are all that exists on that page. The tradeoff: a redacted page is no longer searchable or copy-pasteable as text, since it's now an image. Pages you didn't touch stay exactly as they were.</p>
+      <p>Once a box is confirmed — whether auto-detected or drawn manually — that page is converted into a flattened image before being placed back into the PDF. There's no separate text layer left underneath to extract; the pixels you see are all that exists on that page. The tradeoff: a redacted page is no longer searchable or copy-pasteable as text, since it's now an image. Pages you didn't touch stay exactly as they were.</p>
 
       <h2>Common questions</h2>
 
       <div class="faq-item">
+        <div class="faq-q">Is the auto-detection perfect?</div>
+        <div class="faq-a">No — pattern matching catches most standard-format Aadhaar, PAN, phone, and email formats, but it can miss unusual formatting or catch false positives (like a random 10-digit number that isn't actually a phone number). Always review every flagged page yourself before downloading.</div>
+      </div>
+      <div class="faq-item">
         <div class="faq-q">Will this work on scanned documents or photos turned into PDFs?</div>
-        <div class="faq-a">Yes — since those pages are typically already images, redacting them the same way (draw a box, flatten) works the same.</div>
+        <div class="faq-a">Auto-detection needs a text layer to scan, so it won't catch anything on a pure scanned image. You can still manually draw redaction boxes on scanned pages the same way.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q">Can I undo a redaction after downloading?</div>
@@ -175,18 +197,18 @@
       </div>
       <div class="faq-item">
         <div class="faq-q">Does this remove metadata too, like author name or GPS data?</div>
-        <div class="faq-a">No — this tool only removes what's inside the boxes you draw on the page itself. For hidden metadata, that's a separate step (worth checking your PDF's document properties before sharing).</div>
+        <div class="faq-a">No — this tool only removes what's inside the boxes you draw or confirm on the page itself. For hidden metadata, that's a separate step worth checking before sharing.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q">Is my file uploaded anywhere?</div>
-        <div class="faq-a">No. Rendering, drawing, and rebuilding the PDF all happen in your browser using JavaScript libraries — your file never touches a server.</div>
+        <div class="faq-q">Is my file uploaded anywhere, even for the auto-detection?</div>
+        <div class="faq-a">No. Text scanning, rendering, drawing, and rebuilding the PDF all happen in your browser using JavaScript — your file never touches a server.</div>
       </div>
 
       <hr/>
 
       <div class="cta-box">
         <h3>Redact your PDF now</h3>
-        <p>Free, private, and runs entirely in your browser — no uploads, no sign-up.</p>
+        <p>Free, private, and auto-detects Aadhaar, PAN, phone numbers, and emails — no uploads, no sign-up.</p>
         <a class="cta-btn" href="tool-redact-pdf.html">Open Redact PDF Tool →</a>
       </div>
 
