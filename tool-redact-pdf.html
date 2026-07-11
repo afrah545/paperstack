@@ -443,26 +443,54 @@ function refreshThumbBadges() {
 }
 
 // Core text-scanning logic. Returns array of {x,y,w,h,type} in canvas-pixel space for given scale.
+// Uses pdf.js's own text-layer renderer to get pixel-accurate positions (the same system that
+// powers text selection in every PDF viewer) instead of computing transforms by hand.
 async function detectSensitiveOnPage(pageIndex, scale) {
   const page = await pdfDocProxy.getPage(pageIndex + 1);
   const viewport = page.getViewport({ scale });
   const textContent = await page.getTextContent();
 
+  const container = document.createElement('div');
+  container.style.position = 'absolute';
+  container.style.top = '-100000px';
+  container.style.left = '-100000px';
+  container.style.width = viewport.width + 'px';
+  container.style.height = viewport.height + 'px';
+  document.body.appendChild(container);
+
+  let spans = [];
+  try {
+    const task = pdfjsLib.renderTextLayer({
+      textContentSource: textContent,
+      textContent: textContent,
+      container,
+      viewport
+    });
+    await task.promise;
+    spans = Array.from(container.children).filter(el => el.tagName === 'SPAN');
+  } catch(e) {
+    document.body.removeChild(container);
+    return [];
+  }
+
+  const containerRect = container.getBoundingClientRect();
   let fullText = '';
   const items = [];
-  for (const item of textContent.items) {
-    if (!item.str) continue;
-    const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
-    const fontHeight = Math.hypot(tx[2], tx[3]) || 10;
-    const itemWidth = (item.width || 0) * scale;
-    const x = tx[4];
-    const yBaseline = tx[5];
-    const top = yBaseline - fontHeight;
+  spans.forEach(span => {
+    const str = span.textContent || '';
+    if (!str) return;
+    const r = span.getBoundingClientRect();
+    const x = r.left - containerRect.left;
+    const y = r.top - containerRect.top;
+    const w = r.width;
+    const h = r.height;
     const start = fullText.length;
-    fullText += item.str + ' ';
+    fullText += str + ' ';
     const end = fullText.length - 1;
-    items.push({ x, top, width: itemWidth, height: fontHeight * 1.15, start, end });
-  }
+    items.push({ x, y, w, h, start, end });
+  });
+
+  document.body.removeChild(container);
 
   const found = [];
   PATTERNS.forEach(p => {
@@ -474,10 +502,10 @@ async function detectSensitiveOnPage(pageIndex, scale) {
       const overlapping = items.filter(it => it.end > mStart && it.start < mEnd);
       if (overlapping.length === 0) continue;
       const minX = Math.min(...overlapping.map(it => it.x)) - 2;
-      const minTop = Math.min(...overlapping.map(it => it.top)) - 2;
-      const maxRight = Math.max(...overlapping.map(it => it.x + it.width)) + 2;
-      const maxBottom = Math.max(...overlapping.map(it => it.top + it.height)) + 2;
-      found.push({ x: minX, y: minTop, w: maxRight - minX, h: maxBottom - minTop, type: p.type });
+      const minY = Math.min(...overlapping.map(it => it.y)) - 2;
+      const maxRight = Math.max(...overlapping.map(it => it.x + it.w)) + 2;
+      const maxBottom = Math.max(...overlapping.map(it => it.y + it.h)) + 2;
+      found.push({ x: minX, y: minY, w: maxRight - minX, h: maxBottom - minY, type: p.type });
     }
   });
   return found;
