@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/x-icon" href="favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Could a Free PDF Converter Get You in Trouble at Work? | PaperStack</title>
+<meta name="description" content="Uploading work documents to random online PDF tools can leak confidential data, breach IT policy, or leave a metadata trail. Here's what actually happens, and what to check before you use one."/>
+<link rel="canonical" href="https://paperstack-one.vercel.app/blog-pdf-tools-workplace-risk.html"/>
+<meta property="og:title" content="Could a Free PDF Converter Get You in Trouble at Work?"/>
+<meta property="og:description" content="Uploading work documents to random online PDF tools can leak confidential data, breach IT policy, or leave a metadata trail. Here's what to check."/>
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://paperstack-one.vercel.app/blog-pdf-tools-workplace-risk.html"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Could a Free PDF Converter Get You in Trouble at Work?"/>
+<meta name="twitter:description" content="Uploading work documents to random online PDF tools can leak confidential data, breach IT policy, or leave a metadata trail. Here's what to check."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec;
+    --text:#111827; --muted:#6b7280; --light:#9ca3af;
+    --accent:#4f6ef7; --accent-l:#eef1fe;
+    --green:#16a34a; --green-l:#dcfce7;
+    --amber:#d97706; --amber-l:#fef3c7;
+    --red:#dc2626; --red-l:#fee2e2;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+  .back-link:hover{color:var(--text);border-color:var(--accent);}
+
+  .breadcrumb{max-width:760px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--accent);}
+  .breadcrumb .sep{color:var(--light);}
+  .breadcrumb .current{color:var(--text);font-weight:500;}
+
+  .article-hero{max-width:760px;margin:0 auto;padding:28px 24px 20px;}
+  .article-tag{display:inline-block;background:var(--red-l);color:var(--red);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:5px 12px;border-radius:6px;margin-bottom:14px;}
+  .article-hero h1{font-size:1.85rem;font-weight:800;letter-spacing:-.5px;line-height:1.25;margin-bottom:12px;}
+  .article-meta{font-size:.82rem;color:var(--muted);display:flex;gap:10px;align-items:center;}
+  .article-meta .dot{color:var(--light);}
+
+  .article-wrap{max-width:760px;margin:0 auto;padding:0 24px 48px;}
+  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:32px;margin-bottom:16px;}
+
+  .article-body{font-size:.95rem;color:var(--text);}
+  .article-body p{margin-bottom:16px;color:#374151;}
+  .article-body h2{font-size:1.25rem;font-weight:800;letter-spacing:-.3px;margin:28px 0 12px;}
+  .article-body h2:first-child{margin-top:0;}
+  .article-body h3{font-size:1.02rem;font-weight:700;margin:20px 0 8px;}
+  .article-body strong{color:var(--text);font-weight:700;}
+  .article-body ol,.article-body ul{margin:0 0 16px 20px;color:#374151;}
+  .article-body li{margin-bottom:6px;}
+  .article-body hr{border:none;border-top:1px solid var(--border);margin:28px 0;}
+
+  .risk-card{border:1.5px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:12px;background:var(--bg);}
+  .risk-card .risk-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:var(--red);color:white;font-size:.72rem;font-weight:800;border-radius:50%;margin-right:8px;}
+  .risk-card h3{display:inline;font-size:.92rem;font-weight:700;}
+  .risk-card p{font-size:.84rem;color:#4b5563;margin-top:8px;margin-bottom:0;}
+
+  .verdict-row{display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid var(--border);padding:14px 0;}
+  .verdict-row:last-child{border-bottom:none;}
+  .verdict-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+  .verdict-text strong{display:block;font-size:.87rem;margin-bottom:3px;}
+  .verdict-text p{font-size:.83rem;color:#4b5563;margin:0;}
+
+  .callout{background:var(--accent-l);border-left:3px solid var(--accent);border-radius:8px;padding:14px 16px;margin-bottom:16px;font-size:.85rem;color:#374151;}
+  .callout strong{color:var(--accent);}
+  .warn-callout{background:var(--amber-l);border-left:3px solid var(--amber);border-radius:8px;padding:14px 16px;margin-bottom:16px;font-size:.85rem;color:#78350f;}
+  .warn-callout strong{color:#92400e;}
+
+  .cta-box{background:var(--accent-l);border:1.5px solid var(--accent);border-radius:12px;padding:24px;text-align:center;margin-top:8px;}
+  .cta-box h3{font-size:1.05rem;font-weight:800;margin-bottom:6px;}
+  .cta-box p{font-size:.83rem;color:var(--muted);margin-bottom:16px;}
+  .cta-btn{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:white;border:none;padding:11px 24px;border-radius:8px;font-size:.875rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;transition:opacity .15s;}
+  .cta-btn:hover{opacity:.88;}
+
+  .related-title{font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px;}
+  .related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .related-card{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:16px;text-decoration:none;color:var(--text);transition:border-color .15s;}
+  .related-card:hover{border-color:var(--accent);}
+  .related-icon{font-size:1.2rem;margin-bottom:8px;}
+  .related-card h4{font-size:.83rem;font-weight:700;margin-bottom:3px;}
+  .related-card p{font-size:.75rem;color:var(--muted);line-height:1.5;}
+
+  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  .footer-logo{font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:7px;}
+  .footer-links{display:flex;gap:16px;}
+  .footer-links a{font-size:.78rem;color:var(--muted);text-decoration:none;}
+  .footer-links a:hover{color:var(--text);}
+  .footer-copy{font-size:.72rem;color:var(--light);}
+
+  @media(max-width:600px){
+    nav{padding:0 16px;}
+    .article-hero h1{font-size:1.5rem;}
+    .card{padding:22px;}
+    .related-grid{grid-template-columns:1fr;}
+    footer{padding:16px;flex-direction:column;align-items:flex-start;}
+  }
+</style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L99X3LFWVY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-L99X3LFWVY");
+</script>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">
+    <div class="logo-icon">📄</div>
+    PaperStack
+  </a>
+  <a class="back-link" href="blog.html">← All Posts</a>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span class="sep">›</span>
+  <a href="blog.html">Blog</a>
+  <span class="sep">›</span>
+  <span class="current">PDF Tools & Workplace Risk</span>
+</div>
+
+<div class="article-hero">
+  <span class="article-tag">Privacy & Security</span>
+  <h1>Could a Free PDF Converter Get You in Trouble at Work?</h1>
+  <div class="article-meta">
+    <span>PaperStack Team</span>
+    <span class="dot">·</span>
+    <span>July 11, 2026</span>
+    <span class="dot">·</span>
+    <span>7 min read</span>
+  </div>
+</div>
+
+<div class="article-wrap">
+
+  <div class="card">
+    <div class="article-body">
+
+      <p>You need to merge two PDFs for a client email, or compress a file that's too big to send. You search "free pdf converter," click the first result, upload the document, and move on. It takes thirty seconds and you never think about it again — until IT flags it, or worse, a client asks how their contract ended up somewhere it shouldn't have.</p>
+
+      <p>Here's what's actually happening behind that thirty seconds, and what's worth checking before you do it with a work document.</p>
+
+      <h2>The five real risks</h2>
+
+      <div class="risk-card">
+        <h3><span class="risk-num">1</span>Your file leaves your device</h3>
+        <p>Most "free" PDF converters work by uploading your file to their server, processing it there, and sending it back. That means a copy of your document — resume, contract, invoice, HR file — sits on a third party's infrastructure, even if briefly. If it's confidential, that's now out of your control.</p>
+      </div>
+
+      <div class="risk-card">
+        <h3><span class="risk-num">2</span>It can breach company policy</h3>
+        <p>Many workplaces have explicit rules against uploading company data to unapproved external tools — this falls under what IT teams call "shadow IT." Even a well-intentioned quick conversion can technically violate policy if the tool isn't sanctioned, regardless of what that tool actually does with your file.</p>
+      </div>
+
+      <div class="risk-card">
+        <h3><span class="risk-num">3</span>Metadata can leak more than you think</h3>
+        <p>PDFs carry hidden metadata — author name, software used, sometimes edit history. Converting a file can preserve, strip, or (less obviously) add new metadata identifying which tool touched it. Not usually dangerous on its own, but worth knowing it's there.</p>
+      </div>
+
+      <div class="risk-card">
+        <h3><span class="risk-num">4</span>Bad conversions cause real damage</h3>
+        <p>A PDF-to-Word conversion that garbles numbers or drops a clause, sent to a client or filed somewhere official, isn't just embarrassing — it can have real financial or legal consequences depending on what the document was.</p>
+      </div>
+
+      <div class="risk-card">
+        <h3><span class="risk-num">5</span>Free tiers stall you mid-task</h3>
+        <p>Daily conversion caps, forced account creation, or a paywall halfway through — common on free tools, and a bad time to discover it when you're on deadline.</p>
+      </div>
+
+      <h2>What to actually check before using any PDF tool at work</h2>
+      <p>You don't need to memorize a checklist — just ask one question: <strong>does this tool need to upload my file to work?</strong> If a tool runs entirely in your browser using client-side JavaScript rather than sending your file to a server, risks 1 and 3 mostly disappear, since there's nothing to intercept and no server-side processing to leave a trail on. Risk 2 (policy) still depends on your company's specific rules — being privacy-safe under the hood doesn't automatically make an external site "approved," so it's worth checking with IT if you're unsure. Risks 4 and 5 come down to the quality and business model of the specific tool, not whether it's client-side or not.</p>
+
+      <div class="warn-callout"><strong>Being honest about the limits:</strong> even a fully client-side tool is still an external website by network policy. If your workplace has a strict allowlist for approved software, that's a conversation to have with IT — not something any tool's technical design can resolve on its own.</div>
+
+      <h2>Where PaperStack lands on each of these</h2>
+
+      <div class="verdict-row">
+        <div class="verdict-icon">✅</div>
+        <div class="verdict-text"><strong>File leaving your device</strong><p>Doesn't happen. Every tool runs in your browser using JavaScript — nothing is ever sent to a server.</p></div>
+      </div>
+      <div class="verdict-row">
+        <div class="verdict-icon">⚠️</div>
+        <div class="verdict-text"><strong>Company policy</strong><p>Being private under the hood doesn't automatically make it an "approved" tool by your IT department's rules. Check with them if your workplace has a strict allowlist.</p></div>
+      </div>
+      <div class="verdict-row">
+        <div class="verdict-icon">✅</div>
+        <div class="verdict-text"><strong>Metadata</strong><p>Tools that rebuild your PDF now explicitly clear the default software fingerprint before saving, so the output doesn't carry an unnecessary trace of which tool touched it.</p></div>
+      </div>
+      <div class="verdict-row">
+        <div class="verdict-icon">⚠️</div>
+        <div class="verdict-text"><strong>Conversion quality</strong><p>Same inherent risk as any PDF-to-Word or image conversion tool — complex layouts and tables can still convert imperfectly. Always review the output before sending it anywhere important.</p></div>
+      </div>
+      <div class="verdict-row">
+        <div class="verdict-icon">✅</div>
+        <div class="verdict-text"><strong>Daily limits</strong><p>No server-side processing means no rate limits and no forced sign-up wall mid-task.</p></div>
+      </div>
+
+      <hr/>
+
+      <div class="cta-box">
+        <h3>Try a PDF tool that never uploads your file</h3>
+        <p>Merge, split, compress, redact and more — all processed locally in your browser.</p>
+        <a class="cta-btn" href="index.html">Explore Free Tools →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="related-title">Related</div>
+  <div class="related-grid">
+    <a class="related-card" href="blog-pdf-privacy-security-tips.html">
+      <div class="related-icon">🔐</div>
+      <h4>PDF Privacy Tips</h4>
+      <p>7 practical steps to protect sensitive data in your PDFs.</p>
+    </a>
+    <a class="related-card" href="blog-redact-pdf-guide.html">
+      <div class="related-icon">✏️</div>
+      <h4>How to Redact a PDF</h4>
+      <p>Permanently remove sensitive text before you share a file.</p>
+    </a>
+    <a class="related-card" href="blog-why-different.html">
+      <div class="related-icon">🧱</div>
+      <h4>Why We Built PaperStack Differently</h4>
+      <p>Most PDF tools upload your file. We don't — here's why.</p>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">
+    <div style="width:24px;height:24px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.75rem;">📄</div>
+    PaperStack
+  </div>
+  <div class="footer-links">
+    <a href="about.html">About</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="blog.html">Blog</a>
+    <a href="mailto:paperstack.help@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
+</footer>
+
+<script src="cookie-banner.js"></script>
+</body>
+</html>
