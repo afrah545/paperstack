@@ -7,16 +7,16 @@
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Redact PDF Free — Auto-Detect Aadhaar & PAN | PaperStack</title>
-<meta name="description" content="Permanently black out sensitive text in a PDF, right in your browser. Auto-detects Aadhaar numbers, PAN numbers, phone numbers, and emails for you. No uploads, no sign-up."/>
+<title>Redact PDF Free | PaperStack</title>
+<meta name="description" content="Permanently black out sensitive text and images in a PDF, right in your browser. No uploads, no sign-up, files never leave your device."/>
 <link rel="canonical" href="https://paperstack-one.vercel.app/tool-redact-pdf.html"/>
-<meta property="og:title" content="Redact PDF Free — Auto-Detect Aadhaar & PAN | PaperStack"/>
-<meta property="og:description" content="Permanently black out sensitive text in a PDF. Auto-detects Aadhaar, PAN, phone numbers and emails. Runs entirely in your browser."/>
+<meta property="og:title" content="Redact PDF Free | PaperStack"/>
+<meta property="og:description" content="Permanently black out sensitive text and images in a PDF, right in your browser. No uploads, no sign-up, files never leave your device."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://paperstack-one.vercel.app/tool-redact-pdf.html"/>
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Redact PDF Free — Auto-Detect Aadhaar & PAN | PaperStack"/>
-<meta name="twitter:description" content="Permanently black out sensitive text in a PDF. Auto-detects Aadhaar, PAN, phone numbers and emails. Runs entirely in your browser."/>
+<meta name="twitter:title" content="Redact PDF Free | PaperStack"/>
+<meta name="twitter:description" content="Permanently black out sensitive text and images in a PDF, right in your browser. No uploads, no sign-up, files never leave your device."/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -48,7 +48,6 @@
   .tool-hero-icon{width:56px;height:56px;background:#111827;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
   .tool-hero h1{font-size:1.5rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px;}
   .tool-hero p{font-size:.875rem;color:var(--muted);}
-  .hero-badge{display:inline-flex;align-items:center;gap:5px;background:var(--green-l);color:var(--green);font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:20px;margin-top:6px;}
 
   .tool-wrap{max-width:760px;margin:0 auto;padding:0 24px 48px;}
   .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px;margin-bottom:16px;}
@@ -80,8 +79,6 @@
   .page-thumb.edited{border-color:var(--green);}
   .page-thumb .edited-badge{position:absolute;top:5px;right:5px;background:var(--green);color:white;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:20px;display:none;align-items:center;gap:3px;}
   .page-thumb.edited .edited-badge{display:flex;}
-  .page-thumb .flag-badge{position:absolute;top:5px;left:5px;background:var(--red);color:white;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:20px;display:none;align-items:center;gap:3px;}
-  .page-thumb.flagged .flag-badge{display:flex;}
 
   .select-hint{font-size:.8rem;color:var(--muted);margin-bottom:14px;}
   .select-hint strong{color:var(--text);}
@@ -97,17 +94,8 @@
   .tbtn.primary:hover{opacity:.85;color:white;}
   .tbtn:disabled{opacity:.4;cursor:not-allowed;}
 
-  .detection-bar{display:none;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--red-l);border:1.5px solid #fca5a5;border-radius:9px;padding:11px 14px;margin-bottom:12px;}
-  .detection-text{font-size:.82rem;color:#991b1b;font-weight:600;}
-  .detection-text span{font-weight:800;}
-  .detect-btn{background:var(--red);color:white;border:none;padding:7px 14px;border-radius:7px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .15s;flex-shrink:0;}
-  .detect-btn:hover{opacity:.88;}
-
   .canvas-wrap{border:1.5px solid var(--border);border-radius:10px;overflow:auto;background:#e5e7eb;padding:10px;text-align:center;}
-  .canvas-stack{position:relative;display:inline-block;max-width:100%;}
-  .canvas-stack canvas{display:block;max-width:100%;height:auto;background:white;box-shadow:0 1px 4px rgba(0,0,0,.15);touch-action:none;}
-  #editCanvas{cursor:crosshair;position:relative;z-index:1;}
-  #suggestCanvas{position:absolute;top:0;left:0;pointer-events:none;z-index:2;box-shadow:none;}
+  .canvas-wrap canvas{max-width:100%;height:auto;cursor:crosshair;background:white;box-shadow:0 1px 4px rgba(0,0,0,.15);touch-action:none;}
   .editor-hint{font-size:.78rem;color:var(--muted);margin-top:10px;text-align:center;}
 
   .apply-btn{width:100%;padding:14px;background:#111827;border:none;border-radius:10px;color:white;font-size:.95rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:opacity .15s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;}
@@ -130,7 +118,7 @@
   .again-btn{margin-top:10px;background:none;border:1.5px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;display:block;margin-left:auto;margin-right:auto;}
   .again-btn:hover{border-color:var(--accent);color:var(--accent);}
 
-  .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
   .feat{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:16px;}
   .feat-icon{font-size:1.2rem;margin-bottom:8px;}
   .feat h4{font-size:.83rem;font-weight:700;margin-bottom:3px;}
@@ -147,6 +135,7 @@
     nav{padding:0 16px;}
     .tool-hero{flex-direction:column;align-items:flex-start;gap:12px;}
     .pages-grid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr));}
+    .features-grid{grid-template-columns:1fr;}
     footer{padding:16px;flex-direction:column;align-items:flex-start;}
   }
 </style>
@@ -180,7 +169,6 @@
   <div>
     <h1>Redact PDF</h1>
     <p>Draw over sensitive text or images to permanently black them out.</p>
-    <span class="hero-badge">✨ Auto-detects Aadhaar, PAN, phone & email</span>
   </div>
 </div>
 
@@ -191,8 +179,7 @@
     <ul>
       <li>Any page you redact is converted into a flattened image. This guarantees the covered content can't be recovered, copied, or selected — but that page will no longer be searchable or text-selectable.</li>
       <li>Pages you don't touch stay exactly as they were (still text/searchable).</li>
-      <li>This tool scans each page for likely Aadhaar numbers, PAN numbers, phone numbers, and email addresses and suggests boxes for you — but pattern matching isn't perfect. Always review every page yourself before downloading.</li>
-      <li>Make sure your black box fully covers the sensitive area — zoom in if needed. Redaction only removes what's inside the box you draw or confirm.</li>
+      <li>Make sure your black box fully covers the sensitive area — zoom in if needed. Redaction only removes what's inside the box you draw.</li>
       <li>Always open the downloaded PDF and double-check before sharing it.</li>
     </ul>
   </div>
@@ -223,7 +210,7 @@
 
     <div class="card">
       <div class="card-title">Step 2 — Select a page to redact</div>
-      <div class="select-hint">Click any page to open it and draw black boxes over sensitive content. <strong>Green = already redacted. Red flag = possible sensitive data auto-detected.</strong></div>
+      <div class="select-hint">Click any page to open it and draw black boxes over sensitive content. <strong>Green = already redacted.</strong></div>
       <div class="pages-grid" id="pagesGrid"></div>
     </div>
 
@@ -237,19 +224,10 @@
           <button class="tbtn primary" onclick="closeEditor()">✓ Done with this page</button>
         </div>
       </div>
-
-      <div class="detection-bar" id="detectionBar">
-        <div class="detection-text">🚩 <span id="detectionCount">0</span> possible sensitive item(s) found on this page</div>
-        <button class="detect-btn" onclick="redactAllDetected()">Redact All Detected</button>
-      </div>
-
       <div class="canvas-wrap">
-        <div class="canvas-stack" id="canvasStack">
-          <canvas id="editCanvas"></canvas>
-          <canvas id="suggestCanvas"></canvas>
-        </div>
+        <canvas id="editCanvas"></canvas>
       </div>
-      <div class="editor-hint">Tap a red-highlighted box to redact it instantly, or click and drag anywhere to draw your own.</div>
+      <div class="editor-hint">Click and drag to draw a black box over anything you want redacted.</div>
     </div>
 
     <div class="card">
@@ -275,11 +253,6 @@
       <div class="feat-icon">🔒</div>
       <h4>100% Private</h4>
       <p>Files stay on your device. Nothing is uploaded to any server.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-icon">🧠</div>
-      <h4>Auto-detection</h4>
-      <p>Finds likely Aadhaar, PAN, phone numbers, and emails for you automatically.</p>
     </div>
     <div class="feat">
       <div class="feat-icon">🧱</div>
@@ -319,18 +292,8 @@ let totalPages = 0;
 let currentEditIndex = null;
 const EDIT_SCALE = 2.2;
 
-let pageStates = [];       // null or { dataUrl } once redacted
-let pageFlags = [];        // true/false — whether auto-scan found anything on that page
+let pageStates = [];
 let undoStack = [];
-let pendingSuggestions = []; // [{x,y,w,h,type}] for the currently open page
-
-// Detection patterns
-const PATTERNS = [
-  { type: 'Aadhaar', re: /\b\d{4}\s?\d{4}\s?\d{4}\b/g },
-  { type: 'PAN', re: /\b[A-Z]{5}[0-9]{4}[A-Z]\b/g },
-  { type: 'Phone', re: /\b(?:\+91[\-\s]?)?[6-9]\d{9}\b/g },
-  { type: 'Email', re: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g }
-];
 
 const dropArea       = document.getElementById('dropArea');
 const fileInput      = document.getElementById('fileInput');
@@ -342,12 +305,8 @@ const editorCard     = document.getElementById('editorCard');
 const editorTitle    = document.getElementById('editorTitle');
 const editCanvas     = document.getElementById('editCanvas');
 const editCtx        = editCanvas.getContext('2d');
-const suggestCanvas  = document.getElementById('suggestCanvas');
-const suggestCtx     = suggestCanvas.getContext('2d');
 const undoBtn        = document.getElementById('undoBtn');
 const applyBtn       = document.getElementById('applyBtn');
-const detectionBar   = document.getElementById('detectionBar');
-const detectionCount = document.getElementById('detectionCount');
 const progressWrap   = document.getElementById('progressWrap');
 const progressBar    = document.getElementById('progressBar');
 const progressLabel  = document.getElementById('progressLabel');
@@ -372,7 +331,6 @@ async function handleFile(file) {
     pdfDocProxy = await pdfjsLib.getDocument({ data: arrayBuffer.slice(0) }).promise;
     totalPages = pdfDocProxy.numPages;
     pageStates = new Array(totalPages).fill(null);
-    pageFlags = new Array(totalPages).fill(false);
     loadedName.textContent = file.name;
     loadedMeta.textContent = `${totalPages} pages · ${fmtSize(file.size)}`;
     optionsSection.style.display = 'block';
@@ -381,7 +339,6 @@ async function handleFile(file) {
     applyBtn.disabled = true;
     hideError();
     await renderThumbnails();
-    await prescanAllPages();
   } catch(e) {
     showError('Could not read this PDF. It may be corrupted or password-protected.');
   }
@@ -401,10 +358,6 @@ async function renderThumbnails() {
     thumb.className = 'page-thumb';
     thumb.dataset.index = i - 1;
 
-    const flagBadge = document.createElement('div');
-    flagBadge.className = 'flag-badge';
-    flagBadge.textContent = '🚩';
-
     const badge = document.createElement('div');
     badge.className = 'edited-badge';
     badge.textContent = '✓ Redacted';
@@ -414,7 +367,6 @@ async function renderThumbnails() {
     label.textContent = `Page ${i}`;
 
     thumb.appendChild(canvas);
-    thumb.appendChild(flagBadge);
     thumb.appendChild(badge);
     thumb.appendChild(label);
     thumb.addEventListener('click', () => openEditor(i - 1));
@@ -422,77 +374,12 @@ async function renderThumbnails() {
   }
 }
 
-// Quick pre-scan of every page so we can flag thumbnails before the user opens them
-async function prescanAllPages() {
-  for (let i = 0; i < totalPages; i++) {
-    try {
-      const matches = await detectSensitiveOnPage(i, 1.0); // scale doesn't matter for flag-only pass
-      pageFlags[i] = matches.length > 0;
-    } catch(e) { pageFlags[i] = false; }
-  }
-  refreshThumbBadges();
-}
-
 function refreshThumbBadges() {
   document.querySelectorAll('.page-thumb').forEach(t => {
     const idx = parseInt(t.dataset.index, 10);
     t.classList.toggle('edited', !!pageStates[idx]);
-    t.classList.toggle('flagged', !pageStates[idx] && !!pageFlags[idx]);
   });
   applyBtn.disabled = !pageStates.some(s => !!s);
-}
-
-// Core text-scanning logic. Returns array of {x,y,w,h,type} in canvas-pixel space for given scale.
-// Transforms each glyph run's 4 corners (with generous ascent/descent padding) through the
-// page-to-canvas matrix and takes an axis-aligned min/max box. Using min/max over sampled
-// corners (rather than assuming which direction is "up") avoids sign/orientation bugs entirely.
-async function detectSensitiveOnPage(pageIndex, scale) {
-  const page = await pdfDocProxy.getPage(pageIndex + 1);
-  const viewport = page.getViewport({ scale });
-  const textContent = await page.getTextContent();
-
-  let fullText = '';
-  const items = [];
-  for (const item of textContent.items) {
-    if (!item.str) continue;
-    const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
-    const w = item.width || 0;
-    const corners = [
-      [0, -0.35], [w, -0.35], [0, 1.05], [w, 1.05]
-    ].map(([lx, ly]) => ({
-      x: tx[0]*lx + tx[2]*ly + tx[4],
-      y: tx[1]*lx + tx[3]*ly + tx[5]
-    }));
-    const xs = corners.map(c => c.x);
-    const ys = corners.map(c => c.y);
-    const boxX = Math.min(...xs);
-    const boxY = Math.min(...ys);
-    const boxW = Math.max(...xs) - boxX;
-    const boxH = Math.max(...ys) - boxY;
-
-    const start = fullText.length;
-    fullText += item.str + ' ';
-    const end = fullText.length - 1;
-    items.push({ x: boxX, y: boxY, w: boxW, h: boxH, start, end });
-  }
-
-  const found = [];
-  PATTERNS.forEach(p => {
-    let m;
-    p.re.lastIndex = 0;
-    while ((m = p.re.exec(fullText)) !== null) {
-      const mStart = m.index;
-      const mEnd = m.index + m[0].length;
-      const overlapping = items.filter(it => it.end > mStart && it.start < mEnd);
-      if (overlapping.length === 0) continue;
-      const minX = Math.min(...overlapping.map(it => it.x)) - 2;
-      const minY = Math.min(...overlapping.map(it => it.y)) - 2;
-      const maxRight = Math.max(...overlapping.map(it => it.x + it.w)) + 2;
-      const maxBottom = Math.max(...overlapping.map(it => it.y + it.h)) + 2;
-      found.push({ x: minX, y: minY, w: maxRight - minX, h: maxBottom - minY, type: p.type });
-    }
-  });
-  return found;
 }
 
 async function openEditor(idx) {
@@ -500,99 +387,19 @@ async function openEditor(idx) {
   editorTitle.textContent = `Editing page ${idx + 1}`;
   undoStack = [];
   undoBtn.disabled = true;
-  pendingSuggestions = [];
   editorCard.style.display = 'block';
   editorCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   if (pageStates[idx]) {
     await loadImageIntoCanvas(pageStates[idx].dataUrl);
-    syncSuggestCanvasSize();
-    drawSuggestionOverlay();
-    updateDetectionBar();
   } else {
     const page = await pdfDocProxy.getPage(idx + 1);
     const viewport = page.getViewport({ scale: EDIT_SCALE });
     editCanvas.width = viewport.width;
     editCanvas.height = viewport.height;
     await page.render({ canvasContext: editCtx, viewport }).promise;
-    syncSuggestCanvasSize();
-
-    // Full-resolution scan for this page (more accurate than the quick pre-scan)
-    pendingSuggestions = await detectSensitiveOnPage(idx, EDIT_SCALE);
-    drawSuggestionOverlay();
-    updateDetectionBar();
   }
   attachDrawHandlers();
-}
-
-function syncSuggestCanvasSize() {
-  suggestCanvas.width = editCanvas.width;
-  suggestCanvas.height = editCanvas.height;
-}
-
-function drawSuggestionOverlay() {
-  suggestCtx.clearRect(0, 0, suggestCanvas.width, suggestCanvas.height);
-  suggestCtx.font = `${Math.round(14 * (EDIT_SCALE/2.2))}px Inter, sans-serif`;
-  pendingSuggestions.forEach(s => {
-    suggestCtx.fillStyle = 'rgba(220,38,38,0.28)';
-    suggestCtx.fillRect(s.x, s.y, s.w, s.h);
-    suggestCtx.strokeStyle = '#dc2626';
-    suggestCtx.lineWidth = 2;
-    suggestCtx.setLineDash([5,4]);
-    suggestCtx.strokeRect(s.x, s.y, s.w, s.h);
-    suggestCtx.setLineDash([]);
-    const label = s.type;
-    const labelY = Math.max(s.y - 5, 12);
-    suggestCtx.fillStyle = '#dc2626';
-    const tw = suggestCtx.measureText(label).width + 8;
-    suggestCtx.fillRect(s.x, labelY - 14, tw, 16);
-    suggestCtx.fillStyle = '#fff';
-    suggestCtx.fillText(label, s.x + 4, labelY - 2);
-  });
-}
-
-function updateDetectionBar() {
-  if (pendingSuggestions.length > 0) {
-    detectionBar.style.display = 'flex';
-    detectionCount.textContent = pendingSuggestions.length;
-  } else {
-    detectionBar.style.display = 'none';
-  }
-}
-
-function findSuggestionAt(x, y) {
-  for (let i = 0; i < pendingSuggestions.length; i++) {
-    const s = pendingSuggestions[i];
-    if (x >= s.x && x <= s.x + s.w && y >= s.y && y <= s.y + s.h) return i;
-  }
-  return -1;
-}
-
-function confirmSuggestion(idx) {
-  const s = pendingSuggestions[idx];
-  if (!s) return;
-  undoStack.push(editCanvas.toDataURL('image/png'));
-  undoBtn.disabled = false;
-  editCtx.fillStyle = '#000000';
-  editCtx.fillRect(s.x, s.y, s.w, s.h);
-  pendingSuggestions.splice(idx, 1);
-  drawSuggestionOverlay();
-  updateDetectionBar();
-  pageStates[currentEditIndex] = { dataUrl: editCanvas.toDataURL('image/png') };
-  refreshThumbBadges();
-}
-
-function redactAllDetected() {
-  if (pendingSuggestions.length === 0) return;
-  undoStack.push(editCanvas.toDataURL('image/png'));
-  undoBtn.disabled = false;
-  editCtx.fillStyle = '#000000';
-  pendingSuggestions.forEach(s => editCtx.fillRect(s.x, s.y, s.w, s.h));
-  pendingSuggestions = [];
-  drawSuggestionOverlay();
-  updateDetectionBar();
-  pageStates[currentEditIndex] = { dataUrl: editCanvas.toDataURL('image/png') };
-  refreshThumbBadges();
 }
 
 function loadImageIntoCanvas(dataUrl) {
@@ -611,7 +418,6 @@ function loadImageIntoCanvas(dataUrl) {
 // --- Drawing ---
 let drawing = false;
 let startX = 0, startY = 0;
-let pendingSuggestionHit = -1;
 
 function canvasCoords(e) {
   const rect = editCanvas.getBoundingClientRect();
@@ -625,17 +431,9 @@ function canvasCoords(e) {
 function attachDrawHandlers() {
   editCanvas.onpointerdown = (e) => {
     e.preventDefault();
-    const p = canvasCoords(e);
-    const hit = findSuggestionAt(p.x, p.y);
-    if (hit !== -1) {
-      pendingSuggestionHit = hit;
-      drawing = false;
-      editCanvas.setPointerCapture(e.pointerId);
-      return;
-    }
-    pendingSuggestionHit = -1;
     undoStack.push(editCanvas.toDataURL('image/png'));
     undoBtn.disabled = false;
+    const p = canvasCoords(e);
     startX = p.x; startY = p.y;
     drawing = true;
     editCanvas.setPointerCapture(e.pointerId);
@@ -647,17 +445,12 @@ function attachDrawHandlers() {
     redrawPreview(startX, startY, p.x, p.y);
   };
   editCanvas.onpointerup = (e) => {
-    if (pendingSuggestionHit !== -1) {
-      confirmSuggestion(pendingSuggestionHit);
-      pendingSuggestionHit = -1;
-      return;
-    }
     if (!drawing) return;
     drawing = false;
     const p = canvasCoords(e);
     commitBox(startX, startY, p.x, p.y);
   };
-  editCanvas.onpointercancel = () => { drawing = false; pendingSuggestionHit = -1; };
+  editCanvas.onpointercancel = () => { drawing = false; };
 }
 
 function redrawPreview(x0, y0, x1, y1) {
@@ -677,22 +470,14 @@ function commitBox(x0, y0, x1, y1) {
     img.onload = () => { editCtx.clearRect(0,0,editCanvas.width,editCanvas.height); editCtx.drawImage(img,0,0); };
     img.src = undoStack.pop();
     undoBtn.disabled = undoStack.length === 0;
-    return;
   }
-  pageStates[currentEditIndex] = { dataUrl: editCanvas.toDataURL('image/png') };
-  refreshThumbBadges();
 }
 
 function undoStroke() {
   if (undoStack.length === 0) return;
   const last = undoStack.pop();
   const img = new Image();
-  img.onload = () => {
-    editCtx.clearRect(0,0,editCanvas.width,editCanvas.height);
-    editCtx.drawImage(img,0,0);
-    pageStates[currentEditIndex] = { dataUrl: editCanvas.toDataURL('image/png') };
-    refreshThumbBadges();
-  };
+  img.onload = () => { editCtx.clearRect(0,0,editCanvas.width,editCanvas.height); editCtx.drawImage(img,0,0); };
   img.src = last;
   undoBtn.disabled = undoStack.length === 0;
 }
@@ -703,21 +488,18 @@ async function clearPage() {
   editCanvas.width = viewport.width;
   editCanvas.height = viewport.height;
   await page.render({ canvasContext: editCtx, viewport }).promise;
-  syncSuggestCanvasSize();
   undoStack = [];
   undoBtn.disabled = true;
   pageStates[currentEditIndex] = null;
-  pendingSuggestions = await detectSensitiveOnPage(currentEditIndex, EDIT_SCALE);
-  drawSuggestionOverlay();
-  updateDetectionBar();
   refreshThumbBadges();
 }
 
 function closeEditor() {
+  if (undoStack.length > 0) {
+    pageStates[currentEditIndex] = { dataUrl: editCanvas.toDataURL('image/png') };
+  }
   editorCard.style.display = 'none';
   currentEditIndex = null;
-  pendingSuggestions = [];
-  suggestCtx.clearRect(0,0,suggestCanvas.width,suggestCanvas.height);
   editCanvas.onpointerdown = editCanvas.onpointermove = editCanvas.onpointerup = null;
   refreshThumbBadges();
 }
@@ -781,7 +563,7 @@ function fmtSize(b) { if(b<1024) return b+' B'; if(b<1048576) return (b/1024).to
 
 function resetAll() {
   pdfFile = null; pdfDocProxy = null; totalPages = 0;
-  pageStates = []; pageFlags = []; undoStack = []; pendingSuggestions = []; currentEditIndex = null;
+  pageStates = []; undoStack = []; currentEditIndex = null;
   fileInput.value = '';
   pagesGrid.innerHTML = '';
   optionsSection.style.display = 'none';
