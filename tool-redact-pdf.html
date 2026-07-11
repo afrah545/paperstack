@@ -443,54 +443,38 @@ function refreshThumbBadges() {
 }
 
 // Core text-scanning logic. Returns array of {x,y,w,h,type} in canvas-pixel space for given scale.
-// Uses pdf.js's own text-layer renderer to get pixel-accurate positions (the same system that
-// powers text selection in every PDF viewer) instead of computing transforms by hand.
+// Transforms each glyph run's 4 corners (with generous ascent/descent padding) through the
+// page-to-canvas matrix and takes an axis-aligned min/max box. Using min/max over sampled
+// corners (rather than assuming which direction is "up") avoids sign/orientation bugs entirely.
 async function detectSensitiveOnPage(pageIndex, scale) {
   const page = await pdfDocProxy.getPage(pageIndex + 1);
   const viewport = page.getViewport({ scale });
   const textContent = await page.getTextContent();
 
-  const container = document.createElement('div');
-  container.style.position = 'absolute';
-  container.style.top = '-100000px';
-  container.style.left = '-100000px';
-  container.style.width = viewport.width + 'px';
-  container.style.height = viewport.height + 'px';
-  document.body.appendChild(container);
-
-  let spans = [];
-  try {
-    const task = pdfjsLib.renderTextLayer({
-      textContentSource: textContent,
-      textContent: textContent,
-      container,
-      viewport
-    });
-    await task.promise;
-    spans = Array.from(container.children).filter(el => el.tagName === 'SPAN');
-  } catch(e) {
-    document.body.removeChild(container);
-    return [];
-  }
-
-  const containerRect = container.getBoundingClientRect();
   let fullText = '';
   const items = [];
-  spans.forEach(span => {
-    const str = span.textContent || '';
-    if (!str) return;
-    const r = span.getBoundingClientRect();
-    const x = r.left - containerRect.left;
-    const y = r.top - containerRect.top;
-    const w = r.width;
-    const h = r.height;
-    const start = fullText.length;
-    fullText += str + ' ';
-    const end = fullText.length - 1;
-    items.push({ x, y, w, h, start, end });
-  });
+  for (const item of textContent.items) {
+    if (!item.str) continue;
+    const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
+    const w = item.width || 0;
+    const corners = [
+      [0, -0.35], [w, -0.35], [0, 1.05], [w, 1.05]
+    ].map(([lx, ly]) => ({
+      x: tx[0]*lx + tx[2]*ly + tx[4],
+      y: tx[1]*lx + tx[3]*ly + tx[5]
+    }));
+    const xs = corners.map(c => c.x);
+    const ys = corners.map(c => c.y);
+    const boxX = Math.min(...xs);
+    const boxY = Math.min(...ys);
+    const boxW = Math.max(...xs) - boxX;
+    const boxH = Math.max(...ys) - boxY;
 
-  document.body.removeChild(container);
+    const start = fullText.length;
+    fullText += item.str + ' ';
+    const end = fullText.length - 1;
+    items.push({ x: boxX, y: boxY, w: boxW, h: boxH, start, end });
+  }
 
   const found = [];
   PATTERNS.forEach(p => {
