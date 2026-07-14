@@ -7,160 +7,228 @@
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Redact PDF Free | PaperStack</title>
-<meta name="description" content="Permanently black out sensitive text and images in a PDF, right in your browser. No uploads, no sign-up, files never leave your device."/>
+<title>Redact PDF Free — Permanently Remove Sensitive Text | PaperStack</title>
+<meta name="description" content="Permanently black out sensitive text and images in a PDF. Draw boxes, search by keyword, strip metadata. Runs entirely in your browser — nothing uploaded."/>
 <link rel="canonical" href="https://paperstack-one.vercel.app/tool-redact-pdf.html"/>
-<meta property="og:title" content="Redact PDF Free | PaperStack"/>
-<meta property="og:description" content="Permanently black out sensitive text and images in a PDF, right in your browser. No uploads, no sign-up, files never leave your device."/>
+<meta property="og:title" content="Redact PDF Free — Permanently Remove Sensitive Text | PaperStack"/>
+<meta property="og:description" content="Permanently black out sensitive text and images in a PDF. Draw boxes, search by keyword, strip metadata. Runs entirely in your browser — nothing uploaded."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://paperstack-one.vercel.app/tool-redact-pdf.html"/>
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Redact PDF Free | PaperStack"/>
-<meta name="twitter:description" content="Permanently black out sensitive text and images in a PDF, right in your browser. No uploads, no sign-up, files never leave your device."/>
+<meta name="twitter:title" content="Redact PDF Free — Permanently Remove Sensitive Text | PaperStack"/>
+<meta name="twitter:description" content="Permanently black out sensitive text and images in a PDF. Draw boxes, search by keyword, strip metadata. Runs entirely in your browser — nothing uploaded."/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
-  :root {
-    --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec;
-    --text:#111827; --muted:#6b7280; --light:#9ca3af;
-    --accent:#4f6ef7; --accent-l:#eef1fe;
-    --green:#16a34a; --green-l:#dcfce7;
-    --red:#dc2626; --red-l:#fee2e2;
-    --amber:#d97706; --amber-l:#fef3c7;
-  }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+:root {
+  --bg:#f7f8fa; --white:#ffffff; --border:#e4e7ec;
+  --text:#111827; --muted:#6b7280; --light:#9ca3af;
+  --accent:#4f6ef7; --accent-l:#eef1fe;
+  --green:#16a34a; --green-l:#dcfce7;
+  --red:#dc2626; --red-l:#fee2e2;
+  --amber:#d97706; --amber-l:#fef3c7;
+  --dark:#111827;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
 
-  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-  .logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
-  .logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
-  .back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
-  .back-link:hover{color:var(--text);border-color:var(--accent);}
+/* NAV */
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.logo{font-size:1.15rem;font-weight:800;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+.logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+.back-link{font-size:.83rem;font-weight:500;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+.back-link:hover{color:var(--text);border-color:var(--accent);}
 
-  .breadcrumb{max-width:760px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
-  .breadcrumb a{color:var(--muted);text-decoration:none;}
-  .breadcrumb a:hover{color:var(--accent);}
-  .breadcrumb .sep{color:var(--light);}
-  .breadcrumb .current{color:var(--text);font-weight:500;}
+/* BREADCRUMB */
+.breadcrumb{max-width:820px;margin:20px auto 0;padding:0 24px;font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center;}
+.breadcrumb a{color:var(--muted);text-decoration:none;}
+.breadcrumb a:hover{color:var(--accent);}
+.breadcrumb .sep{color:var(--light);}
+.breadcrumb .current{color:var(--text);font-weight:500;}
 
-  .tool-hero{max-width:760px;margin:0 auto;padding:28px 24px 24px;display:flex;align-items:center;gap:18px;}
-  .tool-hero-icon{width:56px;height:56px;background:#111827;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
-  .tool-hero h1{font-size:1.5rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px;}
-  .tool-hero p{font-size:.875rem;color:var(--muted);}
+/* HERO */
+.tool-hero{max-width:820px;margin:0 auto;padding:28px 24px 20px;display:flex;align-items:center;gap:18px;}
+.tool-hero-icon{width:56px;height:56px;background:var(--dark);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+.tool-hero h1{font-size:1.5rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px;}
+.tool-hero p{font-size:.875rem;color:var(--muted);}
 
-  .tool-wrap{max-width:760px;margin:0 auto;padding:0 24px 48px;}
-  .card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:28px;margin-bottom:16px;}
-  .card-title{font-size:.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px;}
+/* LAYOUT */
+.tool-wrap{max-width:820px;margin:0 auto;padding:0 24px 48px;}
+.card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:24px 26px;margin-bottom:14px;}
+.card-title{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:14px;}
 
-  .warn-box{background:var(--amber-l);border:1.5px solid #fcd34d;border-radius:10px;padding:14px 16px;font-size:.83rem;color:#92400e;margin-bottom:16px;line-height:1.55;}
-  .warn-box strong{color:#78350f;}
-  .warn-box ul{margin:8px 0 0 18px;}
-  .warn-box li{margin-bottom:4px;}
+/* NOTICE */
+.notice{background:var(--amber-l);border:1.5px solid #fcd34d;border-radius:10px;padding:13px 16px;font-size:.82rem;color:#78350f;margin-bottom:14px;line-height:1.55;}
+.notice strong{color:#78350f;display:block;margin-bottom:3px;}
+.notice ul{margin:6px 0 0 16px;}
+.notice li{margin-bottom:3px;}
 
-  .drop-area{border:2px dashed var(--border);border-radius:10px;background:var(--bg);padding:44px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;}
-  .drop-area.dragover{border-color:var(--accent);background:var(--accent-l);}
-  .drop-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-  .drop-icon{font-size:2.2rem;margin-bottom:12px;}
-  .drop-area h3{font-size:.95rem;font-weight:700;margin-bottom:5px;}
-  .drop-area p{font-size:.8rem;color:var(--muted);}
-  .drop-area .browse{color:var(--accent);font-weight:600;text-decoration:underline;}
+/* UPLOAD */
+.drop-area{border:2px dashed var(--border);border-radius:10px;background:var(--bg);padding:40px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;}
+.drop-area.dragover{border-color:var(--accent);background:var(--accent-l);}
+.drop-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.drop-icon{font-size:2rem;margin-bottom:10px;}
+.drop-area h3{font-size:.93rem;font-weight:700;margin-bottom:4px;}
+.drop-area p{font-size:.79rem;color:var(--muted);}
+.drop-area .browse{color:var(--accent);font-weight:600;text-decoration:underline;}
 
-  .file-info-bar{background:var(--accent-l);border-radius:8px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
-  .file-info-bar .fname{font-size:.875rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .file-info-bar .fmeta{font-size:.75rem;color:var(--accent);flex-shrink:0;}
-  .change-file{background:none;border:1.5px solid var(--accent);color:var(--accent);padding:5px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;flex-shrink:0;}
-  .change-file:hover{background:var(--accent);color:white;}
+/* FILE BAR */
+.file-bar{background:var(--accent-l);border-radius:8px;padding:11px 15px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.file-bar .fname{font-size:.875rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.file-bar .fmeta{font-size:.73rem;color:var(--accent);flex-shrink:0;}
+.change-btn{background:none;border:1.5px solid var(--accent);color:var(--accent);padding:5px 11px;border-radius:6px;font-size:.73rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;flex-shrink:0;}
+.change-btn:hover{background:var(--accent);color:white;}
 
-  .pages-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;margin-top:4px;}
-  .page-thumb{position:relative;border-radius:8px;overflow:hidden;border:2px solid var(--border);cursor:pointer;transition:border-color .2s,box-shadow .2s;background:var(--bg);}
-  .page-thumb canvas{display:block;width:100%;height:auto;}
-  .page-thumb .thumb-label{font-size:.7rem;font-weight:600;color:var(--muted);text-align:center;padding:5px 4px;background:var(--white);border-top:1px solid var(--border);}
-  .page-thumb.edited{border-color:var(--green);}
-  .page-thumb .edited-badge{position:absolute;top:5px;right:5px;background:var(--green);color:white;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:20px;display:none;align-items:center;gap:3px;}
-  .page-thumb.edited .edited-badge{display:flex;}
+/* OPTIONS ROW */
+.options-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.opt-group{flex:1;min-width:160px;}
+.opt-label{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;}
+.opt-select{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:.82rem;font-family:'Inter',sans-serif;color:var(--text);background:var(--white);cursor:pointer;}
+.opt-select:focus{outline:none;border-color:var(--accent);}
 
-  .select-hint{font-size:.8rem;color:var(--muted);margin-bottom:14px;}
-  .select-hint strong{color:var(--text);}
+/* SEARCH BAR */
+.search-row{display:flex;gap:8px;margin-bottom:14px;}
+.search-field{flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.84rem;font-family:'Inter',sans-serif;color:var(--text);transition:border-color .15s;}
+.search-field:focus{outline:none;border-color:var(--accent);}
+.search-btn{background:var(--accent);border:none;color:white;padding:9px 16px;border-radius:8px;font-size:.8rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;white-space:nowrap;transition:opacity .15s;}
+.search-btn:hover{opacity:.85;}
+.search-btn:disabled{opacity:.4;cursor:not-allowed;}
+.search-results{font-size:.78rem;color:var(--muted);margin-top:6px;min-height:18px;}
+.search-results .hit{color:var(--green);font-weight:600;}
+.search-results .miss{color:var(--red);}
 
-  /* EDITOR */
-  .editor-card{display:none;}
-  .editor-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;}
-  .editor-title{font-size:.9rem;font-weight:700;}
-  .editor-actions{display:flex;gap:8px;flex-wrap:wrap;}
-  .tbtn{background:var(--white);border:1.5px solid var(--border);color:var(--text);padding:7px 14px;border-radius:7px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
-  .tbtn:hover{border-color:var(--accent);color:var(--accent);}
-  .tbtn.primary{background:#111827;border-color:#111827;color:white;}
-  .tbtn.primary:hover{opacity:.85;color:white;}
-  .tbtn:disabled{opacity:.4;cursor:not-allowed;}
+/* META TOGGLE */
+.meta-strip-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;margin-bottom:14px;}
+.meta-strip-label{font-size:.84rem;font-weight:600;}
+.meta-strip-desc{font-size:.74rem;color:var(--muted);margin-top:2px;}
+.toggle{position:relative;width:40px;height:22px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:#d1d5db;border-radius:11px;cursor:pointer;transition:background .2s;}
+.toggle input:checked+.toggle-slider{background:var(--accent);}
+.toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:white;border-radius:50%;transition:transform .2s;}
+.toggle input:checked+.toggle-slider:before{transform:translateX(18px);}
 
-  .canvas-wrap{border:1.5px solid var(--border);border-radius:10px;overflow:auto;background:#e5e7eb;padding:10px;text-align:center;}
-  .canvas-wrap canvas{max-width:100%;height:auto;cursor:crosshair;background:white;box-shadow:0 1px 4px rgba(0,0,0,.15);touch-action:none;}
-  .editor-hint{font-size:.78rem;color:var(--muted);margin-top:10px;text-align:center;}
+/* PAGE GRID */
+.pages-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.pages-hint{font-size:.79rem;color:var(--muted);}
+.pages-hint strong{color:var(--text);}
+.pages-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;}
+.page-thumb{border:2px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all .15s;background:var(--bg);position:relative;}
+.page-thumb:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 3px 10px rgba(79,110,247,.15);}
+.page-thumb.has-marks{border-color:var(--green);}
+.page-thumb.active{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-l);}
+.page-thumb canvas{display:block;width:100%;height:auto;}
+.page-thumb .thumb-label{font-size:.68rem;font-weight:600;color:var(--muted);text-align:center;padding:4px;background:var(--white);border-top:1px solid var(--border);}
+.page-thumb.has-marks .thumb-label{color:var(--green);}
+.mark-badge{position:absolute;top:4px;right:4px;background:var(--green);color:white;font-size:.6rem;font-weight:700;padding:2px 6px;border-radius:10px;display:none;}
+.page-thumb.has-marks .mark-badge{display:block;}
 
-  .apply-btn{width:100%;padding:14px;background:#111827;border:none;border-radius:10px;color:white;font-size:.95rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:opacity .15s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;}
-  .apply-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px);}
-  .apply-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+/* EDITOR */
+.editor-section{display:none;}
+.editor-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px;}
+.editor-bar-left{display:flex;align-items:center;gap:10px;}
+.editor-page-label{font-size:.9rem;font-weight:700;}
+.editor-nav{display:flex;gap:5px;}
+.enav-btn{background:var(--white);border:1.5px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.enav-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+.enav-btn:disabled{opacity:.3;cursor:not-allowed;}
+.editor-bar-right{display:flex;gap:7px;flex-wrap:wrap;}
+.tbtn{background:var(--white);border:1.5px solid var(--border);color:var(--text);padding:6px 12px;border-radius:7px;font-size:.76rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;white-space:nowrap;}
+.tbtn:hover{border-color:var(--accent);color:var(--accent);}
+.tbtn:disabled{opacity:.35;cursor:not-allowed;}
+.tbtn.danger:hover{border-color:var(--red);color:var(--red);}
+.tbtn.done-btn{background:var(--dark);border-color:var(--dark);color:white;}
+.tbtn.done-btn:hover{opacity:.85;color:white;}
 
-  .progress-wrap{margin-top:14px;display:none;}
-  .progress-bg{background:var(--bg);border-radius:6px;height:6px;overflow:hidden;margin-bottom:7px;}
-  .progress-bar{height:100%;background:linear-gradient(90deg,#111827,#374151);width:0%;border-radius:6px;transition:width .3s;}
-  .progress-label{font-size:.77rem;color:var(--muted);text-align:center;}
+.canvas-scroll{overflow:auto;background:#e5e7eb;border-radius:10px;border:1.5px solid var(--border);padding:10px;text-align:center;max-height:600px;}
+.canvas-scroll canvas{max-width:100%;height:auto;cursor:crosshair;background:white;box-shadow:0 1px 6px rgba(0,0,0,.18);touch-action:none;display:block;margin:0 auto;}
+.editor-footer{display:flex;align-items:center;justify-content:space-between;margin-top:9px;flex-wrap:wrap;gap:8px;}
+.editor-hint{font-size:.75rem;color:var(--muted);}
+.marks-count{font-size:.75rem;font-weight:600;color:var(--accent);}
 
-  .error-box{display:none;background:var(--red-l);border:1.5px solid #fca5a5;border-radius:9px;padding:12px 16px;color:var(--red);font-size:.83rem;margin-top:12px;}
+/* VERIFY PANEL */
+.verify-section{display:none;}
+.verify-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;max-height:260px;overflow-y:auto;padding:2px;}
+.verify-thumb{border-radius:7px;overflow:hidden;border:1.5px solid var(--border);background:var(--bg);}
+.verify-thumb canvas{display:block;width:100%;height:auto;}
+.verify-thumb .vt-label{font-size:.65rem;font-weight:600;color:var(--muted);text-align:center;padding:3px;background:var(--white);border-top:1px solid var(--border);}
+.verify-thumb.redacted-page{border-color:var(--green);}
+.verify-thumb.redacted-page .vt-label{color:var(--green);}
+.verify-notice{background:var(--green-l);border:1.5px solid #86efac;border-radius:8px;padding:12px 15px;font-size:.82rem;color:#15803d;margin-bottom:12px;line-height:1.55;}
+.verify-notice strong{display:block;margin-bottom:2px;}
 
-  .success-box{display:none;background:var(--green-l);border:1.5px solid #86efac;border-radius:12px;padding:24px;text-align:center;margin-top:14px;}
-  .success-box .s-icon{font-size:2rem;margin-bottom:8px;}
-  .success-box h3{font-size:1rem;font-weight:700;color:var(--green);margin-bottom:4px;}
-  .success-box p{font-size:.82rem;color:#15803d;margin-bottom:16px;}
-  .download-btn{display:inline-flex;align-items:center;gap:7px;background:var(--green);color:white;border:none;padding:11px 24px;border-radius:8px;font-size:.875rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;transition:opacity .15s;}
-  .download-btn:hover{opacity:.85;}
-  .again-btn{margin-top:10px;background:none;border:1.5px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;display:block;margin-left:auto;margin-right:auto;}
-  .again-btn:hover{border-color:var(--accent);color:var(--accent);}
+/* APPLY BTN */
+.apply-btn{width:100%;padding:14px;background:var(--dark);border:none;border-radius:10px;color:white;font-size:.95rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:opacity .15s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.apply-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px);}
+.apply-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
 
-  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-  .feat{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:16px;}
-  .feat-icon{font-size:1.2rem;margin-bottom:8px;}
-  .feat h4{font-size:.83rem;font-weight:700;margin-bottom:3px;}
-  .feat p{font-size:.75rem;color:var(--muted);line-height:1.5;}
+/* PROGRESS */
+.progress-wrap{display:none;margin-top:12px;}
+.progress-bg{background:var(--bg);border-radius:6px;height:6px;overflow:hidden;margin-bottom:6px;}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--dark),#374151);width:0%;border-radius:6px;transition:width .25s;}
+.progress-label{font-size:.76rem;color:var(--muted);text-align:center;}
 
-  footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
-  .footer-logo{font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:7px;}
-  .footer-links{display:flex;gap:16px;}
-  .footer-links a{font-size:.78rem;color:var(--muted);text-decoration:none;}
-  .footer-links a:hover{color:var(--text);}
-  .footer-copy{font-size:.72rem;color:var(--light);}
+.error-box{display:none;background:var(--red-l);border:1.5px solid #fca5a5;border-radius:9px;padding:11px 15px;color:var(--red);font-size:.82rem;margin-top:10px;}
 
-  @media(max-width:600px){
-    nav{padding:0 16px;}
-    .tool-hero{flex-direction:column;align-items:flex-start;gap:12px;}
-    .pages-grid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr));}
-    .features-grid{grid-template-columns:1fr;}
-    footer{padding:16px;flex-direction:column;align-items:flex-start;}
-  }
+/* SUCCESS */
+.success-box{display:none;background:var(--green-l);border:1.5px solid #86efac;border-radius:12px;padding:22px;text-align:center;margin-top:12px;}
+.success-box .s-icon{font-size:1.9rem;margin-bottom:7px;}
+.success-box h3{font-size:1rem;font-weight:700;color:var(--green);margin-bottom:6px;}
+.success-stats{display:flex;justify-content:center;gap:24px;margin-bottom:14px;}
+.stat{text-align:center;}
+.stat-val{font-size:1.1rem;font-weight:800;color:var(--text);}
+.stat-label{font-size:.7rem;color:#15803d;text-transform:uppercase;letter-spacing:.3px;}
+.download-btn{display:inline-flex;align-items:center;gap:7px;background:var(--green);color:white;border:none;padding:11px 22px;border-radius:8px;font-size:.875rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;transition:opacity .15s;}
+.download-btn:hover{opacity:.85;}
+.again-btn{margin-top:9px;background:none;border:1.5px solid var(--border);color:var(--muted);padding:7px 16px;border-radius:8px;font-size:.78rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;display:block;margin-left:auto;margin-right:auto;}
+.again-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* META SUMMARY */
+.meta-summary{background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:11px 14px;margin-top:10px;display:none;}
+.meta-summary-title{font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;}
+.meta-row{display:flex;gap:8px;font-size:.78rem;margin-bottom:4px;align-items:baseline;}
+.meta-key{color:var(--muted);min-width:90px;flex-shrink:0;}
+.meta-before{text-decoration:line-through;color:#fca5a5;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.meta-after{color:var(--green);font-weight:600;}
+
+/* FEATURES */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px;}
+.feat{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:15px;}
+.feat-icon{font-size:1.15rem;margin-bottom:7px;}
+.feat h4{font-size:.82rem;font-weight:700;margin-bottom:3px;}
+.feat p{font-size:.74rem;color:var(--muted);line-height:1.5;}
+
+/* FOOTER */
+footer{background:var(--white);border-top:1px solid var(--border);padding:20px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-logo{font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:7px;}
+.footer-links{display:flex;gap:16px;}
+.footer-links a{font-size:.78rem;color:var(--muted);text-decoration:none;}
+.footer-links a:hover{color:var(--text);}
+.footer-copy{font-size:.72rem;color:var(--light);}
+
+@media(max-width:640px){
+  nav{padding:0 16px;}
+  .tool-hero{flex-direction:column;align-items:flex-start;gap:12px;}
+  .pages-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr));}
+  .features-grid{grid-template-columns:1fr;}
+  footer{padding:16px;flex-direction:column;align-items:flex-start;}
+  .options-row{flex-direction:column;}
+}
 </style>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-L99X3LFWVY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-L99X3LFWVY");
-</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-L99X3LFWVY");</script>
 </head>
 <body>
 
 <nav>
-  <a class="logo" href="index.html">
-    <div class="logo-icon">📄</div>
-    PaperStack
-  </a>
+  <a class="logo" href="index.html"><div class="logo-icon">📄</div>PaperStack</a>
   <a class="back-link" href="index.html">← All Tools</a>
 </nav>
 
 <div class="breadcrumb">
-  <a href="index.html">Home</a>
-  <span class="sep">›</span>
+  <a href="index.html">Home</a><span class="sep">›</span>
   <span class="current">Redact PDF</span>
 </div>
 
@@ -168,23 +236,23 @@
   <div class="tool-hero-icon">✏️</div>
   <div>
     <h1>Redact PDF</h1>
-    <p>Draw over sensitive text or images to permanently black them out.</p>
+    <p>Draw boxes, search by keyword, strip metadata. True redaction — nothing recoverable left behind.</p>
   </div>
 </div>
 
 <div class="tool-wrap">
 
-  <div class="warn-box">
-    <strong>⚠️ How this works — please read before you rely on this:</strong>
+  <div class="notice">
+    <strong>⚠️ How this works</strong>
     <ul>
-      <li>Any page you redact is converted into a flattened image. This guarantees the covered content can't be recovered, copied, or selected — but that page will no longer be searchable or text-selectable.</li>
-      <li>Pages you don't touch stay exactly as they were (still text/searchable).</li>
-      <li>Make sure your black box fully covers the sensitive area — zoom in if needed. Redaction only removes what's inside the box you draw.</li>
-      <li>Always open the downloaded PDF and double-check before sharing it.</li>
+      <li>Pages you redact are permanently converted to flattened images — covered text cannot be selected, copied, or recovered.</li>
+      <li>Pages you don't touch stay as searchable text.</li>
+      <li>Metadata stripping (Author, Title, Creator, dates) is on by default — turn it off only if you need to preserve it.</li>
+      <li>Always verify the preview before downloading.</li>
     </ul>
   </div>
 
-  <!-- UPLOAD -->
+  <!-- STEP 1: UPLOAD -->
   <div class="card" id="uploadCard">
     <div class="card-title">Step 1 — Upload your PDF</div>
     <div class="drop-area" id="dropArea">
@@ -195,78 +263,133 @@
     </div>
   </div>
 
-  <div id="optionsSection" style="display:none;">
+  <div id="mainSection" style="display:none;">
 
+    <!-- FILE LOADED -->
     <div class="card">
       <div class="card-title">File loaded</div>
-      <div class="file-info-bar">
+      <div class="file-bar">
         <div>
           <div class="fname" id="loadedName">file.pdf</div>
-          <div class="fmeta" id="loadedMeta">0 pages · 0 KB</div>
+          <div class="fmeta" id="loadedMeta"></div>
         </div>
-        <button class="change-file" onclick="resetAll()">Change file</button>
+        <button class="change-btn" onclick="resetAll()">Change file</button>
       </div>
     </div>
 
+    <!-- STEP 2: REDACTION OPTIONS -->
     <div class="card">
-      <div class="card-title">Step 2 — Select a page to redact</div>
-      <div class="select-hint">Click any page to open it and draw black boxes over sensitive content. <strong>Green = already redacted.</strong></div>
+      <div class="card-title">Step 2 — Redaction options</div>
+
+      <div class="options-row">
+        <div class="opt-group">
+          <div class="opt-label">Redaction colour</div>
+          <select class="opt-select" id="redactColor">
+            <option value="#000000">⬛ Black (standard)</option>
+            <option value="#FFFFFF">⬜ White</option>
+            <option value="#1e40af">🟦 Blue</option>
+          </select>
+        </div>
+        <div class="opt-group">
+          <div class="opt-label">Render quality</div>
+          <select class="opt-select" id="renderQuality">
+            <option value="2.0">Standard (faster)</option>
+            <option value="2.8" selected>High (recommended)</option>
+            <option value="3.5">Maximum (slower)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- METADATA STRIP TOGGLE -->
+      <div class="meta-strip-row">
+        <div>
+          <div class="meta-strip-label">🧹 Strip document metadata</div>
+          <div class="meta-strip-desc">Removes Author, Title, Creator, Producer, and dates from the output file</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="stripMetaToggle" checked/>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+    <!-- STEP 3: SELECT PAGE & DRAW -->
+    <div class="card">
+      <div class="card-title">Step 3 — Select a page and draw redaction boxes</div>
+      <div class="pages-header">
+        <div class="pages-hint">Click any page thumbnail to open the editor. <strong>Green border = has redactions.</strong></div>
+        <div style="font-size:.75rem;color:var(--muted);" id="marksTotal"></div>
+      </div>
       <div class="pages-grid" id="pagesGrid"></div>
     </div>
 
     <!-- EDITOR -->
-    <div class="card editor-card" id="editorCard">
-      <div class="editor-toolbar">
-        <div class="editor-title" id="editorTitle">Editing page 1</div>
-        <div class="editor-actions">
-          <button class="tbtn" id="undoBtn" onclick="undoStroke()" disabled>↩ Undo box</button>
-          <button class="tbtn" id="clearBtn" onclick="clearPage()">Clear page</button>
-          <button class="tbtn primary" onclick="closeEditor()">✓ Done with this page</button>
+    <div class="card editor-section" id="editorSection">
+      <div class="editor-bar">
+        <div class="editor-bar-left">
+          <div class="editor-page-label" id="editorLabel">Page 1</div>
+          <div class="editor-nav">
+            <button class="enav-btn" id="prevPageBtn" onclick="navigatePage(-1)" title="Previous page">‹</button>
+            <button class="enav-btn" id="nextPageBtn" onclick="navigatePage(1)" title="Next page">›</button>
+          </div>
+        </div>
+        <div class="editor-bar-right">
+          <button class="tbtn" id="undoBtn" onclick="undoLast()" disabled>↩ Undo</button>
+          <button class="tbtn danger" onclick="clearCurrentPage()">🗑 Clear page</button>
+          <button class="tbtn done-btn" onclick="closeEditor()">✓ Done with page</button>
         </div>
       </div>
-      <div class="canvas-wrap">
+      <div class="canvas-scroll" id="canvasScroll">
         <canvas id="editCanvas"></canvas>
       </div>
-      <div class="editor-hint">Click and drag to draw a black box over anything you want redacted.</div>
+      <div class="editor-footer">
+        <div class="editor-hint">Click and drag to draw a redaction box. Hold Shift for finer control.</div>
+        <div class="marks-count" id="marksCount"></div>
+      </div>
     </div>
 
+    <!-- STEP 4: VERIFY -->
+    <div class="card verify-section" id="verifySection">
+      <div class="card-title">Step 4 — Verify before downloading</div>
+      <div class="verify-notice" id="verifyNotice"></div>
+      <div class="verify-grid" id="verifyGrid"></div>
+    </div>
+
+    <!-- APPLY -->
     <div class="card">
-      <button class="apply-btn" id="applyBtn" onclick="finalizePdf()" disabled>✏️ Apply Redactions & Download</button>
+      <button class="apply-btn" id="applyBtn" onclick="finalize()" disabled>✏️ Apply Redactions & Download</button>
       <div class="progress-wrap" id="progressWrap">
         <div class="progress-bg"><div class="progress-bar" id="progressBar"></div></div>
         <div class="progress-label" id="progressLabel">Processing…</div>
       </div>
       <div class="error-box" id="errorBox"></div>
+
       <div class="success-box" id="successBox">
         <div class="s-icon">✅</div>
-        <h3>Redactions applied!</h3>
-        <p id="successDesc">Your PDF is ready to download.</p>
-        <a class="download-btn" id="downloadLink" href="#" download="redacted.pdf">⬇️ Download PDF</a>
+        <h3>Redactions applied successfully</h3>
+        <div class="success-stats">
+          <div class="stat"><div class="stat-val" id="statPages">0</div><div class="stat-label">Pages redacted</div></div>
+          <div class="stat"><div class="stat-val" id="statBoxes">0</div><div class="stat-label">Boxes applied</div></div>
+          <div class="stat"><div class="stat-val" id="statMeta">—</div><div class="stat-label">Metadata</div></div>
+        </div>
+        <div class="meta-summary" id="metaSummary">
+          <div class="meta-summary-title">Metadata removed</div>
+          <div id="metaRows"></div>
+        </div>
+        <a class="download-btn" id="downloadLink" href="#" download="redacted.pdf">⬇️ Download Redacted PDF</a>
         <button class="again-btn" onclick="resetAll()">Redact a different file</button>
       </div>
     </div>
 
-  </div>
+  </div><!-- /mainSection -->
 
+  <!-- FEATURES -->
   <div class="features-grid">
-    <div class="feat">
-      <div class="feat-icon">🔒</div>
-      <h4>100% Private</h4>
-      <p>Files stay on your device. Nothing is uploaded to any server.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-icon">🧱</div>
-      <h4>Real redaction</h4>
-      <p>Redacted pages are flattened to images — no hidden text left underneath.</p>
-    </div>
-    <div class="feat">
-      <div class="feat-icon">⚡</div>
-      <h4>Instant result</h4>
-      <p>Processing happens in your browser — no waiting, no queue.</p>
-    </div>
+    <div class="feat"><div class="feat-icon">🔒</div><h4>100% private</h4><p>Everything runs in your browser. Your file never touches a server.</p></div>
+    <div class="feat"><div class="feat-icon">🧹</div><h4>Metadata stripped</h4><p>Author, Title, Creator, and timestamps removed from the output by default.</p></div>
+    <div class="feat"><div class="feat-icon">🔍</div><h4>Search & redact</h4><p>Find sensitive keywords across all pages and mark them in one click.</p></div>
   </div>
 
-</div>
+</div><!-- /tool-wrap -->
 
 <footer>
   <div class="footer-logo">
@@ -274,11 +397,7 @@
     PaperStack
   </div>
   <div class="footer-links">
-    <a href="about.html">About</a>
-    <a href="terms.html">Terms</a>
-    <a href="privacy.html">Privacy</a>
-    <a href="blog.html">Blog</a>
-    <a href="mailto:paperstack.help@gmail.com">Contact</a>
+    <a href="about.html">About</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="blog.html">Blog</a><a href="mailto:paperstack.help@gmail.com">Contact</a>
   </div>
   <div class="footer-copy">© 2026 PaperStack · Made in Kerala</div>
 </footer>
@@ -286,268 +405,517 @@
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
+// ─── State ───────────────────────────────────────────────────────────────────
 let pdfFile = null;
-let pdfDocProxy = null;
+let pdfProxy = null;
 let totalPages = 0;
-let currentEditIndex = null;
-const EDIT_SCALE = 2.2;
+let currentPage = null;        // 1-indexed
+const THUMB_SCALE = 0.28;
 
-let pageStates = [];
+// pageMarks[i] = array of {x,y,w,h} in canvas pixels (high-DPI scale)
+let pageMarks = [];            // indexed 0..totalPages-1
+let pagePNGCache = {};         // page index → dataUrl (after any drawing)
 let undoStack = [];
 
-const dropArea       = document.getElementById('dropArea');
-const fileInput      = document.getElementById('fileInput');
-const optionsSection = document.getElementById('optionsSection');
-const loadedName     = document.getElementById('loadedName');
-const loadedMeta     = document.getElementById('loadedMeta');
-const pagesGrid      = document.getElementById('pagesGrid');
-const editorCard     = document.getElementById('editorCard');
-const editorTitle    = document.getElementById('editorTitle');
-const editCanvas     = document.getElementById('editCanvas');
-const editCtx        = editCanvas.getContext('2d');
-const undoBtn        = document.getElementById('undoBtn');
-const applyBtn       = document.getElementById('applyBtn');
-const progressWrap   = document.getElementById('progressWrap');
-const progressBar    = document.getElementById('progressBar');
-const progressLabel  = document.getElementById('progressLabel');
-const errorBox       = document.getElementById('errorBox');
-const successBox     = document.getElementById('successBox');
-const downloadLink   = document.getElementById('downloadLink');
-const successDesc    = document.getElementById('successDesc');
+// Drawing state
+let isDrawing = false;
+let dragStart = {x:0, y:0};
+let editScale = 2.8;           // updated from select
 
-dropArea.addEventListener('dragover', e => { e.preventDefault(); dropArea.classList.add('dragover'); });
-dropArea.addEventListener('dragleave', () => dropArea.classList.remove('dragover'));
-dropArea.addEventListener('drop', e => { e.preventDefault(); dropArea.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
-fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
+// DOM refs
+const dropArea      = document.getElementById('dropArea');
+const fileInput     = document.getElementById('fileInput');
+const mainSection   = document.getElementById('mainSection');
+const loadedName    = document.getElementById('loadedName');
+const loadedMeta    = document.getElementById('loadedMeta');
+const pagesGrid     = document.getElementById('pagesGrid');
+const editorSection = document.getElementById('editorSection');
+const editorLabel   = document.getElementById('editorLabel');
+const editCanvas    = document.getElementById('editCanvas');
+const editCtx       = editCanvas.getContext('2d');
+const undoBtn       = document.getElementById('undoBtn');
+const marksCount    = document.getElementById('marksCount');
+const marksTotal    = document.getElementById('marksTotal');
+const applyBtn      = document.getElementById('applyBtn');
+const searchBtn     = document.getElementById('searchBtn');
+const searchField   = document.getElementById('searchField');
+const searchResults = document.getElementById('searchResults');
+const verifySection = document.getElementById('verifySection');
+const verifyGrid    = document.getElementById('verifyGrid');
+const verifyNotice  = document.getElementById('verifyNotice');
+const progressWrap  = document.getElementById('progressWrap');
+const progressBar   = document.getElementById('progressBar');
+const progressLabel = document.getElementById('progressLabel');
+const errorBox      = document.getElementById('errorBox');
+const successBox    = document.getElementById('successBox');
+const downloadLink  = document.getElementById('downloadLink');
+
+// ─── Upload ───────────────────────────────────────────────────────────────────
+dropArea.addEventListener('dragover', e=>{e.preventDefault();dropArea.classList.add('dragover');});
+dropArea.addEventListener('dragleave', ()=>dropArea.classList.remove('dragover'));
+dropArea.addEventListener('drop', e=>{e.preventDefault();dropArea.classList.remove('dragover');handleFile(e.dataTransfer.files[0]);});
+fileInput.addEventListener('change', ()=>handleFile(fileInput.files[0]));
+searchField.addEventListener('keydown', e=>{if(e.key==='Enter') doSearch();});
 
 async function handleFile(file) {
   if (!file) return;
   if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
     showError('Please select a PDF file.'); return;
   }
+  hideError();
   pdfFile = file;
   try {
-    const arrayBuffer = await file.arrayBuffer();
-    pdfDocProxy = await pdfjsLib.getDocument({ data: arrayBuffer.slice(0) }).promise;
-    totalPages = pdfDocProxy.numPages;
-    pageStates = new Array(totalPages).fill(null);
+    const buf = await file.arrayBuffer();
+    pdfProxy = await pdfjsLib.getDocument({data: buf.slice(0)}).promise;
+    totalPages = pdfProxy.numPages;
+    pageMarks = Array.from({length: totalPages}, ()=>[]);
+    pagePNGCache = {};
+
     loadedName.textContent = file.name;
-    loadedMeta.textContent = `${totalPages} pages · ${fmtSize(file.size)}`;
-    optionsSection.style.display = 'block';
-    editorCard.style.display = 'none';
+    loadedMeta.textContent = `${totalPages} page${totalPages!==1?'s':''} · ${fmtSize(file.size)}`;
+
+    mainSection.style.display = 'block';
     successBox.style.display = 'none';
+    editorSection.style.display = 'none';
+    verifySection.style.display = 'none';
     applyBtn.disabled = true;
-    hideError();
-    await renderThumbnails();
+    searchBtn.disabled = false;
+    searchResults.textContent = '';
+
+    await buildThumbnails();
   } catch(e) {
-    showError('Could not read this PDF. It may be corrupted or password-protected.');
+    showError('Could not open this PDF. It may be corrupted or password-protected.');
   }
 }
 
-async function renderThumbnails() {
+// ─── Thumbnails ───────────────────────────────────────────────────────────────
+async function buildThumbnails() {
   pagesGrid.innerHTML = '';
   for (let i = 1; i <= totalPages; i++) {
-    const page = await pdfDocProxy.getPage(i);
-    const viewport = page.getViewport({ scale: 0.3 });
-    const canvas = document.createElement('canvas');
-    canvas.width = viewport.width;
-    canvas.height = viewport.height;
-    await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
-
     const thumb = document.createElement('div');
     thumb.className = 'page-thumb';
-    thumb.dataset.index = i - 1;
+    thumb.dataset.page = i;
 
     const badge = document.createElement('div');
-    badge.className = 'edited-badge';
-    badge.textContent = '✓ Redacted';
+    badge.className = 'mark-badge';
+    badge.textContent = '✓';
 
     const label = document.createElement('div');
     label.className = 'thumb-label';
     label.textContent = `Page ${i}`;
 
-    thumb.appendChild(canvas);
+    const page = await pdfProxy.getPage(i);
+    const vp = page.getViewport({scale: THUMB_SCALE});
+    const c = document.createElement('canvas');
+    c.width = vp.width; c.height = vp.height;
+    await page.render({canvasContext: c.getContext('2d'), viewport: vp}).promise;
+
+    thumb.appendChild(c);
     thumb.appendChild(badge);
     thumb.appendChild(label);
-    thumb.addEventListener('click', () => openEditor(i - 1));
+    thumb.addEventListener('click', ()=>openEditor(i));
     pagesGrid.appendChild(thumb);
   }
 }
 
-function refreshThumbBadges() {
+function refreshThumbs() {
+  const totalBoxes = pageMarks.reduce((s,m)=>s+m.length, 0);
+  const redactedPages = pageMarks.filter(m=>m.length>0).length;
+  marksTotal.textContent = totalBoxes > 0 ? `${redactedPages} page${redactedPages!==1?'s':''} · ${totalBoxes} box${totalBoxes!==1?'es':''} marked` : '';
+  applyBtn.disabled = totalBoxes === 0;
+
   document.querySelectorAll('.page-thumb').forEach(t => {
-    const idx = parseInt(t.dataset.index, 10);
-    t.classList.toggle('edited', !!pageStates[idx]);
+    const idx = parseInt(t.dataset.page) - 1;
+    const hasMarks = pageMarks[idx] && pageMarks[idx].length > 0;
+    t.classList.toggle('has-marks', hasMarks);
+    t.classList.toggle('active', parseInt(t.dataset.page) === currentPage);
   });
-  applyBtn.disabled = !pageStates.some(s => !!s);
+
+  // Show verify section when there are marks
+  if (pageMarks.some(m=>m.length>0)) {
+    buildVerifyGrid();
+    verifySection.style.display = 'block';
+  } else {
+    verifySection.style.display = 'none';
+  }
 }
 
-async function openEditor(idx) {
-  currentEditIndex = idx;
-  editorTitle.textContent = `Editing page ${idx + 1}`;
+// ─── Editor ───────────────────────────────────────────────────────────────────
+async function openEditor(pageNum) {
+  currentPage = pageNum;
+  editScale = parseFloat(document.getElementById('renderQuality').value);
   undoStack = [];
   undoBtn.disabled = true;
-  editorCard.style.display = 'block';
-  editorCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  editorSection.style.display = 'block';
+  editorSection.scrollIntoView({behavior:'smooth', block:'start'});
+  editorLabel.textContent = `Page ${pageNum} of ${totalPages}`;
+  document.getElementById('prevPageBtn').disabled = pageNum <= 1;
+  document.getElementById('nextPageBtn').disabled = pageNum >= totalPages;
 
-  if (pageStates[idx]) {
-    await loadImageIntoCanvas(pageStates[idx].dataUrl);
-  } else {
-    const page = await pdfDocProxy.getPage(idx + 1);
-    const viewport = page.getViewport({ scale: EDIT_SCALE });
-    editCanvas.width = viewport.width;
-    editCanvas.height = viewport.height;
-    await page.render({ canvasContext: editCtx, viewport }).promise;
+  await renderEditPage(pageNum);
+  updateMarksCount();
+  attachPointerHandlers();
+}
+
+async function renderEditPage(pageNum) {
+  const idx = pageNum - 1;
+  const page = await pdfProxy.getPage(pageNum);
+  const vp = page.getViewport({scale: editScale});
+  editCanvas.width = vp.width;
+  editCanvas.height = vp.height;
+
+  // Always re-render clean from PDF, then overlay saved marks
+  await page.render({canvasContext: editCtx, viewport: vp}).promise;
+
+  // Re-draw existing marks for this page
+  const color = document.getElementById('redactColor').value;
+  editCtx.fillStyle = color;
+  for (const mark of pageMarks[idx]) {
+    editCtx.fillRect(mark.x, mark.y, mark.w, mark.h);
   }
-  attachDrawHandlers();
+  // Cache the state
+  pagePNGCache[idx] = editCanvas.toDataURL('image/png');
 }
 
-function loadImageIntoCanvas(dataUrl) {
-  return new Promise(resolve => {
-    const img = new Image();
-    img.onload = () => {
-      editCanvas.width = img.width;
-      editCanvas.height = img.height;
-      editCtx.drawImage(img, 0, 0);
-      resolve();
-    };
-    img.src = dataUrl;
-  });
+function attachPointerHandlers() {
+  editCanvas.onpointerdown = startDraw;
+  editCanvas.onpointermove = duringDraw;
+  editCanvas.onpointerup   = endDraw;
+  editCanvas.onpointercancel = ()=>{ isDrawing = false; };
 }
 
-// --- Drawing ---
-let drawing = false;
-let startX = 0, startY = 0;
-
-function canvasCoords(e) {
+function canvasXY(e) {
   const rect = editCanvas.getBoundingClientRect();
-  const scaleX = editCanvas.width / rect.width;
-  const scaleY = editCanvas.height / rect.height;
-  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-  return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+  const sx = editCanvas.width / rect.width;
+  const sy = editCanvas.height / rect.height;
+  const cx = e.touches ? e.touches[0].clientX : e.clientX;
+  const cy = e.touches ? e.touches[0].clientY : e.clientY;
+  return {x:(cx-rect.left)*sx, y:(cy-rect.top)*sy};
 }
 
-function attachDrawHandlers() {
-  editCanvas.onpointerdown = (e) => {
-    e.preventDefault();
-    undoStack.push(editCanvas.toDataURL('image/png'));
-    undoBtn.disabled = false;
-    const p = canvasCoords(e);
-    startX = p.x; startY = p.y;
-    drawing = true;
-    editCanvas.setPointerCapture(e.pointerId);
-  };
-  editCanvas.onpointermove = (e) => {
-    if (!drawing) return;
-    e.preventDefault();
-    const p = canvasCoords(e);
-    redrawPreview(startX, startY, p.x, p.y);
-  };
-  editCanvas.onpointerup = (e) => {
-    if (!drawing) return;
-    drawing = false;
-    const p = canvasCoords(e);
-    commitBox(startX, startY, p.x, p.y);
-  };
-  editCanvas.onpointercancel = () => { drawing = false; };
+function startDraw(e) {
+  e.preventDefault();
+  isDrawing = true;
+  editCanvas.setPointerCapture(e.pointerId);
+  const p = canvasXY(e);
+  dragStart = p;
+  // save undo snapshot
+  undoStack.push({marks: JSON.parse(JSON.stringify(pageMarks[currentPage-1]))});
+  undoBtn.disabled = false;
 }
 
-function redrawPreview(x0, y0, x1, y1) {
+function duringDraw(e) {
+  if (!isDrawing) return;
+  e.preventDefault();
+  const p = canvasXY(e);
+  // Redraw from cache + preview rect
   const img = new Image();
   img.onload = () => {
-    editCtx.clearRect(0,0,editCanvas.width,editCanvas.height);
     editCtx.drawImage(img, 0, 0);
-    editCtx.fillStyle = '#000000';
-    editCtx.fillRect(Math.min(x0,x1), Math.min(y0,y1), Math.abs(x1-x0), Math.abs(y1-y0));
+    const color = document.getElementById('redactColor').value;
+    editCtx.fillStyle = color;
+    editCtx.fillRect(
+      Math.min(dragStart.x, p.x), Math.min(dragStart.y, p.y),
+      Math.abs(p.x - dragStart.x), Math.abs(p.y - dragStart.y)
+    );
   };
-  img.src = undoStack[undoStack.length - 1];
+  img.src = pagePNGCache[currentPage-1] || editCanvas.toDataURL('image/png');
 }
 
-function commitBox(x0, y0, x1, y1) {
-  if (Math.abs(x1 - x0) < 3 || Math.abs(y1 - y0) < 3) {
-    const img = new Image();
-    img.onload = () => { editCtx.clearRect(0,0,editCanvas.width,editCanvas.height); editCtx.drawImage(img,0,0); };
-    img.src = undoStack.pop();
+function endDraw(e) {
+  if (!isDrawing) return;
+  isDrawing = false;
+  const p = canvasXY(e);
+  const x = Math.min(dragStart.x, p.x);
+  const y = Math.min(dragStart.y, p.y);
+  const w = Math.abs(p.x - dragStart.x);
+  const h = Math.abs(p.y - dragStart.y);
+
+  if (w < 5 || h < 5) {
+    // Too small — discard and revert
+    undoStack.pop();
     undoBtn.disabled = undoStack.length === 0;
+    return;
   }
+
+  const idx = currentPage - 1;
+  pageMarks[idx].push({x, y, w, h});
+
+  // Commit to canvas & cache
+  const color = document.getElementById('redactColor').value;
+  editCtx.fillStyle = color;
+  editCtx.fillRect(x, y, w, h);
+  pagePNGCache[idx] = editCanvas.toDataURL('image/png');
+
+  updateMarksCount();
+  refreshThumbs();
 }
 
-function undoStroke() {
-  if (undoStack.length === 0) return;
-  const last = undoStack.pop();
-  const img = new Image();
-  img.onload = () => { editCtx.clearRect(0,0,editCanvas.width,editCanvas.height); editCtx.drawImage(img,0,0); };
-  img.src = last;
+function undoLast() {
+  if (!undoStack.length) return;
+  const snap = undoStack.pop();
+  pageMarks[currentPage-1] = snap.marks;
   undoBtn.disabled = undoStack.length === 0;
+  renderEditPage(currentPage).then(()=>{ updateMarksCount(); refreshThumbs(); });
 }
 
-async function clearPage() {
-  const page = await pdfDocProxy.getPage(currentEditIndex + 1);
-  const viewport = page.getViewport({ scale: EDIT_SCALE });
-  editCanvas.width = viewport.width;
-  editCanvas.height = viewport.height;
-  await page.render({ canvasContext: editCtx, viewport }).promise;
+async function clearCurrentPage() {
+  if (!currentPage) return;
+  pageMarks[currentPage-1] = [];
   undoStack = [];
   undoBtn.disabled = true;
-  pageStates[currentEditIndex] = null;
-  refreshThumbBadges();
+  delete pagePNGCache[currentPage-1];
+  await renderEditPage(currentPage);
+  updateMarksCount();
+  refreshThumbs();
 }
 
 function closeEditor() {
-  if (undoStack.length > 0) {
-    pageStates[currentEditIndex] = { dataUrl: editCanvas.toDataURL('image/png') };
-  }
-  editorCard.style.display = 'none';
-  currentEditIndex = null;
+  editorSection.style.display = 'none';
+  currentPage = null;
   editCanvas.onpointerdown = editCanvas.onpointermove = editCanvas.onpointerup = null;
-  refreshThumbBadges();
+  refreshThumbs();
 }
 
-// --- Build final PDF ---
-async function finalizePdf() {
+function navigatePage(delta) {
+  if (!currentPage) return;
+  const next = currentPage + delta;
+  if (next < 1 || next > totalPages) return;
+  openEditor(next);
+}
+
+function updateMarksCount() {
+  if (!currentPage) return;
+  const n = pageMarks[currentPage-1].length;
+  marksCount.textContent = n > 0 ? `${n} box${n!==1?'es':''} on this page` : '';
+}
+
+// ─── Search & Redact ─────────────────────────────────────────────────────────
+async function doSearch() {
+  const query = searchField.value.trim();
+  if (!query || !pdfProxy) return;
+  searchBtn.disabled = true;
+  searchResults.innerHTML = '<span>Searching…</span>';
+
+  let totalFound = 0;
+  editScale = parseFloat(document.getElementById('renderQuality').value);
+
+  for (let i = 1; i <= totalPages; i++) {
+    const page = await pdfProxy.getPage(i);
+    const content = await page.getTextContent();
+    const vp = page.getViewport({scale: editScale});
+    const pageH = vp.height;
+
+    for (const item of content.items) {
+      if (!item.str) continue;
+      // Find all occurrences of query in item.str (case-insensitive)
+      const lower = item.str.toLowerCase();
+      const qLower = query.toLowerCase();
+      let pos = lower.indexOf(qLower);
+      while (pos !== -1) {
+        totalFound++;
+        // Transform PDF coordinates to canvas coordinates
+        const tx = item.transform;
+        // item.transform = [scaleX, 0, 0, scaleY, translateX, translateY]
+        const pdfX = tx[4];
+        const pdfY = tx[5];
+        const charWidth = item.width / Math.max(item.str.length, 1);
+        const charHeight = Math.abs(item.height) || 12;
+        const sx = editScale;
+        const sy = editScale;
+        const x = (pdfX + pos * charWidth) * sx;
+        // PDF y is bottom-up; canvas y is top-down
+        const y = pageH - (pdfY + charHeight) * sy;
+        const w = qLower.length * charWidth * sx;
+        const h = charHeight * sy * 1.2;
+        // Add padding
+        pageMarks[i-1].push({
+          x: Math.max(0, x - 3),
+          y: Math.max(0, y - 2),
+          w: w + 6,
+          h: h + 4
+        });
+        pos = lower.indexOf(qLower, pos + 1);
+      }
+    }
+  }
+
+  if (totalFound > 0) {
+    searchResults.innerHTML = `<span class="hit">✓ Marked ${totalFound} match${totalFound!==1?'es':''} of "${query}" across all pages.</span>`;
+    // Rebuild caches for affected pages
+    for (let i = 0; i < totalPages; i++) {
+      if (pageMarks[i].length > 0) delete pagePNGCache[i];
+    }
+    // If editor open, re-render
+    if (currentPage) await renderEditPage(currentPage);
+  } else {
+    searchResults.innerHTML = `<span class="miss">No matches found for "${query}".</span>`;
+  }
+  searchBtn.disabled = false;
+  searchField.value = '';
+  refreshThumbs();
+}
+
+// ─── Verify grid ─────────────────────────────────────────────────────────────
+async function buildVerifyGrid() {
+  verifyGrid.innerHTML = '';
+  const redactedCount = pageMarks.filter(m=>m.length>0).length;
+  verifyNotice.innerHTML = `<strong>✓ ${redactedCount} page${redactedCount!==1?'s':''} will be redacted</strong>Green-bordered pages contain redaction marks. Confirm they cover the right areas before downloading.`;
+
+  const color = document.getElementById('redactColor').value;
+
+  for (let i = 0; i < totalPages; i++) {
+    const page = await pdfProxy.getPage(i+1);
+    const vp = page.getViewport({scale: 0.25});
+    const c = document.createElement('canvas');
+    c.width = vp.width; c.height = vp.height;
+    const ctx = c.getContext('2d');
+    await page.render({canvasContext: ctx, viewport: vp}).promise;
+
+    // Draw marks at thumb scale
+    const scaleRatio = 0.25 / parseFloat(document.getElementById('renderQuality').value);
+    if (pageMarks[i].length > 0) {
+      ctx.fillStyle = color;
+      for (const m of pageMarks[i]) {
+        ctx.fillRect(m.x * scaleRatio, m.y * scaleRatio, m.w * scaleRatio, m.h * scaleRatio);
+      }
+    }
+
+    const vt = document.createElement('div');
+    vt.className = 'verify-thumb' + (pageMarks[i].length > 0 ? ' redacted-page' : '');
+    const lbl = document.createElement('div');
+    lbl.className = 'vt-label';
+    lbl.textContent = pageMarks[i].length > 0 ? `P${i+1} ✓` : `P${i+1}`;
+    vt.appendChild(c);
+    vt.appendChild(lbl);
+    verifyGrid.appendChild(vt);
+  }
+}
+
+// ─── Finalize ────────────────────────────────────────────────────────────────
+async function finalize() {
   hideError();
   successBox.style.display = 'none';
   applyBtn.disabled = true;
   progressWrap.style.display = 'block';
-  setProgress(10, 'Loading original PDF…');
+  setProgress(5, 'Loading PDF…');
 
   try {
-    const { PDFDocument } = PDFLib;
-    const bytes = await pdfFile.arrayBuffer();
-    const srcDoc = await PDFDocument.load(bytes);
-    const newDoc = await PDFDocument.create();
+    const {PDFDocument, rgb} = PDFLib;
+    const srcBytes = await pdfFile.arrayBuffer();
+    const srcDoc = await PDFDocument.load(srcBytes);
+    const outDoc = await PDFDocument.create();
+
+    const color = document.getElementById('redactColor').value;
+    const stripMeta = document.getElementById('stripMetaToggle').checked;
+    const editSc = parseFloat(document.getElementById('renderQuality').value);
+
+    let totalBoxCount = 0;
+    let redactedPageCount = 0;
 
     for (let i = 0; i < totalPages; i++) {
-      setProgress(10 + Math.round((i / totalPages) * 75), `Processing page ${i + 1} of ${totalPages}…`);
-      if (pageStates[i]) {
-        const pngBytes = await (await fetch(pageStates[i].dataUrl)).arrayBuffer();
-        const pngImage = await newDoc.embedPng(pngBytes);
+      setProgress(5 + Math.round((i / totalPages) * 78), `Processing page ${i+1} of ${totalPages}…`);
+      const marks = pageMarks[i];
+
+      if (marks.length > 0) {
+        // Render page with marks burned in → PNG → embed
+        redactedPageCount++;
+        totalBoxCount += marks.length;
+
+        const page = await pdfProxy.getPage(i+1);
+        const vp = page.getViewport({scale: editSc});
+        const offCanvas = document.createElement('canvas');
+        offCanvas.width = vp.width;
+        offCanvas.height = vp.height;
+        const offCtx = offCanvas.getContext('2d');
+        await page.render({canvasContext: offCtx, viewport: vp}).promise;
+
+        offCtx.fillStyle = color;
+        for (const m of marks) offCtx.fillRect(m.x, m.y, m.w, m.h);
+
+        const pngData = offCanvas.toDataURL('image/png');
+        const pngBytes = await (await fetch(pngData)).arrayBuffer();
+        const pngImage = await outDoc.embedPng(pngBytes);
+
         const srcPage = srcDoc.getPage(i);
-        const { width, height } = srcPage.getSize();
-        const newPage = newDoc.addPage([width, height]);
-        newPage.drawImage(pngImage, { x: 0, y: 0, width, height });
+        const {width, height} = srcPage.getSize();
+        const newPage = outDoc.addPage([width, height]);
+        newPage.drawImage(pngImage, {x:0, y:0, width, height});
+
       } else {
-        const [copied] = await newDoc.copyPages(srcDoc, [i]);
-        newDoc.addPage(copied);
+        // Copy page unchanged
+        const [copied] = await outDoc.copyPages(srcDoc, [i]);
+        outDoc.addPage(copied);
       }
     }
 
-    setProgress(92, 'Finalising…');
-    const outBytes = await newDoc.save();
+    setProgress(88, 'Stripping metadata…');
+
+    // ── Metadata stripping ────────────────────────────────────────
+    const origMeta = {
+      title:    srcDoc.getTitle()    || '',
+      author:   srcDoc.getAuthor()   || '',
+      subject:  srcDoc.getSubject()  || '',
+      keywords: srcDoc.getKeywords() || '',
+      creator:  srcDoc.getCreator()  || '',
+      producer: srcDoc.getProducer() || '',
+    };
+
+    if (stripMeta) {
+      outDoc.setTitle('');
+      outDoc.setAuthor('');
+      outDoc.setSubject('');
+      outDoc.setKeywords([]);
+      outDoc.setCreator('PaperStack');
+      outDoc.setProducer('PaperStack');
+      // Clear creation/modification dates
+      try { outDoc.setCreationDate(new Date(0)); outDoc.setModificationDate(new Date(0)); } catch(e){}
+    }
+
+    setProgress(95, 'Saving…');
+    const outBytes = await outDoc.save();
     setProgress(100, 'Done!');
 
-    const blob = new Blob([outBytes], { type: 'application/pdf' });
+    const blob = new Blob([outBytes], {type:'application/pdf'});
     downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = pdfFile.name.replace(/\.pdf$/i, '') + '_redacted.pdf';
-    const redactedCount = pageStates.filter(s => !!s).length;
-    successDesc.textContent = `${redactedCount} page${redactedCount !== 1 ? 's' : ''} redacted · ${fmtSize(outBytes.length)}`;
+    downloadLink.download = pdfFile.name.replace(/\.pdf$/i,'') + '_redacted.pdf';
 
-    setTimeout(() => {
+    // Success stats
+    document.getElementById('statPages').textContent = redactedPageCount;
+    document.getElementById('statBoxes').textContent = totalBoxCount;
+    document.getElementById('statMeta').textContent = stripMeta ? 'Stripped' : 'Kept';
+
+    // Metadata summary
+    if (stripMeta) {
+      const rows = document.getElementById('metaRows');
+      rows.innerHTML = '';
+      const fields = [
+        ['Title', origMeta.title],
+        ['Author', origMeta.author],
+        ['Subject', origMeta.subject],
+        ['Creator', origMeta.creator],
+        ['Producer', origMeta.producer],
+      ];
+      let anyShown = false;
+      for (const [key, val] of fields) {
+        if (val) {
+          anyShown = true;
+          const row = document.createElement('div');
+          row.className = 'meta-row';
+          row.innerHTML = `<span class="meta-key">${key}</span><span class="meta-before">${val}</span><span style="color:var(--muted);margin:0 4px;">→</span><span class="meta-after">removed</span>`;
+          rows.appendChild(row);
+        }
+      }
+      document.getElementById('metaSummary').style.display = anyShown ? 'block' : 'none';
+    } else {
+      document.getElementById('metaSummary').style.display = 'none';
+    }
+
+    setTimeout(()=>{
       progressWrap.style.display = 'none';
       successBox.style.display = 'block';
       applyBtn.disabled = false;
-    }, 400);
+    }, 350);
 
   } catch(err) {
     progressWrap.style.display = 'none';
@@ -556,20 +924,24 @@ async function finalizePdf() {
   }
 }
 
-function setProgress(pct, label) { progressBar.style.width = pct + '%'; progressLabel.textContent = label; }
-function showError(msg) { errorBox.textContent = '⚠️ ' + msg; errorBox.style.display = 'block'; }
-function hideError() { errorBox.style.display = 'none'; }
-function fmtSize(b) { if(b<1024) return b+' B'; if(b<1048576) return (b/1024).toFixed(1)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+function setProgress(pct, label){ progressBar.style.width=pct+'%'; progressLabel.textContent=label; }
+function showError(msg){ errorBox.textContent='⚠️ '+msg; errorBox.style.display='block'; }
+function hideError(){ errorBox.style.display='none'; }
+function fmtSize(b){ if(b<1024) return b+' B'; if(b<1048576) return (b/1024).toFixed(1)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
 
-function resetAll() {
-  pdfFile = null; pdfDocProxy = null; totalPages = 0;
-  pageStates = []; undoStack = []; currentEditIndex = null;
-  fileInput.value = '';
-  pagesGrid.innerHTML = '';
-  optionsSection.style.display = 'none';
-  editorCard.style.display = 'none';
-  successBox.style.display = 'none';
-  progressWrap.style.display = 'none';
+function resetAll(){
+  pdfFile=null; pdfProxy=null; totalPages=0;
+  pageMarks=[]; pagePNGCache={}; undoStack=[]; currentPage=null;
+  fileInput.value='';
+  pagesGrid.innerHTML='';
+  mainSection.style.display='none';
+  editorSection.style.display='none';
+  verifySection.style.display='none';
+  successBox.style.display='none';
+  progressWrap.style.display='none';
+  searchResults.textContent='';
+  searchBtn.disabled=true;
   hideError();
 }
 </script>
