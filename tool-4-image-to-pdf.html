@@ -8,15 +8,15 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Convert Image to PDF Free Online | PaperStack</title>
-<meta name="description" content="Turn JPG, PNG, or WEBP images into a PDF for free. Reorder images, pick page size, all done in your browser."/>
+<meta name="description" content="Turn JPG, PNG, or WEBP images into a PDF for free. Crop, reorder images, pick page size, all done in your browser."/>
 <link rel="canonical" href="https://paperstack-one.vercel.app//tool-4-image-to-pdf.html"/>
 <meta property="og:title" content="Convert Image to PDF Free Online | PaperStack"/>
-<meta property="og:description" content="Turn JPG, PNG, or WEBP images into a PDF for free. Reorder images, pick page size, all done in your browser."/>
+<meta property="og:description" content="Turn JPG, PNG, or WEBP images into a PDF for free. Crop, reorder images, pick page size, all done in your browser."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://paperstack-one.vercel.app//tool-4-image-to-pdf.html"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Convert Image to PDF Free Online | PaperStack"/>
-<meta name="twitter:description" content="Turn JPG, PNG, or WEBP images into a PDF for free. Reorder images, pick page size, all done in your browser."/>
+<meta name="twitter:description" content="Turn JPG, PNG, or WEBP images into a PDF for free. Crop, reorder images, pick page size, all done in your browser."/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <style>
@@ -76,6 +76,8 @@
   .img-num-badge{position:absolute;top:6px;left:6px;background:var(--accent);color:white;font-size:.7rem;font-weight:700;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
   .img-remove{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.6);color:white;width:22px;height:22px;border-radius:50%;border:none;cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;transition:background .15s;}
   .img-remove:hover{background:var(--red);}
+  .img-crop{position:absolute;bottom:34px;right:6px;background:rgba(0,0,0,.6);color:white;width:26px;height:26px;border-radius:7px;border:none;cursor:pointer;font-size:.78rem;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+  .img-crop:hover{background:var(--accent);}
   .img-name{font-size:.68rem;color:var(--muted);padding:6px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
   /* PAGE SETTINGS */
@@ -86,6 +88,14 @@
   .pill-tab{flex:1;padding:8px;text-align:center;font-size:.78rem;font-weight:600;cursor:pointer;background:var(--white);color:var(--muted);transition:all .15s;}
   .pill-tab.active{background:var(--accent);color:white;}
   .pill-tab:hover:not(.active){background:var(--bg);}
+
+  .filename-row{display:flex;align-items:center;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;background:var(--white);transition:border-color .2s;}
+  .filename-row:focus-within{border-color:var(--accent);}
+  .filename-input{flex:1;border:none;outline:none;padding:9px 10px;font-family:'Inter',sans-serif;font-size:.85rem;color:var(--text);background:none;min-width:0;}
+  .filename-input::placeholder{color:var(--light);}
+  .filename-suffix{font-size:.85rem;color:var(--muted);padding-right:8px;flex-shrink:0;}
+  .filename-clear{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;padding:9px 11px;border-left:1px solid var(--border);flex-shrink:0;transition:color .15s;}
+  .filename-clear:hover{color:var(--red);}
 
   .convert-btn{width:100%;padding:14px;background:var(--accent);border:none;border-radius:10px;color:white;font-size:.95rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:opacity .15s,transform .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:18px;}
   .convert-btn:hover:not(:disabled){opacity:.88;transform:translateY(-1px);}
@@ -121,6 +131,28 @@
   .footer-links a{font-size:.78rem;color:var(--muted);text-decoration:none;}
   .footer-links a:hover{color:var(--text);}
   .footer-copy{font-size:.72rem;color:var(--light);}
+
+  /* CROP MODAL */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(17,24,39,.72);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+  .modal-overlay.open{display:flex;}
+  .crop-modal{background:var(--white);border-radius:14px;padding:22px;max-width:560px;width:100%;max-height:90vh;overflow:auto;}
+  .crop-modal-title{font-size:.95rem;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+  .crop-modal-close{background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--muted);}
+  .crop-stage-wrap{display:flex;justify-content:center;background:var(--bg);border-radius:10px;padding:14px;margin-bottom:16px;}
+  .crop-stage{position:relative;user-select:none;touch-action:none;}
+  .crop-stage img{display:block;max-width:100%;max-height:55vh;pointer-events:none;-webkit-user-drag:none;}
+  .crop-selection{position:absolute;border:2px solid var(--accent);background:rgba(79,110,247,.15);cursor:move;box-sizing:border-box;}
+  .crop-handle{position:absolute;width:14px;height:14px;background:var(--accent);border:2px solid white;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.3);}
+  .crop-handle.nw{top:-8px;left:-8px;cursor:nwse-resize;}
+  .crop-handle.ne{top:-8px;right:-8px;cursor:nesw-resize;}
+  .crop-handle.sw{bottom:-8px;left:-8px;cursor:nesw-resize;}
+  .crop-handle.se{bottom:-8px;right:-8px;cursor:nwse-resize;}
+  .crop-modal-actions{display:flex;gap:10px;flex-wrap:wrap;}
+  .crop-btn{flex:1;padding:11px;border-radius:8px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;border:1.5px solid var(--border);background:var(--white);color:var(--text);transition:all .15s;}
+  .crop-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .crop-btn.primary{background:var(--accent);border-color:var(--accent);color:white;}
+  .crop-btn.primary:hover{opacity:.88;color:white;}
+  .crop-hint{font-size:.76rem;color:var(--muted);text-align:center;margin-bottom:14px;}
 
   @media(max-width:600px){
     nav{padding:0 16px;}
@@ -158,7 +190,7 @@
   <div class="tool-hero-icon">🖼️</div>
   <div>
     <h1>Image to PDF</h1>
-    <p>Turn JPG, PNG, or WEBP images into a single PDF. Reorder images before converting.</p>
+    <p>Turn JPG, PNG, or WEBP images into a single PDF. Crop and reorder images before converting.</p>
   </div>
 </div>
 
@@ -183,7 +215,7 @@
       </div>
       <button class="clear-btn" onclick="clearAll()">Clear all</button>
     </div>
-    <div class="hint-box">☝️ Drag images to reorder — they'll appear in the PDF in this order</div>
+    <div class="hint-box">☝️ Drag images to reorder — tap ✂️ to crop an image before converting</div>
     <div class="img-grid" id="imgGrid"></div>
   </div>
 
@@ -203,6 +235,15 @@
           <div class="pill-tab active" data-orient="portrait" onclick="setSetting('orient','portrait',this)">Portrait</div>
           <div class="pill-tab" data-orient="landscape" onclick="setSetting('orient','landscape',this)">Landscape</div>
         </div>
+      </div>
+    </div>
+
+    <div class="setting-group" style="margin-top:14px;">
+      <span class="setting-label">File name (optional)</span>
+      <div class="filename-row">
+        <input type="text" id="fileNameInput" class="filename-input" placeholder="images" oninput="updateFileNamePreview()"/>
+        <span class="filename-suffix">.pdf</span>
+        <button class="filename-clear" id="fileNameClear" onclick="clearFileName()" title="Reset to default" style="display:none;">✕</button>
       </div>
     </div>
 
@@ -230,17 +271,44 @@
       <p>Images stay on your device. Nothing is uploaded to any server.</p>
     </div>
     <div class="feat">
+      <div class="feat-icon">✂️</div>
+      <h4>Crop before converting</h4>
+      <p>Trim any image to exactly what you need before it becomes a page.</p>
+    </div>
+    <div class="feat">
       <div class="feat-icon">🔃</div>
       <h4>Reorder freely</h4>
       <p>Drag images to control the exact page order in your PDF.</p>
     </div>
-    <div class="feat">
-      <div class="feat-icon">📐</div>
-      <h4>Flexible sizing</h4>
-      <p>Choose A4 standard pages or let pages fit each image's size.</p>
-    </div>
   </div>
 
+</div>
+
+<!-- CROP MODAL -->
+<div class="modal-overlay" id="cropOverlay">
+  <div class="crop-modal">
+    <div class="crop-modal-title">
+      <span>Crop image</span>
+      <button class="crop-modal-close" onclick="closeCropModal()">✕</button>
+    </div>
+    <div class="crop-hint">Drag the box to move it, or drag a corner to resize.</div>
+    <div class="crop-stage-wrap">
+      <div class="crop-stage" id="cropStage">
+        <img id="cropImg" src="" alt="Crop preview"/>
+        <div class="crop-selection" id="cropSelection">
+          <div class="crop-handle nw" data-handle="nw"></div>
+          <div class="crop-handle ne" data-handle="ne"></div>
+          <div class="crop-handle sw" data-handle="sw"></div>
+          <div class="crop-handle se" data-handle="se"></div>
+        </div>
+      </div>
+    </div>
+    <div class="crop-modal-actions">
+      <button class="crop-btn" onclick="resetCropSelection()">↺ Reset</button>
+      <button class="crop-btn" onclick="closeCropModal()">Cancel</button>
+      <button class="crop-btn primary" onclick="applyCrop()">✓ Apply Crop</button>
+    </div>
+  </div>
 </div>
 
 <footer>
@@ -258,6 +326,7 @@
 let images = []; // {id, file, url}
 let dragSrcIdx = null;
 let settings = { size: 'a4', orient: 'portrait' };
+let customFileName = '';
 
 const dropArea     = document.getElementById('dropArea');
 const fileInput    = document.getElementById('fileInput');
@@ -298,6 +367,7 @@ function renderGrid() {
     item.innerHTML = `
       <span class="img-num-badge">${idx+1}</span>
       <button class="img-remove" onclick="removeImg(${idx})">✕</button>
+      <button class="img-crop" onclick="openCropModal(${idx})" title="Crop">✂️</button>
       <img class="img-thumb" src="${img.url}"/>
       <div class="img-name">${img.file.name}</div>
     `;
@@ -328,6 +398,11 @@ function removeImg(idx) {
 function clearAll() {
   images = [];
   fileInput.value = '';
+  customFileName = '';
+  const fnInput = document.getElementById('fileNameInput');
+  if (fnInput) fnInput.value = '';
+  const fnClear = document.getElementById('fileNameClear');
+  if (fnClear) fnClear.style.display = 'none';
   renderGrid();
 }
 
@@ -335,6 +410,150 @@ function setSetting(key, val, el) {
   settings[key] = val;
   el.parentElement.querySelectorAll('.pill-tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
+}
+
+function updateFileNamePreview() {
+  const input = document.getElementById('fileNameInput');
+  const clearBtn = document.getElementById('fileNameClear');
+  customFileName = input.value;
+  clearBtn.style.display = input.value ? 'flex' : 'none';
+}
+
+function clearFileName() {
+  const input = document.getElementById('fileNameInput');
+  input.value = '';
+  customFileName = '';
+  document.getElementById('fileNameClear').style.display = 'none';
+  input.focus();
+}
+
+function sanitizeFileName(name) {
+  const cleaned = name.trim().replace(/[\\/:*?"<>|]/g, '').replace(/\.pdf$/i, '');
+  return cleaned || 'images';
+}
+
+// --- CROP MODAL LOGIC ---
+const cropOverlay   = document.getElementById('cropOverlay');
+const cropStage     = document.getElementById('cropStage');
+const cropImg       = document.getElementById('cropImg');
+const cropSelection = document.getElementById('cropSelection');
+
+let cropIdx = null;
+let sel = { x: 0, y: 0, w: 0, h: 0 };
+let cropDrag = null; // { mode: 'move'|'resize', handle, startX, startY, startSel }
+
+function openCropModal(idx) {
+  cropIdx = idx;
+  cropImg.src = images[idx].url;
+  cropOverlay.classList.add('open');
+
+  cropImg.onload = () => {
+    resetCropSelection();
+  };
+  if (cropImg.complete) resetCropSelection();
+}
+
+function closeCropModal() {
+  cropOverlay.classList.remove('open');
+  cropIdx = null;
+}
+
+function resetCropSelection() {
+  const rect = cropImg.getBoundingClientRect();
+  sel = { x: 0, y: 0, w: rect.width, h: rect.height };
+  drawSelection();
+}
+
+function drawSelection() {
+  cropSelection.style.left = sel.x + 'px';
+  cropSelection.style.top = sel.y + 'px';
+  cropSelection.style.width = sel.w + 'px';
+  cropSelection.style.height = sel.h + 'px';
+}
+
+function stageBounds() {
+  return { w: cropImg.getBoundingClientRect().width, h: cropImg.getBoundingClientRect().height };
+}
+
+function clampSel() {
+  const b = stageBounds();
+  if (sel.w < 24) sel.w = 24;
+  if (sel.h < 24) sel.h = 24;
+  if (sel.x < 0) sel.x = 0;
+  if (sel.y < 0) sel.y = 0;
+  if (sel.x + sel.w > b.w) sel.x = b.w - sel.w;
+  if (sel.y + sel.h > b.h) sel.y = b.h - sel.h;
+  if (sel.w > b.w) sel.w = b.w;
+  if (sel.h > b.h) sel.h = b.h;
+}
+
+cropSelection.addEventListener('pointerdown', (e) => {
+  const handle = e.target.dataset.handle;
+  e.stopPropagation();
+  cropDrag = {
+    mode: handle ? 'resize' : 'move',
+    handle,
+    startClientX: e.clientX,
+    startClientY: e.clientY,
+    startSel: { ...sel }
+  };
+  cropSelection.setPointerCapture(e.pointerId);
+});
+
+cropSelection.addEventListener('pointermove', (e) => {
+  if (!cropDrag) return;
+  const dx = e.clientX - cropDrag.startClientX;
+  const dy = e.clientY - cropDrag.startClientY;
+  const s0 = cropDrag.startSel;
+
+  if (cropDrag.mode === 'move') {
+    sel.x = s0.x + dx;
+    sel.y = s0.y + dy;
+  } else {
+    let { x, y, w, h } = s0;
+    if (cropDrag.handle === 'se') { w = s0.w + dx; h = s0.h + dy; }
+    if (cropDrag.handle === 'sw') { x = s0.x + dx; w = s0.w - dx; h = s0.h + dy; }
+    if (cropDrag.handle === 'ne') { y = s0.y + dy; w = s0.w + dx; h = s0.h - dy; }
+    if (cropDrag.handle === 'nw') { x = s0.x + dx; y = s0.y + dy; w = s0.w - dx; h = s0.h - dy; }
+    sel = { x, y, w, h };
+  }
+  clampSel();
+  drawSelection();
+});
+
+cropSelection.addEventListener('pointerup', (e) => {
+  cropDrag = null;
+  try { cropSelection.releasePointerCapture(e.pointerId); } catch(err) {}
+});
+cropSelection.addEventListener('pointercancel', () => { cropDrag = null; });
+
+async function applyCrop() {
+  if (cropIdx === null) return;
+  const rect = cropImg.getBoundingClientRect();
+  const scaleX = cropImg.naturalWidth / rect.width;
+  const scaleY = cropImg.naturalHeight / rect.height;
+
+  const sx = sel.x * scaleX;
+  const sy = sel.y * scaleY;
+  const sw = sel.w * scaleX;
+  const sh = sel.h * scaleY;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(sw));
+  canvas.height = Math.max(1, Math.round(sh));
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(cropImg, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+
+  canvas.toBlob((blob) => {
+    if (!blob) { closeCropModal(); return; }
+    const oldImg = images[cropIdx];
+    URL.revokeObjectURL(oldImg.url);
+    const newName = oldImg.file.name.replace(/(\.[^.]+)?$/, '_cropped.png');
+    const newFile = new File([blob], newName, { type: 'image/png' });
+    images[cropIdx] = { id: oldImg.id, file: newFile, url: URL.createObjectURL(blob) };
+    renderGrid();
+    closeCropModal();
+  }, 'image/png');
 }
 
 async function doConvert() {
@@ -398,13 +617,16 @@ async function doConvert() {
     }
 
     setProgress(95, 'Finalising…');
+    pdfDoc.setProducer('');
+    pdfDoc.setCreator('');
     const pdfBytes = await pdfDoc.save();
     setProgress(100, 'Done!');
 
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = 'images.pdf';
-    successDesc.textContent = `${total} image${total>1?'s':''} converted → ${fmt(pdfBytes.length)}`;
+    const finalName = sanitizeFileName(customFileName) + '.pdf';
+    downloadLink.download = finalName;
+    successDesc.textContent = `${total} image${total>1?'s':''} converted → ${finalName} · ${fmt(pdfBytes.length)}`;
 
     setTimeout(()=>{
       progressWrap.style.display='none';
